@@ -42,13 +42,16 @@ function RootLayoutContent() {
   }, []);
 
   return (
-    <SafeAreaProvider>
+    <SafeAreaProvider style={{ backgroundColor: 'transparent' }}>
       <StatusBar style="light" />
       <AuthNavigationHandler />
-      <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="index" />
-        <Stack.Screen name="login" />
-        <Stack.Screen name="signup" />
+      <Stack screenOptions={{ 
+        headerShown: false,
+        contentStyle: { backgroundColor: 'transparent' },
+      }}>
+        <Stack.Screen name="index" options={{ contentStyle: { backgroundColor: 'transparent' } }} />
+        <Stack.Screen name="login" options={{ contentStyle: { backgroundColor: 'transparent' } }} />
+        <Stack.Screen name="signup" options={{ contentStyle: { backgroundColor: 'transparent' } }} />
         <Stack.Screen name="(tabs)" />
         <Stack.Screen name="document/[id]" />
         <Stack.Screen name="generated-doc/[id]" />
