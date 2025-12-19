@@ -48,34 +48,34 @@ const AnimatedWelcomeLogo = () => {
     const halfCycleDuration = 1200;
     const easeConfig = { duration: halfCycleDuration, easing: Easing.inOut(Easing.ease) };
 
-    // W: décalage 0ms, ±15%, GRANDIT d'abord
+    // W: décalage 0ms, ±5% (réduit de 2/3), GRANDIT d'abord
     scaleW.value = withRepeat(
       withSequence(
-        withTiming(1.15, easeConfig),
-        withTiming(0.85, easeConfig)
+        withTiming(1.05, easeConfig),
+        withTiming(0.95, easeConfig)
       ),
       -1, // Boucle infinie
       true
     );
 
-    // Artywiz: décalage 500ms, ±15%, RÉDUIT d'abord
+    // Artywiz: décalage 500ms, ±5% (réduit de 2/3), RÉDUIT d'abord
     setTimeout(() => {
       scaleArtywiz.value = withRepeat(
         withSequence(
-          withTiming(0.85, easeConfig),
-          withTiming(1.15, easeConfig)
+          withTiming(0.95, easeConfig),
+          withTiming(1.05, easeConfig)
         ),
         -1,
         true
       );
     }, 500);
 
-    // Football: décalage 1000ms, ±15%, GRANDIT d'abord
+    // Football: décalage 1000ms, ±5% (réduit de 2/3), GRANDIT d'abord
     setTimeout(() => {
       scaleFootball.value = withRepeat(
         withSequence(
-          withTiming(1.15, easeConfig),
-          withTiming(0.85, easeConfig)
+          withTiming(1.05, easeConfig),
+          withTiming(0.95, easeConfig)
         ),
         -1,
         true
