@@ -1,0 +1,42 @@
+diff --git a/frontend/providers/VideoBackgroundProvider.tsx b/frontend/providers/VideoBackgroundProvider.tsx
+index 6139b2e..559f806 100644
+--- a/frontend/providers/VideoBackgroundProvider.tsx
++++ b/frontend/providers/VideoBackgroundProvider.tsx
+@@ -130,25 +130,31 @@ export function VideoBackgroundProvider({ children }: VideoBackgroundProviderPro
+ const styles = StyleSheet.create({
+   container: {
+     flex: 1,
+-    position: 'relative',
+   },
+   videoContainer: {
+-    ...StyleSheet.absoluteFillObject,
+-    zIndex: -1,
++    position: 'absolute',
++    top: 0,
++    left: 0,
++    right: 0,
++    bottom: 0,
+   },
+   fallbackImage: {
+-    ...StyleSheet.absoluteFillObject,
++    position: 'absolute',
++    top: 0,
++    left: 0,
+     width: '100%',
+     height: '100%',
+   },
+   video: {
+-    ...StyleSheet.absoluteFillObject,
++    position: 'absolute',
++    top: 0,
++    left: 0,
+     width: '100%',
+     height: '100%',
+   },
+   content: {
+     flex: 1,
+-    zIndex: 1,
++    backgroundColor: 'transparent',
+   },
+ });
+ 
