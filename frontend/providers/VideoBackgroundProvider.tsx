@@ -10,6 +10,45 @@ import { Video, ResizeMode, AVPlaybackStatus } from 'expo-av';
 const VIDEO_URL = 'https://customer-assets.emergentagent.com/job_artywiz-transfer/artifacts/8qc6s5v8_bg-login%20%282%29.mp4';
 const FALLBACK_IMAGE = require('../assets/images/fond_blocs.png');
 
+// Web-only video component using DOM API
+const WebVideoBackground = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (containerRef.current && Platform.OS === 'web') {
+      // Create video element manually
+      const video = document.createElement('video');
+      video.src = VIDEO_URL;
+      video.autoplay = true;
+      video.loop = true;
+      video.muted = true;
+      video.playsInline = true;
+      video.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;';
+      
+      containerRef.current.innerHTML = '';
+      containerRef.current.appendChild(video);
+      
+      video.play().catch(console.warn);
+    }
+  }, []);
+
+  if (Platform.OS !== 'web') return null;
+
+  return (
+    <div 
+      ref={containerRef}
+      style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        overflow: 'hidden',
+      }}
+    />
+  );
+};
+
 // Screens that should show the video background
 const AUTH_SCREENS = ['index', 'login', 'signup', 'profile-selection', 'theme-selection'];
 
