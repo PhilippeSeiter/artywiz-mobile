@@ -3,14 +3,15 @@ import { Stack, useRouter, useSegments } from 'expo-router';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { useAuthStore } from '../stores/authStore';
+import { QueryProvider } from '../providers/QueryProvider';
+import { useCurrentUser } from '../hooks/useAuth';
 import { useNotificationStore } from '../stores/notificationStore';
 
 // Auth listener component - handles all auth-based navigation
 function AuthNavigationHandler() {
   const router = useRouter();
   const segments = useSegments();
-  const { user, isInitialized, isLoggingOut } = useAuthStore();
+  const { user, isInitialized } = useCurrentUser();
   const previousUser = useRef(user);
 
   useEffect(() => {
@@ -32,36 +33,42 @@ function AuthNavigationHandler() {
   return null;
 }
 
-export default function RootLayout() {
-  const initialize = useAuthStore((state) => state.initialize);
+function RootLayoutContent() {
   const initializeNotifications = useNotificationStore((state) => state.initialize);
 
   useEffect(() => {
-    initialize();
     initializeNotifications();
   }, []);
 
   return (
+    <SafeAreaProvider>
+      <StatusBar style="light" />
+      <AuthNavigationHandler />
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="index" />
+        <Stack.Screen name="login" />
+        <Stack.Screen name="signup" />
+        <Stack.Screen name="(tabs)" />
+        <Stack.Screen name="document/[id]" />
+        <Stack.Screen name="generated-doc/[id]" />
+        <Stack.Screen 
+          name="filter-modal" 
+          options={{ 
+            presentation: 'modal',
+            animation: 'slide_from_bottom'
+          }} 
+        />
+      </Stack>
+    </SafeAreaProvider>
+  );
+}
+
+export default function RootLayout() {
+  return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <SafeAreaProvider>
-        <StatusBar style="light" />
-        <AuthNavigationHandler />
-        <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="index" />
-          <Stack.Screen name="login" />
-          <Stack.Screen name="signup" />
-          <Stack.Screen name="(tabs)" />
-          <Stack.Screen name="document/[id]" />
-          <Stack.Screen name="generated-doc/[id]" />
-          <Stack.Screen 
-            name="filter-modal" 
-            options={{ 
-              presentation: 'modal',
-              animation: 'slide_from_bottom'
-            }} 
-          />
-        </Stack>
-      </SafeAreaProvider>
+      <QueryProvider>
+        <RootLayoutContent />
+      </QueryProvider>
     </GestureHandlerRootView>
   );
 }
