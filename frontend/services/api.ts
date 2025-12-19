@@ -24,16 +24,21 @@ const TOKEN_KEY = '@artywiz_tokens';
 
 // Get base URL from environment
 const getBaseUrl = (): string => {
-  // Use environment variable or fallback
-  const envUrl = Constants.expoConfig?.extra?.backendUrl 
-    || process.env.EXPO_PUBLIC_BACKEND_URL;
-  
-  if (envUrl) return envUrl;
-  
-  // Default for development
+  // For web, always use relative /api path (handled by nginx proxy)
   if (Platform.OS === 'web') {
     return '/api';
   }
+  
+  // For native (Expo Go), use environment variable
+  const envUrl = Constants.expoConfig?.extra?.backendUrl 
+    || process.env.EXPO_PUBLIC_BACKEND_URL;
+  
+  if (envUrl) {
+    // Add /api if not already present
+    return envUrl.endsWith('/api') ? envUrl : `${envUrl}/api`;
+  }
+  
+  // Default fallback for local development
   return 'http://localhost:8001/api';
 };
 
