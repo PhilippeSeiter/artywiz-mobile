@@ -61,58 +61,64 @@ export function VideoBackgroundProvider({ children }: VideoBackgroundProviderPro
 
   const shouldUseNativeVideo = Platform.OS !== 'web' && !hasError;
 
+  // If not on auth screen, just render children
+  if (!isAuthScreen) {
+    return (
+      <VideoBackgroundContext.Provider value={{ isVisible: false }}>
+        {children}
+      </VideoBackgroundContext.Provider>
+    );
+  }
+
   return (
-    <VideoBackgroundContext.Provider value={{ isVisible: isAuthScreen }}>
+    <VideoBackgroundContext.Provider value={{ isVisible: true }}>
       <View style={styles.container}>
-        {/* Persistent video background - only visible on auth screens */}
-        {isAuthScreen && (
-          <View style={styles.videoContainer} pointerEvents="none">
-            {/* Fallback image */}
-            <Image
-              source={FALLBACK_IMAGE}
-              style={styles.fallbackImage}
-              resizeMode="cover"
+        {/* Video background layer - absolute positioned behind content */}
+        <View style={styles.videoContainer}>
+          {/* Fallback image */}
+          <Image
+            source={FALLBACK_IMAGE}
+            style={styles.fallbackImage}
+            resizeMode="cover"
+          />
+
+          {/* Native video */}
+          {shouldUseNativeVideo && (
+            <Video
+              ref={videoRef}
+              source={{ uri: VIDEO_URL }}
+              style={[styles.video, { opacity: isVideoReady ? 1 : 0 }]}
+              resizeMode={ResizeMode.COVER}
+              shouldPlay
+              isLooping
+              isMuted
+              onPlaybackStatusUpdate={handlePlaybackStatusUpdate}
+              onError={handleError}
             />
+          )}
 
-            {/* Native video */}
-            {shouldUseNativeVideo && (
-              <Video
-                ref={videoRef}
-                source={{ uri: VIDEO_URL }}
-                style={[styles.video, { opacity: isVideoReady ? 1 : 0 }]}
-                resizeMode={ResizeMode.COVER}
-                shouldPlay
-                isLooping
-                isMuted
-                onPlaybackStatusUpdate={handlePlaybackStatusUpdate}
-                onError={handleError}
-              />
-            )}
+          {/* Web video - HTML5 video element */}
+          {Platform.OS === 'web' && !hasError && (
+            <video
+              src={VIDEO_URL}
+              autoPlay
+              loop
+              muted
+              playsInline
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+              }}
+              onError={() => setHasError(true)}
+            />
+          )}
+        </View>
 
-            {/* Web video - HTML5 video element */}
-            {Platform.OS === 'web' && !hasError && (
-              <video
-                src={VIDEO_URL}
-                autoPlay
-                loop
-                muted
-                playsInline
-                style={{
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                  zIndex: 0,
-                }}
-                onError={() => setHasError(true)}
-              />
-            )}
-          </View>
-        )}
-
-        {/* Main content */}
+        {/* Main content - on top of video */}
         <View style={styles.content}>
           {children}
         </View>
