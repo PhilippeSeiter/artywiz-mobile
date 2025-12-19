@@ -13,6 +13,7 @@ const FALLBACK_IMAGE = require('../assets/images/fond_blocs.png');
 // Web-only video component using DOM API
 const WebVideoBackground = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
     if (containerRef.current && Platform.OS === 'web') {
@@ -23,13 +24,40 @@ const WebVideoBackground = () => {
       video.loop = true;
       video.muted = true;
       video.playsInline = true;
+      video.setAttribute('playsinline', 'true');
+      video.setAttribute('webkit-playsinline', 'true');
       video.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;';
       
       containerRef.current.innerHTML = '';
       containerRef.current.appendChild(video);
+      videoRef.current = video;
       
-      video.play().catch(console.warn);
+      // Force play with user interaction workaround
+      const playVideo = () => {
+        video.play().catch(() => {
+          // If autoplay blocked, try again on user interaction
+          const tryPlay = () => {
+            video.play().then(() => {
+              document.removeEventListener('click', tryPlay);
+              document.removeEventListener('touchstart', tryPlay);
+            }).catch(console.warn);
+          };
+          document.addEventListener('click', tryPlay, { once: true });
+          document.addEventListener('touchstart', tryPlay, { once: true });
+        });
+      };
+      
+      // Try playing immediately and on canplay
+      video.addEventListener('canplay', playVideo);
+      video.addEventListener('loadeddata', playVideo);
+      playVideo();
     }
+    
+    return () => {
+      if (videoRef.current) {
+        videoRef.current.pause();
+      }
+    };
   }, []);
 
   if (Platform.OS !== 'web') return null;
@@ -44,6 +72,7 @@ const WebVideoBackground = () => {
         right: 0,
         bottom: 0,
         overflow: 'hidden',
+        backgroundColor: '#0066FF', // Fallback while loading
       }}
     />
   );
