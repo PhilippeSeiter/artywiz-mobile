@@ -422,14 +422,8 @@ export default function LoginScreen() {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.container}
     >
-      {/* Fond statique avec blocs - COUCHE 0 */}
-      <View style={styles.bgWrapper}>
-        <ImageBackground
-          source={require('../assets/images/fond_blocs.png')}
-          style={styles.bgImage}
-          resizeMode="cover"
-        />
-      </View>
+      {/* Fond vidéo en boucle - COUCHE 0 */}
+      <VideoBackground />
 
       {/* Logo Artywiz - COUCHE 2 (3 parties animées) */}
       <AnimatedLoginLogo />
