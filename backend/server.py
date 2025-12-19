@@ -82,6 +82,9 @@ app.include_router(auth_routes.router, prefix="/api")
 # Include ATC (Artycoins) routes
 app.include_router(atc_routes.router, prefix="/api")
 
+# Include users routes (authentication)
+app.include_router(users_routes.router, prefix="/api")
+
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=True,
