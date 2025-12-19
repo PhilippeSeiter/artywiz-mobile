@@ -68,8 +68,8 @@ const AnimatedSignupLogo = () => {
     setTimeout(() => {
       scaleArtywiz.value = withRepeat(
         withSequence(
-          withTiming(0.85, easeConfig),
-          withTiming(1.15, easeConfig)
+          withTiming(0.95, easeConfig),
+          withTiming(1.05, easeConfig)
         ),
         -1,
         true
