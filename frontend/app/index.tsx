@@ -539,7 +539,7 @@ export default function WelcomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0066FF',
+    backgroundColor: 'transparent',
     overflow: 'hidden',
   },
   // Gradient rotatif - agrandi à 130% pour éviter les bords visibles lors de la rotation
