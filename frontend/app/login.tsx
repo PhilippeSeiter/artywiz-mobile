@@ -281,12 +281,11 @@ const SocialButton = ({
 
 export default function LoginScreen() {
   const router = useRouter();
-  const login = useAuthStore((state) => state.login);
+  const { login, isLoggingIn, loginError } = useAuth();
   const insets = useSafeAreaInsets();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
 
   // Background breathing animation (scale + translate)
