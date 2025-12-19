@@ -354,7 +354,7 @@ export default function SignupScreen() {
             onPressIn={handleButtonPressIn}
             onPressOut={handleButtonPressOut}
             activeOpacity={1}
-            disabled={loading}
+            disabled={isRegistering}
           >
             <Animated.View style={buttonAnimatedStyle}>
               <LinearGradient
@@ -364,7 +364,7 @@ export default function SignupScreen() {
                 style={styles.continueButton}
               >
                 <Text style={styles.continueButtonText}>
-                  {loading ? 'CRÉATION...' : 'JE CRÉE MON COMPTE'}
+                  {isRegistering ? 'CRÉATION...' : 'JE CRÉE MON COMPTE'}
                 </Text>
                 <View style={styles.arrowContainer}>
                   <Ionicons name="arrow-forward" size={18} color="#FFFFFF" />
