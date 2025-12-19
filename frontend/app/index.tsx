@@ -18,6 +18,7 @@ import Animated, {
   interpolate,
   Easing,
 } from 'react-native-reanimated';
+import { VideoBackground } from '../components/VideoBackground';
 
 const { width, height } = Dimensions.get('window');
 
