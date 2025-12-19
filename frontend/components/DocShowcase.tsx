@@ -198,13 +198,25 @@ export const DocShowcase: React.FC<DocShowcaseProps> = ({
     badgeScale.value = withTiming(0.9, { duration: 100 });
   }, []);
 
-  // Animation terminée - mettre à jour l'index React
+  // Opacity pour le fade durant la transition
+  const slidesOpacity = useSharedValue(1);
+
+  // Animation terminée - mettre à jour l'index React avec fade pour éviter le flash
   const onAnimationComplete = useCallback((targetIndex: number) => {
-    // Réinitialiser scrollX à 0 et mettre à jour l'index
-    scrollX.value = 0;
-    isAnimating.value = false;
-    updateActiveIndex(targetIndex);
-    startTextAnimation();
+    // Fade out rapide
+    slidesOpacity.value = withTiming(0, { duration: 50 }, (finished) => {
+      if (finished) {
+        // Reset scrollX pendant que c'est invisible
+        scrollX.value = 0;
+        // Mettre à jour l'index
+        runOnJS(updateActiveIndex)(targetIndex);
+        // Fade in
+        slidesOpacity.value = withTiming(1, { duration: 100 }, () => {
+          isAnimating.value = false;
+          runOnJS(startTextAnimation)();
+        });
+      }
+    });
   }, [updateActiveIndex, startTextAnimation]);
 
   // Auto-play
