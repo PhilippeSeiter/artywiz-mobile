@@ -27,9 +27,8 @@ import Animated, {
 } from 'react-native-reanimated';
 import { CustomInput } from '../components';
 import { Colors, Spacing } from '../constants';
-import { useAuthStore } from '../stores/authStore';
+import { useAuth } from '../hooks/useAuth';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { MockDataService } from '../services/mockDataService';
 
 const { width, height } = Dimensions.get('window');
 
