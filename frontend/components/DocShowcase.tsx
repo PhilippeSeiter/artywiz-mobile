@@ -345,6 +345,11 @@ export const DocShowcase: React.FC<DocShowcaseProps> = ({
   
   const loadingStyle = useAnimatedStyle(() => ({ opacity: loadingOpacity.value }));
 
+  // Style d'opacité pour les slides (évite le flash lors du reset)
+  const slidesWrapperStyle = useAnimatedStyle(() => ({
+    opacity: slidesOpacity.value,
+  }));
+
   if (documents.length === 0) {
     return (
       <View style={styles.emptyContainer}>
