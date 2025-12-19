@@ -378,17 +378,12 @@ export default function LoginScreen() {
   const handleLogin = async () => {
     if (!validate()) return;
 
-    setLoading(true);
     try {
-      const profiles = MockDataService.getAllProfiles();
-      const defaultProfile = profiles[0];
-      
-      await login(email, password, defaultProfile.id);
-      router.replace('/(tabs)');
+      // Login via real backend API
+      await login({ email, password });
+      // Navigation is handled by useLogin hook based on onboarding status
     } catch (error: any) {
       Alert.alert('Erreur', error.message || 'Une erreur est survenue');
-    } finally {
-      setLoading(false);
     }
   };
 
