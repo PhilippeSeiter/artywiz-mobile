@@ -8,12 +8,78 @@ import { Video, ResizeMode, AVPlaybackStatus } from 'expo-av';
 
 const VIDEO_URL = 'https://customer-assets.emergentagent.com/job_artywiz-transfer/artifacts/8qc6s5v8_bg-login%20%282%29.mp4';
 
-// Fallback image for web or when video fails
+// Fallback image for when video fails to load
 const FALLBACK_IMAGE = require('../assets/images/fond_blocs.png');
 
 interface VideoBackgroundProps {
   children?: React.ReactNode;
 }
+
+// Web-only video component using DOM API directly
+const WebVideo = () => {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (Platform.OS !== 'web' || !containerRef.current) return;
+
+    // Create video element via DOM
+    const video = document.createElement('video');
+    video.src = VIDEO_URL;
+    video.autoplay = true;
+    video.loop = true;
+    video.muted = true;
+    video.playsInline = true;
+    video.setAttribute('playsinline', '');
+    video.setAttribute('webkit-playsinline', '');
+    video.style.cssText = `
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    `;
+
+    containerRef.current.appendChild(video);
+
+    // Attempt to play
+    const playVideo = () => {
+      video.play().catch(() => {
+        // Try again on user interaction if autoplay fails
+        const tryPlay = () => {
+          video.play().then(() => {
+            document.removeEventListener('click', tryPlay);
+          }).catch(() => {});
+        };
+        document.addEventListener('click', tryPlay, { once: true });
+      });
+    };
+
+    video.addEventListener('loadeddata', playVideo);
+    playVideo();
+
+    return () => {
+      video.pause();
+      video.remove();
+    };
+  }, []);
+
+  if (Platform.OS !== 'web') return null;
+
+  return (
+    <div
+      ref={containerRef}
+      style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        overflow: 'hidden',
+      }}
+    />
+  );
+};
 
 export function VideoBackground({ children }: VideoBackgroundProps) {
   const videoRef = useRef<Video>(null);
@@ -21,8 +87,8 @@ export function VideoBackground({ children }: VideoBackgroundProps) {
   const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
-    // Auto-play when component mounts
-    if (videoRef.current) {
+    // Auto-play when component mounts (native only)
+    if (Platform.OS !== 'web' && videoRef.current) {
       videoRef.current.playAsync().catch(() => {
         setHasError(true);
       });
@@ -32,7 +98,6 @@ export function VideoBackground({ children }: VideoBackgroundProps) {
   const handlePlaybackStatusUpdate = (status: AVPlaybackStatus) => {
     if (status.isLoaded) {
       setIsVideoReady(true);
-      // Ensure video loops
       if (status.didJustFinish && videoRef.current) {
         videoRef.current.replayAsync();
       }
@@ -44,20 +109,17 @@ export function VideoBackground({ children }: VideoBackgroundProps) {
     setHasError(true);
   };
 
-  // On web, video playback can be problematic, use fallback
-  const shouldUseVideo = Platform.OS !== 'web' && !hasError;
-
   return (
     <View style={styles.container}>
-      {/* Fallback image - always rendered behind */}
+      {/* Fallback image - always rendered as base layer */}
       <Image
         source={FALLBACK_IMAGE}
         style={styles.fallbackImage}
         resizeMode="cover"
       />
 
-      {/* Video layer - only on native platforms */}
-      {shouldUseVideo && (
+      {/* Native video (iOS/Android) */}
+      {Platform.OS !== 'web' && !hasError && (
         <Video
           ref={videoRef}
           source={{ uri: VIDEO_URL }}
@@ -71,26 +133,8 @@ export function VideoBackground({ children }: VideoBackgroundProps) {
         />
       )}
 
-      {/* Web: Use video element directly for better support */}
-      {Platform.OS === 'web' && !hasError && (
-        <video
-          src={VIDEO_URL}
-          autoPlay
-          loop
-          muted
-          playsInline
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            zIndex: 0,
-          }}
-          onError={() => setHasError(true)}
-        />
-      )}
+      {/* Web video */}
+      {Platform.OS === 'web' && !hasError && <WebVideo />}
 
       {/* Children content overlay */}
       {children && (
@@ -104,22 +148,29 @@ export function VideoBackground({ children }: VideoBackgroundProps) {
 
 const styles = StyleSheet.create({
   container: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: '#000',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: '#0066FF',
   },
   fallbackImage: {
-    ...StyleSheet.absoluteFillObject,
+    position: 'absolute',
+    top: 0,
+    left: 0,
     width: '100%',
     height: '100%',
   },
   video: {
-    ...StyleSheet.absoluteFillObject,
+    position: 'absolute',
+    top: 0,
+    left: 0,
     width: '100%',
     height: '100%',
   },
   content: {
-    ...StyleSheet.absoluteFillObject,
-    zIndex: 1,
+    flex: 1,
   },
 });
 
