@@ -461,7 +461,8 @@ export default function WelcomeScreen() {
 
   return (
     <View style={styles.container}>
-      {/* Fond vidéo partagé via VideoBackgroundProvider dans _layout.tsx */}
+      {/* Fond vidéo en boucle */}
+      <VideoBackground />
       
       <View style={[styles.content, { paddingTop: insets.top + Spacing.lg }]}>
         {/* Logo Section - 3 parties animées */}
