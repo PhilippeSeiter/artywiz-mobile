@@ -284,14 +284,8 @@ export default function SignupScreen() {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.container}
     >
-      {/* Fond statique */}
-      <View style={styles.bgWrapper}>
-        <ImageBackground
-          source={require('../assets/images/fond_blocs.png')}
-          style={styles.bgImage}
-          resizeMode="cover"
-        />
-      </View>
+      {/* Fond vidéo en boucle */}
+      <VideoBackground />
 
       {/* Logo animé - zIndex bas pour passer sous la card */}
       <AnimatedSignupLogo />
