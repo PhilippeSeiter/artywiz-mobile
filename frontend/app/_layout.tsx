@@ -68,7 +68,9 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <QueryProvider>
-        <RootLayoutContent />
+        <VideoBackgroundProvider>
+          <RootLayoutContent />
+        </VideoBackgroundProvider>
       </QueryProvider>
     </GestureHandlerRootView>
   );
