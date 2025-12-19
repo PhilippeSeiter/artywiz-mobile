@@ -10,14 +10,26 @@ from typing import List
 import uuid
 from datetime import datetime
 
+# Import routes
+from routes import social_routes
+from routes import auth_routes
+from routes import atc_routes
+
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
 # MongoDB connection
-mongo_url = os.environ['MONGO_URL']
+mongo_url = os.environ.get('MONGO_URL', 'mongodb://localhost:27017')
 client = AsyncIOMotorClient(mongo_url)
-db = client[os.environ['DB_NAME']]
+# DB_NAME is provided by Kubernetes in production, fallback to test_database for local dev
+db_name = os.environ.get('DB_NAME', 'test_database')
+db = client[db_name]
+
+# Initialize routes with database
+social_routes.set_db(db)
+auth_routes.set_db(db)
+atc_routes.set_db(db)
 
 # Create the main app without a prefix
 app = FastAPI()
@@ -49,11 +61,24 @@ async def create_status_check(input: StatusCheckCreate):
 
 @api_router.get("/status", response_model=List[StatusCheck])
 async def get_status_checks():
-    status_checks = await db.status_checks.find().to_list(1000)
+    # Optimized query with projection and limit
+    status_checks = await db.status_checks.find(
+        {}, 
+        {"_id": 0, "id": 1, "client_name": 1, "timestamp": 1}
+    ).limit(1000).to_list(1000)
     return [StatusCheck(**status_check) for status_check in status_checks]
 
 # Include the router in the main app
 app.include_router(api_router)
+
+# Include social media routes
+app.include_router(social_routes.router, prefix="/api")
+
+# Include auth routes
+app.include_router(auth_routes.router, prefix="/api")
+
+# Include ATC (Artycoins) routes
+app.include_router(atc_routes.router, prefix="/api")
 
 app.add_middleware(
     CORSMiddleware,
