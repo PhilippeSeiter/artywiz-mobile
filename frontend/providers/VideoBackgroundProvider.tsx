@@ -136,23 +136,8 @@ export function VideoBackgroundProvider({ children }: VideoBackgroundProviderPro
             />
           )}
 
-          {/* Web video - using View with dangerouslySetInnerHTML for web */}
-          {Platform.OS === 'web' && !hasError && (
-            <View 
-              style={styles.video}
-              // @ts-ignore - web only
-              dangerouslySetInnerHTML={{
-                __html: `<video 
-                  src="${VIDEO_URL}" 
-                  autoplay 
-                  loop 
-                  muted 
-                  playsinline
-                  style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;"
-                ></video>`
-              }}
-            />
-          )}
+          {/* Web video - using DOM API */}
+          {Platform.OS === 'web' && !hasError && <WebVideoBackground />}
         </View>
 
         {/* Main content - on top of video */}
