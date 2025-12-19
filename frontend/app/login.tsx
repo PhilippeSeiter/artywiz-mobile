@@ -422,8 +422,7 @@ export default function LoginScreen() {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.container}
     >
-      {/* Fond vidéo en boucle - COUCHE 0 */}
-      <VideoBackground />
+      {/* Fond vidéo partagé via VideoBackgroundProvider dans _layout.tsx */}
 
       {/* Logo Artywiz - COUCHE 2 (3 parties animées) */}
       <AnimatedLoginLogo />
