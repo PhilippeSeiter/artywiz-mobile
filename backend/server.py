@@ -14,6 +14,7 @@ from datetime import datetime
 from routes import social_routes
 from routes import auth_routes
 from routes import atc_routes
+from routes import users_routes
 
 
 ROOT_DIR = Path(__file__).parent
@@ -30,6 +31,7 @@ db = client[db_name]
 social_routes.set_db(db)
 auth_routes.set_db(db)
 atc_routes.set_db(db)
+users_routes.set_db(db)
 
 # Create the main app without a prefix
 app = FastAPI()
