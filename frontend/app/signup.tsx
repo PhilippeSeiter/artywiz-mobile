@@ -284,7 +284,8 @@ export default function SignupScreen() {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.container}
     >
-      {/* Fond vidéo partagé via VideoBackgroundProvider dans _layout.tsx */}
+      {/* Fond vidéo en boucle */}
+      <VideoBackground />
 
       {/* Logo animé - zIndex bas pour passer sous la card */}
       <AnimatedSignupLogo />
