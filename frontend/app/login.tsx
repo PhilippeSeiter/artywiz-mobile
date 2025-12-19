@@ -388,67 +388,11 @@ export default function LoginScreen() {
   };
 
   const handleSocialLogin = async (provider: 'facebook' | 'google') => {
-    if (provider === 'google') {
-      Alert.alert(
-        'Connexion Google',
-        'La connexion via Google sera bientôt disponible.'
-      );
-      return;
-    }
-    
-    // Facebook login via Meta OAuth
-    setLoading(true);
-    try {
-      const BACKEND_URL = Constants.expoConfig?.extra?.EXPO_PUBLIC_BACKEND_URL || process.env.EXPO_PUBLIC_BACKEND_URL || '';
-      const callbackUrl = `${BACKEND_URL}/api/auth/meta/callback`;
-      
-      const response = await fetch(
-        `${BACKEND_URL}/api/auth/meta/start?user_id=facebook_user&redirect_uri=${encodeURIComponent(callbackUrl)}`
-      );
-      
-      if (!response.ok) {
-        throw new Error('Impossible de démarrer la connexion Facebook');
-      }
-      
-      const { auth_url } = await response.json();
-      
-      if (Platform.OS === 'web') {
-        const popup = window.open(auth_url, 'facebook_login', 'width=600,height=700');
-        
-        const handleMessage = async (event: MessageEvent) => {
-          if (event.data?.type === 'META_AUTH_SUCCESS') {
-            window.removeEventListener('message', handleMessage);
-            const profiles = MockDataService.getAllProfiles();
-            const defaultProfile = profiles[0];
-            await login('facebook@user.com', 'facebook', defaultProfile.id);
-            router.replace('/(tabs)');
-          }
-        };
-        window.addEventListener('message', handleMessage);
-        
-        const checkPopup = setInterval(() => {
-          if (popup?.closed) {
-            clearInterval(checkPopup);
-            setLoading(false);
-          }
-        }, 500);
-      } else {
-        const WebBrowser = await import('expo-web-browser');
-        const result = await WebBrowser.openAuthSessionAsync(auth_url, callbackUrl);
-        
-        if (result.type === 'success') {
-          const profiles = MockDataService.getAllProfiles();
-          const defaultProfile = profiles[0];
-          await login('facebook@user.com', 'facebook', defaultProfile.id);
-          router.replace('/(tabs)');
-        }
-        setLoading(false);
-      }
-    } catch (error) {
-      console.error('Facebook login error:', error);
-      Alert.alert('Erreur', 'Impossible de se connecter avec Facebook');
-      setLoading(false);
-    }
+    // TODO: OAuth integration will be connected after JWT auth is fully working
+    Alert.alert(
+      `Connexion ${provider === 'facebook' ? 'Facebook' : 'Google'}`,
+      'La connexion via les réseaux sociaux sera bientôt disponible.'
+    );
   };
 
   const handleForgotPassword = () => {
