@@ -124,10 +124,11 @@ export function VideoBackgroundProvider({ children }: VideoBackgroundProviderPro
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    position: 'relative',
   },
   videoContainer: {
     ...StyleSheet.absoluteFillObject,
-    zIndex: 0,
+    zIndex: -1,
   },
   fallbackImage: {
     ...StyleSheet.absoluteFillObject,
