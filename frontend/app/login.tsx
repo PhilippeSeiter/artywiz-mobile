@@ -31,10 +31,9 @@ import Animated, {
 } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
 import { Colors, Spacing } from '../constants';
-import { useAuthStore } from '../stores/authStore';
+import { useAuth } from '../hooks/useAuth';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Constants from 'expo-constants';
-import { MockDataService } from '../services/mockDataService';
 
 const { width, height } = Dimensions.get('window');
 
