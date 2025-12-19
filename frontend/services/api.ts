@@ -24,8 +24,17 @@ const TOKEN_KEY = '@artywiz_tokens';
 
 // Get base URL from environment
 const getBaseUrl = (): string => {
-  // For web, always use relative /api path (handled by nginx proxy)
+  // For web
   if (Platform.OS === 'web') {
+    // Check if we're on localhost (development/testing)
+    if (typeof window !== 'undefined' && window.location) {
+      const host = window.location.hostname;
+      if (host === 'localhost' || host === '127.0.0.1') {
+        // In local development, call backend directly
+        return 'http://localhost:8001/api';
+      }
+    }
+    // In production preview, use relative path (handled by Kubernetes ingress)
     return '/api';
   }
   
