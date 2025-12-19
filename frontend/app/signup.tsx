@@ -246,17 +246,12 @@ export default function SignupScreen() {
   const handleSignup = async () => {
     if (!validate()) return;
 
-    setLoading(true);
     try {
-      const profiles = MockDataService.getAllProfiles();
-      const defaultProfile = profiles[0];
-      
-      await signup(email, password, name, defaultProfile.id);
-      router.push('/profile-selection');  // push pour garder l'historique
+      // Register via real backend API
+      await register({ email, password, name });
+      // Navigation is handled by useRegister hook (goes to profile-selection)
     } catch (error: any) {
       Alert.alert('Erreur', error.message || 'Une erreur est survenue');
-    } finally {
-      setLoading(false);
     }
   };
 
