@@ -521,7 +521,7 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0066FF',
+    backgroundColor: 'transparent',
     overflow: 'hidden',
   },
   // Wrapper pour le fond - couvre tout l'écran et cache le débordement
