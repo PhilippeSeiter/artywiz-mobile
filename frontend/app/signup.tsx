@@ -9,9 +9,9 @@ import {
   Platform, 
   TouchableOpacity, 
   Image,
-  ImageBackground,
   Dimensions,
 } from 'react-native';
+import { VideoBackground } from '../components/VideoBackground';
 import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
