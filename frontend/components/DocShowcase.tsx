@@ -423,7 +423,7 @@ export const DocShowcase: React.FC<DocShowcaseProps> = ({
                   textOpacity={textOpacity}
                   onPress={() => {}}
                 />
-              </View>
+              </Animated.View>
             </GestureDetector>
           </GestureHandlerRootView>
         </>
