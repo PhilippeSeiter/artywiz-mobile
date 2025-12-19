@@ -543,7 +543,7 @@ export default function LoginScreen() {
             onPressIn={handleButtonPressIn}
             onPressOut={handleButtonPressOut}
             activeOpacity={1}
-            disabled={loading}
+            disabled={isLoggingIn}
           >
             <Animated.View style={buttonAnimatedStyle}>
               <LinearGradient
@@ -553,7 +553,7 @@ export default function LoginScreen() {
                 style={styles.loginButton}
               >
                 <Text style={styles.loginButtonText}>
-                  {loading ? 'CONNEXION...' : 'JE ME CONNECTE'}
+                  {isLoggingIn ? 'CONNEXION...' : 'JE ME CONNECTE'}
                 </Text>
                 <View style={styles.arrowContainer}>
                   <Ionicons name="arrow-forward" size={18} color="#FFFFFF" />
