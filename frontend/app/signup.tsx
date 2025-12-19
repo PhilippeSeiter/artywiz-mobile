@@ -251,7 +251,16 @@ export default function SignupScreen() {
       await register({ email, password, name });
       // Navigation is handled by useRegister hook (goes to profile-selection)
     } catch (error: any) {
-      Alert.alert('Erreur', error.message || 'Une erreur est survenue');
+      // Check if it's an "email already exists" error
+      const errorMessage = error.message || error.detail || 'Une erreur est survenue';
+      
+      if (errorMessage.toLowerCase().includes('email') && errorMessage.toLowerCase().includes('utilisé')) {
+        // Show error under the email field
+        setErrors({ ...errors, email: 'Cet email est déjà utilisé. Connectez-vous ou utilisez un autre email.' });
+      } else {
+        // Show generic error alert
+        Alert.alert('Erreur', errorMessage);
+      }
     }
   };
 
