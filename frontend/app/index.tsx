@@ -461,15 +461,8 @@ export default function WelcomeScreen() {
 
   return (
     <View style={styles.container}>
-      {/* Fond dégradé rotatif - Bleu vif vers turquoise */}
-      <Animated.View style={[styles.gradientContainer, gradientAnimatedStyle]}>
-        <LinearGradient
-          colors={['#0066FF', '#00A8FF', '#00D4AA', '#0066FF']}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          style={styles.rotatingGradient}
-        />
-      </Animated.View>
+      {/* Fond vidéo en boucle */}
+      <VideoBackground />
       
       <View style={[styles.content, { paddingTop: insets.top + Spacing.lg }]}>
         {/* Logo Section - 3 parties animées */}
