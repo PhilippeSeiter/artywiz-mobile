@@ -309,94 +309,10 @@ export default function CreerScreen() {
     loadDocuments();
   }, [loadDocuments]);
 
-  // Timer pour augmenter les likes des documents publiés
-  useEffect(() => {
-    likesIntervalRef.current = setInterval(() => {
-      setDocuments(prevDocs => prevDocs.map(doc => {
-        if (doc.displayStatus === 'published' && doc.publishStats) {
-          const shouldIncrement = Math.random() > 0.7; // 30% de chance d'incrément
-          if (shouldIncrement) {
-            const incrementType = Math.random();
-            return {
-              ...doc,
-              publishStats: {
-                ...doc.publishStats,
-                likes: incrementType < 0.5 ? doc.publishStats.likes + 1 : doc.publishStats.likes,
-                views: incrementType >= 0.5 && incrementType < 0.8 ? doc.publishStats.views + Math.floor(Math.random() * 3) : doc.publishStats.views,
-                shares: incrementType >= 0.8 ? doc.publishStats.shares + 1 : doc.publishStats.shares,
-              }
-            };
-          }
-        }
-        return doc;
-      }));
-    }, 5000); // Toutes les 5 secondes
-
-    return () => {
-      if (likesIntervalRef.current) {
-        clearInterval(likesIntervalRef.current);
-      }
-    };
-  }, []);
-
-  // Vérifier les documents en génération (via le store)
-  useEffect(() => {
-    const checkGeneratingDocs = setInterval(() => {
-      const now = Date.now();
-      
-      // Vérifier dans le store
-      Object.entries(documentStates).forEach(([docId, state]) => {
-        if (state.status === 'en_cours' && state.generationStartedAt) {
-          const elapsed = now - state.generationStartedAt;
-          if (elapsed >= 15000) { // 15 secondes pour le test (30 sec en prod)
-            // Compléter la génération dans le store
-            completeGeneration(docId);
-            
-            // Trouver le titre du document
-            const doc = documents.find(d => d.id === docId);
-            const docTitle = doc?.title || 'Document';
-            
-            // Afficher l'alerte
-            setTimeout(() => {
-              Alert.alert(
-                '🎉 Document prêt !',
-                `Votre document "${docTitle}" est prêt. Souhaitez-vous le publier ?`,
-                [
-                  { text: 'Plus tard', style: 'cancel', onPress: () => loadDocuments() },
-                  { 
-                    text: 'Publier', 
-                    onPress: () => {
-                      loadDocuments();
-                      router.push(`/document/${docId}`);
-                    }
-                  }
-                ]
-              );
-            }, 100);
-          }
-        }
-      });
-      
-      // Recharger pour mettre à jour l'affichage
-      loadDocuments();
-    }, 2000);
-
-    return () => clearInterval(checkGeneratingDocs);
-  }, [documentStates, completeGeneration, documents, loadDocuments, router]);
-
   // Ouvrir un document
-  const handleDocumentPress = (doc: EnrichedDocument) => {
-    if (doc.displayStatus === 'to_generate') {
-      // Ouvrir l'éditeur pour sélectionner les supports
-      router.push(`/document/${doc.id}`);
-    } else if (doc.displayStatus === 'ready') {
-      // Ouvrir pour publier
-      router.push(`/document/${doc.id}`);
-    } else if (doc.displayStatus === 'published') {
-      // Voir les stats
-      router.push(`/document/${doc.id}`);
-    }
-    // Si en génération, ne rien faire (ou afficher un message)
+  const handleDocumentPress = (doc: ASDocument) => {
+    // Naviguer vers les détails du document
+    router.push(`/document/${doc.id}`);
   };
 
   // Refresh
@@ -411,11 +327,12 @@ export default function CreerScreen() {
   // Filtrer les documents par recherche et filtres
   const filteredDocuments = documents.filter(doc => {
     // Filtre recherche
-    if (searchQuery && !doc.title.toLowerCase().includes(searchQuery.toLowerCase())) {
+    const searchText = `${doc.ligne1} ${doc.ligne2} ${doc.ligne3} ${doc.ligne4}`.toLowerCase();
+    if (searchQuery && !searchText.includes(searchQuery.toLowerCase())) {
       return false;
     }
     // Filtre statut
-    if (filterStatus !== 'all' && doc.displayStatus !== filterStatus) {
+    if (filterStatus !== 'all' && doc.status !== filterStatus) {
       return false;
     }
     // Filtre sponsorisé
