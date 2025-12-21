@@ -229,7 +229,7 @@ const AddAccountButton = ({ onPress }: { onPress: () => void }) => {
 // ============================================
 // UNIFIED POPUP WITH HORIZONTAL SLIDE
 // ============================================
-type PopupStep = 'sport' | 'types' | 'search_club' | 'search_team' | 'search_single';
+type PopupStep = 'types' | 'search_club' | 'search_team' | 'search_single';
 
 interface UnifiedPopupProps {
   visible: boolean;
