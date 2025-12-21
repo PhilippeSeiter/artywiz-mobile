@@ -488,7 +488,7 @@ export default function CreerScreen() {
                 }}
               >
                 <Ionicons 
-                  name={profile.type === 'club' ? 'business' : 'people'} 
+                  name={profile.type === 'club' ? 'business' : profile.type === 'ligue' ? 'globe' : 'people'} 
                   size={20} 
                   color={selectedProfile.id === profile.id ? Colors.primary : '#6B7280'} 
                 />
