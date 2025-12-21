@@ -141,38 +141,18 @@ export default function DocumentDetailScreen() {
   const [isPublishing, setIsPublishing] = useState<string | null>(null); // 'facebook', 'instagram', 'linkedin'
   const [isSharing, setIsSharing] = useState(false);
 
-  // Get status from store
-  const storeStatus = getDocumentStatus(id as string);
-  
-  const getDisplayStatus = (): DocStatus => {
-    if (storeStatus === 'pret') return 'pret_a_buzzer';
-    if (storeStatus === 'publie') return 'publie';
-    return 'a_peaufiner';
-  };
-  
-  const docStatus = getDisplayStatus();
-  const isAutoSponsoringEnabled = sponsoringPrefs?.autoSponsoringEnabled ?? false;
-
-  // Toggle support - multi ou single selon statut
-  const toggleSupport = (supportId: string) => {
-    if (docStatus === 'a_peaufiner') {
-      setSelectedSupports(prev => 
-        prev.includes(supportId)
-          ? prev.filter(id => id !== supportId)
-          : [...prev, supportId]
-      );
-    } else {
-      setSelectedSingleSupport(supportId);
-    }
-  };
-
-  const document = MockDataService.getDocumentById(id as string);
-  const allDocuments = MockDataService.getAllDocuments().slice(0, 6);
+  // Trouver le document avec le helper
+  const docResult = findDocumentById(id as string);
+  const document = docResult?.doc;
+  const allDocuments = docResult?.allDocs || [];
   const currentIndex = allDocuments.findIndex(doc => doc.id === id);
   const totalDocs = allDocuments.length;
 
   const prevDocument = currentIndex > 0 ? allDocuments[currentIndex - 1] : null;
   const nextDocument = currentIndex < allDocuments.length - 1 ? allDocuments[currentIndex + 1] : null;
+
+  // Get status from store
+  const storeStatus = getDocumentStatus(id as string);
 
   // Animation values
   const translateX = useSharedValue(0);
