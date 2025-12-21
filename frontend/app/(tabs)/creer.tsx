@@ -350,11 +350,10 @@ export default function CreerScreen() {
   };
 
   // Render document item
-  const renderDocument = ({ item, index }: { item: EnrichedDocument; index: number }) => (
+  const renderDocument = ({ item }: { item: ASDocument }) => (
     <DocumentCard 
       doc={item} 
       onPress={() => handleDocumentPress(item)}
-      mockupIndex={index}
     />
   );
 
