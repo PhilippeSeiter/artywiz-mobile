@@ -191,7 +191,7 @@ export const DocShowcase: React.FC<DocShowcaseProps> = ({
   }, []);
 
   // ============================================
-  // ANIMATION: Cache le texte (glisse vers le bas)
+  // ANIMATION: Cache le texte (glisse vers le bas) + badge bounce off
   // ============================================
   const hideTextAnimation = useCallback(() => {
     // Texte et overlay disparaissent vers le bas
@@ -201,9 +201,13 @@ export const DocShowcase: React.FC<DocShowcaseProps> = ({
     });
     overlayOpacity.value = withTiming(0, { duration: TEXT_HIDE_DURATION });
     
-    // Badge disparaît
-    badgeOpacity.value = withTiming(0, { duration: 150 });
-    badgeScale.value = withTiming(0.8, { duration: 150 });
+    // Badge bounce off (rebondit en sortant)
+    badgeScale.value = withSpring(0, {
+      damping: 8,
+      stiffness: 300,
+      mass: 0.4,
+    });
+    badgeOpacity.value = withTiming(0, { duration: 200 });
   }, []);
 
   // ============================================
