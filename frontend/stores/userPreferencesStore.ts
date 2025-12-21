@@ -80,13 +80,12 @@ export interface UserProfile {
   numero?: string; // Profile number
 }
 
-// 5 profils conteneurs de base (jamais supprimables)
+// 4 profils conteneurs de base (équipes, clubs, districts, ligues - pas de sponsors)
 export const DEFAULT_BASE_PROFILES: UserProfile[] = [
   { type: 'equipe', id: 'base_equipe', name: 'Une Équipe' },
   { type: 'club', id: 'base_club', name: 'Un Club' },
   { type: 'district', id: 'base_district', name: 'Un District' },
   { type: 'ligue', id: 'base_ligue', name: 'Une Ligue' },
-  { type: 'sponsor', id: 'base_sponsor', name: 'Un Sponsor' },
 ];
 
 export interface SponsoringPrefs {
