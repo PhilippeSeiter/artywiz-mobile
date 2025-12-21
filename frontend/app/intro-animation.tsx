@@ -41,7 +41,7 @@ export default function IntroAnimationScreen() {
         video.loop = false;
         video.muted = true;
         video.playsInline = true;
-        video.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;object-fit:cover;z-index:0;';
+        video.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;object-fit:cover;z-index:0;pointer-events:none;';
         video.onended = goToDashboard;
         document.body.appendChild(video);
         videoRef.current = video;
