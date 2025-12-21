@@ -984,6 +984,12 @@ const styles = StyleSheet.create({
     color: '#059669',
     lineHeight: 20,
   },
+  explanationMinimum: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: Colors.textPrimary,
+    marginTop: Spacing.md,
+  },
   // Account cards
   accountsList: {
     marginBottom: Spacing.lg,
