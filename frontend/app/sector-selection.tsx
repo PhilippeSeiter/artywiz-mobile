@@ -162,30 +162,30 @@ const logoStyles = StyleSheet.create({
     zIndex: 10,
   },
   wrapper: {
-    position: 'relative',
+    width: 220,
+    height: 75,
+    alignItems: 'center',
+    justifyContent: 'flex-start',
   },
   part: {
     position: 'absolute',
     alignItems: 'center',
     justifyContent: 'center',
-    left: 0,
-    right: 0,
+    width: '100%',
   },
   partW: {
     top: 0,
-    height: BASE_HEIGHT * 0.6,
   },
   partArtywiz: {
-    top: BASE_HEIGHT * 0.5,
-    height: BASE_HEIGHT * 0.4,
+    top: 38,
   },
   imageW: {
-    width: BASE_WIDTH * 0.45,
-    height: BASE_HEIGHT * 0.6,
+    width: 55,
+    height: 39,
   },
   imageArtywiz: {
-    width: BASE_WIDTH * 0.85,
-    height: BASE_HEIGHT * 0.35,
+    width: 154,
+    height: 33,
   },
 });
 
