@@ -238,16 +238,20 @@ const SectorCard = ({ sector, index, onPress }: SectorCardProps) => {
         disabled={!sector.active}
         activeOpacity={0.9}
       >
-        {/* Icône */}
+        {/* Icône ou Emoji */}
         <View style={[
           styles.iconContainer,
           { backgroundColor: sector.active ? sector.color : '#E5E7EB' }
         ]}>
-          <Ionicons 
-            name={sector.icon as any} 
-            size={36} 
-            color={sector.active ? '#FFFFFF' : '#9CA3AF'} 
-          />
+          {sector.emoji ? (
+            <Text style={styles.emojiIcon}>{sector.emoji}</Text>
+          ) : (
+            <Ionicons 
+              name={sector.icon as any} 
+              size={36} 
+              color={sector.active ? '#FFFFFF' : '#9CA3AF'} 
+            />
+          )}
         </View>
 
         {/* Nom du secteur */}
