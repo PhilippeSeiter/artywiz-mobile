@@ -147,6 +147,9 @@ export const DocShowcase: React.FC<DocShowcaseProps> = ({
   const scrollX = useSharedValue(0);
   const isAnimating = useSharedValue(false);
   
+  // Opacité pour le slide sortant (évite le flash)
+  const exitingOpacity = useSharedValue(1);
+  
   const overlayOpacity = useSharedValue(0);
   const textOpacity = useSharedValue(0);
   const badgeScale = useSharedValue(0);
