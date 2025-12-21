@@ -148,9 +148,6 @@ const AnimatedSectorLogo = () => {
   );
 };
 
-const BASE_WIDTH = 220 * 1.2;
-const BASE_HEIGHT = 130 * 1.2 * 0.8;
-
 const logoStyles = StyleSheet.create({
   container: {
     alignItems: 'center',
