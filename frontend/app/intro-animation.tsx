@@ -6,17 +6,22 @@ import { useUserPreferencesStore, ARTYWIZ_THEMES } from '../stores/userPreferenc
 // This screen is disabled - immediately redirects to dashboard
 export default function IntroAnimationScreen() {
   const router = useRouter();
-  const { setSelectedThemes, completeOnboarding } = useUserPreferencesStore();
 
   useEffect(() => {
-    // Set default themes and complete onboarding
-    setSelectedThemes([...ARTYWIZ_THEMES.map(t => t.id), 'ephemeride']);
-    completeOnboarding();
-    
-    // Immediate redirect to dashboard
-    router.replace('/(tabs)');
-  }, []);
+    // Small delay to allow component to mount first
+    const timer = setTimeout(() => {
+      // Set default themes and complete onboarding
+      const { setSelectedThemes, completeOnboarding } = useUserPreferencesStore.getState();
+      setSelectedThemes([...ARTYWIZ_THEMES.map(t => t.id), 'ephemeride']);
+      completeOnboarding();
+      
+      // Redirect to dashboard
+      router.replace('/(tabs)');
+    }, 100);
 
-  // Empty view - user will never see this
+    return () => clearTimeout(timer);
+  }, [router]);
+
+  // Empty black view - user will barely see this
   return <View style={{ flex: 1, backgroundColor: '#000' }} />;
 }
