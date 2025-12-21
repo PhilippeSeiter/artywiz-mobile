@@ -365,7 +365,7 @@ const UnifiedPopup = ({ visible, onClose, onAccountCreated }: UnifiedPopupProps)
       <Animated.View style={[styles.popupOverlay, overlayStyle]}>
         <TouchableOpacity style={StyleSheet.absoluteFill} onPress={onClose} activeOpacity={1} />
         <Animated.View style={[styles.popupContainer, contentStyle]}>
-          {/* Header - Always visible */}
+          {/* Header - Always visible, never slides */}
           <View style={styles.popupHeader}>
             {showBackButton ? (
               <TouchableOpacity style={styles.popupBackBtn} onPress={handleBack}>
@@ -380,21 +380,22 @@ const UnifiedPopup = ({ visible, onClose, onAccountCreated }: UnifiedPopupProps)
             </TouchableOpacity>
           </View>
 
-          {/* Subtitle - Changes with animation */}
-          <Animated.View style={slideStyle}>
-            <Text style={styles.popupSubtitle}>{getSubtitle()}</Text>
-          </Animated.View>
+          {/* Sliding content wrapper */}
+          <View style={styles.popupSlideWrapper}>
+            <Animated.View style={[styles.popupSlideContent, slideStyle]}>
+              {/* Subtitle */}
+              <Text style={styles.popupSubtitle}>{getSubtitle()}</Text>
 
-          {/* Club badge when selecting team */}
-          {step === 'search_team' && selectedClub && (
-            <Animated.View style={[styles.clubBadge, slideStyle]}>
-              <Ionicons name="shield" size={16} color="#FFF" />
-              <Text style={styles.clubBadgeText}>{selectedClub.name}</Text>
-            </Animated.View>
-          )}
+              {/* Club badge when selecting team */}
+              {step === 'search_team' && selectedClub && (
+                <View style={styles.clubBadge}>
+                  <Ionicons name="shield" size={16} color="#FFF" />
+                  <Text style={styles.clubBadgeText}>{selectedClub.name}</Text>
+                </View>
+              )}
 
-          {/* Content - Slides horizontally */}
-          <Animated.View style={[styles.popupContent, slideStyle]}>
+              {/* Content */}
+              <View style={styles.popupContent}>
             {step === 'types' && (
               <View style={styles.typesList}>
                 {ACCOUNT_TYPES.map((type, index) => (
