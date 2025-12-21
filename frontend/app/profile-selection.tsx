@@ -489,9 +489,25 @@ export default function ProfileSelectionScreen() {
   const [accounts, setAccounts] = useState<UserProfile[]>(getRealAccounts(existingProfiles));
   const [activeAccountId, setActiveAccountId] = useState<string | null>(accounts.length > 0 ? accounts[activeProfileIndex]?.id || accounts[0]?.id : null);
   const [showPopup, setShowPopup] = useState(false);
+  const [hasCheckedRedirect, setHasCheckedRedirect] = useState(false);
 
   const cardOpacity = useSharedValue(0);
   const cardTranslateY = useSharedValue(50);
+
+  // Auto-redirect to dashboard if user has completed onboarding and has accounts
+  useEffect(() => {
+    if (!hasCheckedRedirect) {
+      setHasCheckedRedirect(true);
+      const realAccounts = getRealAccounts(existingProfiles);
+      
+      // If user has completed onboarding AND has accounts, go directly to dashboard
+      if (hasCompletedOnboarding && realAccounts.length > 0) {
+        console.log('[ProfileSelection] User has accounts and completed onboarding, redirecting to dashboard');
+        router.replace('/(tabs)');
+        return;
+      }
+    }
+  }, [hasCompletedOnboarding, existingProfiles, hasCheckedRedirect]);
 
   useEffect(() => {
     cardOpacity.value = withDelay(200, withTiming(1, { duration: 300 }));
