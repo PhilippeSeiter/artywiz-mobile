@@ -9,7 +9,6 @@ import {
   Platform, 
   TouchableOpacity, 
   Image,
-  TextInput,
   Dimensions,
   Pressable,
 } from 'react-native';
@@ -33,6 +32,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { Colors, Spacing } from '../constants';
 import { useAuth } from '../hooks/useAuth';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { CustomInput } from '../components';
 import Constants from 'expo-constants';
 
 const { width, height } = Dimensions.get('window');
