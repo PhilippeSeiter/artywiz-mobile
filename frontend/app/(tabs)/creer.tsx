@@ -278,33 +278,26 @@ const DocumentCard = ({
           />
         </View>
 
-        {/* Infos à droite - 50% de la largeur avec 4 lignes */}
+        {/* Infos à droite - Structure selon modèle XLS */}
         <View style={styles.documentInfo}>
-          {/* Header avec indicateurs */}
-          <View style={styles.docHeader}>
-            {/* Ligne 1: Date */}
-            <Text style={styles.ligne1}>{doc.ligne1}</Text>
-            <View style={styles.rightIndicators}>
-              {doc.isSponsored && doc.sponsorPrice && (
-                <SponsorBadge amount={doc.sponsorPrice} />
-              )}
-              <StatusIndicator status={doc.status} />
-            </View>
-          </View>
+          {/* Ligne 1A - Ligne 1B (ex: "Séniors 1 - 01/01/25") */}
+          <Text style={styles.ligne1}>{doc.ligne1}</Text>
 
-          {/* Ligne 2: Type de document */}
-          <Text style={styles.ligne2} numberOfLines={1}>{doc.ligne2}</Text>
+          {/* Ligne 2 (ex: "Annoncer un match") */}
+          <Text style={styles.ligne2}>{doc.ligne2}</Text>
 
-          {/* Ligne 3: Description / Compétition */}
+          {/* Ligne 3 (ex: "Championnat R3") */}
           <Text style={styles.ligne3} numberOfLines={2}>{doc.ligne3}</Text>
 
-          {/* Ligne 4: Équipe ou info complémentaire */}
-          <Text style={styles.ligne4} numberOfLines={1}>{doc.ligne4}</Text>
+          {/* Ligne 4 (ex: "ASS Strasbourg - FR Haguenau") - EN GRAS */}
+          <Text style={styles.ligne4}>{doc.ligne4}</Text>
 
-          {/* Nombre de supports disponibles */}
-          <View style={styles.supportsRow}>
-            <Ionicons name="layers-outline" size={12} color="#9CA3AF" />
-            <Text style={styles.supportsCount}>{doc.supports.length} support(s)</Text>
+          {/* Indicateurs en bas à droite */}
+          <View style={styles.bottomIndicators}>
+            {doc.isSponsored && doc.sponsorPrice && (
+              <SponsorBadge amount={doc.sponsorPrice} />
+            )}
+            <StatusIndicator status={doc.status} />
           </View>
         </View>
       </Animated.View>
