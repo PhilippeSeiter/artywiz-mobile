@@ -93,8 +93,8 @@ export function useRegister() {
       // Update user in cache
       queryClient.setQueryData(AUTH_KEYS.user, response.user);
       
-      // New users always go to onboarding
-      router.replace('/profile-selection');
+      // New users go to sector selection first
+      router.replace('/sector-selection');
     },
     onError: (error: ApiError) => {
       console.error('Register error:', error.message);
