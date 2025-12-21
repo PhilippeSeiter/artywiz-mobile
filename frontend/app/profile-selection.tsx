@@ -331,14 +331,14 @@ const UnifiedPopup = ({ visible, onClose, onAccountCreated }: UnifiedPopupProps)
       setSelectedType('');
       slideBack('types');
     } else if (step === 'types') {
-      slideBack('sport');
+      // On est à l'étape initiale, fermer le popup
+      onClose();
     }
   };
 
   // Get subtitle based on step
   const getSubtitle = () => {
     switch (step) {
-      case 'sport': return 'Choisissez votre sport';
       case 'types': return 'Quel type de compte souhaitez-vous créer ?';
       case 'search_club': return 'Choisissez le club de votre équipe';
       case 'search_team': return 'Choisissez votre équipe';
@@ -365,7 +365,7 @@ const UnifiedPopup = ({ visible, onClose, onAccountCreated }: UnifiedPopupProps)
     (item.numero && item.numero.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
-  const showBackButton = step !== 'sport';
+  const showBackButton = step !== 'types';
 
   if (!visible) return null;
 
