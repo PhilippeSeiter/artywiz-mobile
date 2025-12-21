@@ -436,26 +436,20 @@ export default function CreerScreen() {
             />
           </View>
           
-          {/* Titre au centre */}
+          {/* Sélecteur de profil centré avec logo du compte actif */}
           <TouchableOpacity 
-            style={styles.titleContainer}
-            onPress={() => {
-              console.log('Titre Communication cliqué');
-            }}
-            activeOpacity={0.7}
-          >
-            <Text style={styles.pageTitle}>Communication</Text>
-          </TouchableOpacity>
-          
-          {/* Sélecteur de profil à droite */}
-          <TouchableOpacity 
-            style={styles.clubSelectorCompact}
+            style={styles.profileSelectorCenter}
             onPress={() => setShowProfileModal(true)}
           >
-            <Ionicons name={selectedProfile.type === 'club' ? 'business' : selectedProfile.type === 'ligue' ? 'globe' : 'people'} size={16} color="#FFFFFF" />
-            <Text style={styles.clubNameCompact} numberOfLines={1}>{selectedProfile.name}</Text>
+            <View style={styles.profileLogoSmall}>
+              <Ionicons name={selectedProfile.type === 'club' ? 'business' : selectedProfile.type === 'ligue' ? 'globe' : 'people'} size={18} color="#FFFFFF" />
+            </View>
+            <Text style={styles.profileNameHeader} numberOfLines={1}>{selectedProfile.name}</Text>
             <Ionicons name="chevron-down" size={16} color="#FFFFFF" />
           </TouchableOpacity>
+          
+          {/* Espace vide à droite pour équilibrer */}
+          <View style={styles.headerSpacer} />
         </View>
 
         {/* Barre de recherche + Filtre */}
