@@ -213,7 +213,8 @@ const StatsRow = ({ stats }: { stats: { views: number; likes: number; shares: nu
 // Composant Document Card - Nouvelle structure avec 4 lignes
 const DocumentCard = ({ 
   doc, 
-  onPress, 
+  onPress,
+  index, 
 }: { 
   doc: ASDocument; 
   onPress: () => void;
