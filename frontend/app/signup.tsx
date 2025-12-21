@@ -33,28 +33,25 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 const { width, height } = Dimensions.get('window');
 
 // ============================================
-// ANIMATED LOGO COMPONENT - 3 parties
-// Fondu: W (0s) → Artywiz (+0.3s) → Football (+0.6s)
-// Animation: décalage 500ms, ±5%, cycles 2s, boucle infinie
+// ANIMATED LOGO COMPONENT - 2 parties (sans Football)
+// Fondu: W (0s) → Artywiz (+0.3s)
+// Animation: décalage 500ms, ±5%, cycles 2.4s, boucle infinie
 // ============================================
 const AnimatedSignupLogo = () => {
-  const opacityW = useSharedValue(1);      // Démarrer visible
-  const opacityArtywiz = useSharedValue(1); // Démarrer visible
-  const opacityFootball = useSharedValue(1); // Démarrer visible
+  const opacityW = useSharedValue(1);
+  const opacityArtywiz = useSharedValue(1);
   const scaleW = useSharedValue(1);
   const scaleArtywiz = useSharedValue(1);
-  const scaleFootball = useSharedValue(1);
   const isAnimatingRef = useRef(false);
 
   const startAnimation = useCallback(() => {
     if (isAnimatingRef.current) return;
     isAnimatingRef.current = true;
 
-    // Cycle de 2.4 secondes = 1200ms par demi-cycle (20% plus lent)
     const halfCycleDuration = 1200;
     const easeConfig = { duration: halfCycleDuration, easing: Easing.inOut(Easing.ease) };
 
-    // W: ±15% amplitude, GRANDIT d'abord
+    // W: ±5%, GRANDIT d'abord
     scaleW.value = withRepeat(
       withSequence(
         withTiming(1.05, easeConfig),
@@ -64,7 +61,7 @@ const AnimatedSignupLogo = () => {
       true
     );
 
-    // Artywiz: décalage 500ms, ±15%, RÉDUIT d'abord
+    // Artywiz: décalage 500ms, ±5%, RÉDUIT d'abord
     setTimeout(() => {
       scaleArtywiz.value = withRepeat(
         withSequence(
@@ -75,18 +72,6 @@ const AnimatedSignupLogo = () => {
         true
       );
     }, 500);
-
-    // Football: décalage 1000ms, ±15%, GRANDIT d'abord
-    setTimeout(() => {
-      scaleFootball.value = withRepeat(
-        withSequence(
-          withTiming(1.15, easeConfig),
-          withTiming(0.85, easeConfig)
-        ),
-        -1,
-        true
-      );
-    }, 1000);
   }, []);
 
   useEffect(() => {
@@ -94,10 +79,7 @@ const AnimatedSignupLogo = () => {
     setTimeout(() => {
       opacityArtywiz.value = withTiming(1, { duration: 400, easing: Easing.out(Easing.ease) });
     }, 300);
-    setTimeout(() => {
-      opacityFootball.value = withTiming(1, { duration: 400, easing: Easing.out(Easing.ease) });
-    }, 600);
-    const timer = setTimeout(() => startAnimation(), 1000);
+    const timer = setTimeout(() => startAnimation(), 800);
     return () => clearTimeout(timer);
   }, [startAnimation]);
 
@@ -109,11 +91,6 @@ const AnimatedSignupLogo = () => {
   const animatedStyleArtywiz = useAnimatedStyle(() => ({
     opacity: opacityArtywiz.value,
     transform: [{ scale: scaleArtywiz.value }],
-  }));
-
-  const animatedStyleFootball = useAnimatedStyle(() => ({
-    opacity: opacityFootball.value,
-    transform: [{ scale: scaleFootball.value }],
   }));
 
   return (
@@ -130,13 +107,6 @@ const AnimatedSignupLogo = () => {
           <Image
             source={require('../assets/images/logo_artywiz.png')}
             style={styles.logoImageArtywiz}
-            resizeMode="contain"
-          />
-        </Animated.View>
-        <Animated.View style={[styles.logoPart, styles.logoFootball, animatedStyleFootball]}>
-          <Image
-            source={require('../assets/images/logo_football.png')}
-            style={styles.logoImageFootball}
             resizeMode="contain"
           />
         </Animated.View>
