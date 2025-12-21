@@ -130,24 +130,62 @@ const SponsorBadge = ({ amount }: { amount: number }) => {
   );
 };
 
-// Composant Badge de statut - Même largeur que le mockup
-const StatusBadge = ({ status, platforms }: { status: DocumentStatus; platforms?: string[] }) => {
-  const getStatusConfig = () => {
-    switch (status) {
-      case 'to_generate':
-        return { label: 'Brouillon', color: '#FFFFFF', icon: 'document-text-outline', bg: '#EF4444' }; // Rouge
-      case 'generating':
-        return { label: 'Préparation...', color: '#FFFFFF', icon: 'sync-outline', bg: '#F59E0B' }; // Orange
-      case 'ready':
-        return { label: 'Prêt à buzzer', color: '#FFFFFF', icon: 'flash', bg: '#10B981' }; // Vert
-      case 'published':
-        return { label: 'Publié', color: '#FFFFFF', icon: 'checkmark-done', bg: '#10B981' }; // Vert comme "prêt"
-      default:
-        return { label: 'Aperçu', color: '#FFFFFF', icon: 'eye-outline', bg: '#6B7280' };
-    }
-  };
+// Composant Indicateur d'État (cercle clignotant ou icône)
+const StatusIndicator = ({ status }: { status: DocumentStatus }) => {
+  const colorAnim = useSharedValue(0);
 
-  const config = getStatusConfig();
+  useEffect(() => {
+    if (status === 'generating') {
+      // Animation de clignotement vert/rouge
+      colorAnim.value = withRepeat(
+        withTiming(1, { duration: 600, easing: Easing.inOut(Easing.ease) }),
+        -1,
+        true
+      );
+    }
+  }, [status]);
+
+  const animatedStyle = useAnimatedStyle(() => {
+    const backgroundColor = interpolate(
+      colorAnim.value,
+      [0, 1],
+      [0, 1]
+    );
+    // Interpoler entre vert (#22C55E) et rouge (#EF4444)
+    return {
+      backgroundColor: colorAnim.value < 0.5 ? '#22C55E' : '#EF4444',
+    };
+  });
+
+  // Brouillon: pas d'indicateur
+  if (status === 'to_generate') return null;
+
+  // En cours: cercle qui clignote vert/rouge
+  if (status === 'generating') {
+    return (
+      <Animated.View style={[styles.statusCircle, animatedStyle]} />
+    );
+  }
+
+  // Prêt: cercle vert fixe
+  if (status === 'ready') {
+    return <View style={[styles.statusCircle, styles.statusReady]} />;
+  }
+
+  // Publié: icône
+  if (status === 'published') {
+    return (
+      <View style={styles.statusIconContainer}>
+        <Ionicons name="checkmark-circle" size={18} color="#22C55E" />
+      </View>
+    );
+  }
+
+  return null;
+};
+
+// Composant Badge de statut - SUPPRIMÉ (plus de bandeau BROUILLON)
+// Le StatusBadge est maintenant remplacé par StatusIndicator
 
   // Pour les documents publiés, afficher les icônes des plateformes
   if (status === 'published' && platforms && platforms.length > 0) {
