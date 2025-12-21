@@ -309,6 +309,10 @@ export const DocShowcase: React.FC<DocShowcaseProps> = ({
         runOnJS(hideTextAnimation)();
         const nextIdx = (activeIndex + 1) % documents.length;
         
+        // Fade out le slide sortant
+        exitingOpacity.value = 1;
+        exitingOpacity.value = withTiming(0, { duration: 250, easing: Easing.out(Easing.cubic) });
+        
         scrollX.value = withTiming(
           -EFFECTIVE_WIDTH, 
           { duration: 250, easing: Easing.out(Easing.cubic) }, 
@@ -320,6 +324,10 @@ export const DocShowcase: React.FC<DocShowcaseProps> = ({
         isAnimating.value = true;
         runOnJS(hideTextAnimation)();
         const prevIdx = (activeIndex - 1 + documents.length) % documents.length;
+        
+        // Fade out le slide sortant
+        exitingOpacity.value = 1;
+        exitingOpacity.value = withTiming(0, { duration: 250, easing: Easing.out(Easing.cubic) });
         
         scrollX.value = withTiming(
           EFFECTIVE_WIDTH, 
