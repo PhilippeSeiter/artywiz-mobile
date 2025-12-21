@@ -530,28 +530,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logoImageW: {
-    width: 55,   // +10% (était 50)
-    height: 39,  // +10% (était 35)
+    width: 55,
+    height: 39,
   },
-  // Artywiz - au milieu (le texte "artywiz")
+  // Artywiz - en bas (le texte "artywiz")
   logoArtywiz: {
-    top: 36,     // Ajusté pour +10%
+    top: 36,
     width: '100%',
     alignItems: 'center',
   },
   logoImageArtywiz: {
-    width: 154,  // +10% (était 140)
-    height: 33,  // +10% (était 30)
-  },
-  // Football - en bas (le texte "FOOTBALL")
-  logoFootball: {
-    top: 68,     // Ajusté pour être visible dans le wrapper
-    width: '100%',
-    alignItems: 'center',
-  },
-  logoImageFootball: {
-    width: 110,  // +10% (était 100)
-    height: 22,  // +10% (était 20)
+    width: 154,
+    height: 33,
   },
   // Ancien style (conservé pour compatibilité)
   logoContainer: {
