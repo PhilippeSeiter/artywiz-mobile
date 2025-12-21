@@ -306,8 +306,11 @@ export default function CreerScreen() {
     if (selectedProfile.type === 'equipe') {
       const allDocs = ASStrasbourgDataService.getAllDocuments();
       setDocuments(allDocs);
-    } else {
+    } else if (selectedProfile.type === 'club') {
       const allDocs = ASStrasbourgClubDataService.getAllDocuments();
+      setDocuments(allDocs);
+    } else if (selectedProfile.type === 'ligue') {
+      const allDocs = LGEFDataService.getAllDocuments();
       setDocuments(allDocs);
     }
     setIsLoading(false);
