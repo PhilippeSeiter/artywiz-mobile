@@ -76,7 +76,7 @@ const VideoBackgroundIntro = () => {
 export default function IntroAnimationScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const { setSelectedThemes, setHasCompletedOnboarding } = useUserPreferencesStore();
+  const { setSelectedThemes, completeOnboarding } = useUserPreferencesStore();
 
   // Button animation
   const buttonOpacity = useSharedValue(0);
