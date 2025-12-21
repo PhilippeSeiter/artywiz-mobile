@@ -229,7 +229,7 @@ const AddAccountButton = ({ onPress }: { onPress: () => void }) => {
 // ============================================
 // UNIFIED POPUP WITH HORIZONTAL SLIDE
 // ============================================
-type PopupStep = 'types' | 'search_club' | 'search_team' | 'search_single';
+type PopupStep = 'sport' | 'types' | 'search_club' | 'search_team' | 'search_single';
 
 interface UnifiedPopupProps {
   visible: boolean;
@@ -238,7 +238,7 @@ interface UnifiedPopupProps {
 }
 
 const UnifiedPopup = ({ visible, onClose, onAccountCreated }: UnifiedPopupProps) => {
-  const [step, setStep] = useState<PopupStep>('types');
+  const [step, setStep] = useState<PopupStep>('sport');
   const [selectedType, setSelectedType] = useState<string>('');
   const [selectedClub, setSelectedClub] = useState<any>(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -251,7 +251,7 @@ const UnifiedPopup = ({ visible, onClose, onAccountCreated }: UnifiedPopupProps)
   // Reset when opening
   useEffect(() => {
     if (visible) {
-      setStep('types');
+      setStep('sport');
       setSelectedType('');
       setSelectedClub(null);
       setSearchQuery('');
@@ -285,6 +285,11 @@ const UnifiedPopup = ({ visible, onClose, onAccountCreated }: UnifiedPopupProps)
       slideX.value = withTiming(0, { duration: SLIDE_DURATION, easing: Easing.inOut(Easing.ease) });
     });
     setSearchQuery('');
+  };
+
+  // Handler pour le choix du sport
+  const handleSelectSport = () => {
+    slideToNext('types');
   };
 
   // Handlers
