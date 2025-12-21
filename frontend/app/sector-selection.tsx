@@ -485,6 +485,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: Spacing.xs,
   },
+  emojiIcon: {
+    fontSize: 36,
+  },
   sectorName: {
     fontSize: 14,
     fontWeight: '600',
