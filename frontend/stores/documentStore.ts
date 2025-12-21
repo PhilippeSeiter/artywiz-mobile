@@ -69,15 +69,17 @@ export const useDocumentStore = create<DocumentStore>()(
       viewedDocs: [],
 
       // Start document generation
-      startGeneration: (docId, selectedSupports) => {
+      startGeneration: (docId, selectedSupports, profileId) => {
         set((state) => ({
           documentStates: {
             ...state.documentStates,
             [docId]: {
               id: docId,
               status: 'en_cours',
+              profileId,
               selectedSupports,
               generationStartedAt: Date.now(),
+              publications: [],
             },
           },
           generatingDocs: [...state.generatingDocs, docId],
@@ -97,6 +99,7 @@ export const useDocumentStore = create<DocumentStore>()(
             [docId]: {
               ...state.documentStates[docId],
               status: 'pret',
+              publications: state.documentStates[docId]?.publications || [],
             },
           },
           generatingDocs: state.generatingDocs.filter(id => id !== docId),
