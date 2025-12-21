@@ -623,8 +623,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingVertical: 14,
     paddingHorizontal: 20,
-    backgroundColor: '#E8F4FD',
+    backgroundColor: '#FFFFFF',
     borderRadius: 50,
+    borderWidth: 2,
+    borderColor: '#0066FF',
     position: 'relative',
   },
   buttonTextPrimary: {
