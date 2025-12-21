@@ -259,11 +259,12 @@ export const useUserPreferencesStore = create<UserPreferencesState>()(
       completeOnboarding: () => set({ hasCompletedOnboarding: true }),
       
       resetPreferences: () => set({
-        // Remettre les 5 profils conteneurs de base (jamais vide)
+        // Remettre les profils conteneurs de base (jamais vide)
         selectedProfiles: [...DEFAULT_BASE_PROFILES],
         activeProfileIndex: 0,
         selectedThemes: [],
         sponsoringPrefs: initialSponsoringPrefs,
+        profileSponsoringPrefs: {},
         profileSocialConnections: {},
         hasCompletedOnboarding: false,
       }),
@@ -277,6 +278,7 @@ export const useUserPreferencesStore = create<UserPreferencesState>()(
         activeProfileIndex: state.activeProfileIndex,
         selectedThemes: state.selectedThemes,
         sponsoringPrefs: state.sponsoringPrefs,
+        profileSponsoringPrefs: state.profileSponsoringPrefs,
         profileSocialConnections: state.profileSocialConnections,
         hasCompletedOnboarding: state.hasCompletedOnboarding,
       }),
