@@ -392,7 +392,7 @@ const styles = StyleSheet.create({
   },
   logoPartsWrapper: {
     width: 220,  // +10%
-    height: 100, // Hauteur pour W + artywiz + FOOTBALL avec marge
+    height: 75, // Hauteur pour W + artywiz (sans Football)
     alignItems: 'center',
     justifyContent: 'flex-start',
   },
