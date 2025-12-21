@@ -286,11 +286,11 @@ export default function CreerScreen() {
   const insets = useSafeAreaInsets();
   
   // États
-  const [documents, setDocuments] = useState<ASDocument[]>([]);
+  const [documents, setDocuments] = useState<UnifiedDocument[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [selectedClub, setSelectedClub] = useState<Club>(CLUBS[0]);
-  const [showClubModal, setShowClubModal] = useState(false);
+  const [selectedProfile, setSelectedProfile] = useState<Profile>(PROFILES[0]);
+  const [showProfileModal, setShowProfileModal] = useState(false);
   const [showFilterModal, setShowFilterModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   
@@ -298,19 +298,25 @@ export default function CreerScreen() {
   const [filterStatus, setFilterStatus] = useState<DocumentStatus | 'all'>('all');
   const [filterSponsored, setFilterSponsored] = useState<boolean | null>(null);
 
-  // Charger les documents AS Strasbourg
+  // Charger les documents selon le profil sélectionné
   const loadDocuments = useCallback(() => {
-    const allDocs = ASStrasbourgDataService.getAllDocuments();
-    setDocuments(allDocs);
+    setIsLoading(true);
+    if (selectedProfile.type === 'equipe') {
+      const allDocs = ASStrasbourgDataService.getAllDocuments();
+      setDocuments(allDocs);
+    } else {
+      const allDocs = ASStrasbourgClubDataService.getAllDocuments();
+      setDocuments(allDocs);
+    }
     setIsLoading(false);
-  }, []);
+  }, [selectedProfile]);
 
   useEffect(() => {
     loadDocuments();
   }, [loadDocuments]);
 
   // Ouvrir un document
-  const handleDocumentPress = (doc: ASDocument) => {
+  const handleDocumentPress = (doc: UnifiedDocument) => {
     // Naviguer vers les détails du document
     router.push(`/document/${doc.id}`);
   };
