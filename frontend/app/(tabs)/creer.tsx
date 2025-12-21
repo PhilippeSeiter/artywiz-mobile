@@ -40,19 +40,20 @@ const MOCKUP_WIDTH_PERCENT = 0.5; // 50% de la largeur de la carte
 // Types
 type DocumentStatus = 'brouillon' | 'en-cours' | 'pret' | 'publie';
 
-// Type unifié pour les documents (équipe ou club)
-type UnifiedDocument = ASDocument | ASClubDocument;
+// Type unifié pour les documents (équipe, club ou ligue)
+type UnifiedDocument = ASDocument | ASClubDocument | LGEFDocument;
 
 interface Profile {
   id: string;
   name: string;
-  type: 'equipe' | 'club';
+  type: 'equipe' | 'club' | 'ligue';
 }
 
 // Profils disponibles
 const PROFILES: Profile[] = [
   { id: 'seniors1', name: 'AS Strasbourg - Séniors 1', type: 'equipe' },
   { id: 'club', name: 'AS Strasbourg (Club)', type: 'club' },
+  { id: 'lgef', name: 'Ligue LGEF', type: 'ligue' },
 ];
 
 // Couleurs de fond pour les mockups (fallback)
