@@ -5,6 +5,8 @@ import {
   StyleSheet,
   TouchableOpacity,
   Dimensions,
+  Image,
+  ScrollView,
 } from 'react-native';
 import Animated, {
   useSharedValue,
@@ -38,7 +40,7 @@ const SECTORS = [
   { 
     id: 'boulangerie', 
     name: 'Boulangerie', 
-    icon: 'cafe', // closest to bread
+    icon: 'cafe',
     active: false,
     color: '#D4A574',
   },
@@ -59,15 +61,13 @@ const SECTORS = [
 ];
 
 // ============================================
-// ANIMATED LOGO COMPONENT
+// ANIMATED LOGO COMPONENT (sans Football)
 // ============================================
 const AnimatedSectorLogo = () => {
   const opacityW = useSharedValue(0);
   const opacityArtywiz = useSharedValue(0);
-  const opacityFootball = useSharedValue(0);
   const scaleW = useSharedValue(1);
   const scaleArtywiz = useSharedValue(1);
-  const scaleFootball = useSharedValue(1);
   const isAnimatingRef = useRef(false);
 
   const startAnimation = useCallback(() => {
@@ -97,17 +97,6 @@ const AnimatedSectorLogo = () => {
         true
       );
     }, 500);
-
-    setTimeout(() => {
-      scaleFootball.value = withRepeat(
-        withSequence(
-          withTiming(1.05, easeConfig),
-          withTiming(0.95, easeConfig)
-        ),
-        -1,
-        true
-      );
-    }, 1000);
   }, []);
 
   useEffect(() => {
@@ -115,10 +104,7 @@ const AnimatedSectorLogo = () => {
     setTimeout(() => {
       opacityArtywiz.value = withTiming(1, { duration: 400, easing: Easing.out(Easing.ease) });
     }, 300);
-    setTimeout(() => {
-      opacityFootball.value = withTiming(1, { duration: 400, easing: Easing.out(Easing.ease) });
-      startAnimation();
-    }, 600);
+    setTimeout(() => startAnimation(), 800);
   }, []);
 
   const wStyle = useAnimatedStyle(() => ({
@@ -131,55 +117,71 @@ const AnimatedSectorLogo = () => {
     transform: [{ scale: scaleArtywiz.value }],
   }));
 
-  const footballStyle = useAnimatedStyle(() => ({
-    opacity: opacityFootball.value,
-    transform: [{ scale: scaleFootball.value }],
-  }));
+  const BASE_WIDTH = 220 * 1.2;
+  const BASE_HEIGHT = 130 * 1.2 * 0.8; // Réduit car pas de Football
 
   return (
     <View style={logoStyles.container}>
-      <View style={logoStyles.textRow}>
-        <Animated.Text style={[logoStyles.wLetter, wStyle]}>W</Animated.Text>
-        <Animated.Text style={[logoStyles.artywizText, artywizStyle]}>Artywiz</Animated.Text>
+      <View style={[logoStyles.wrapper, { width: BASE_WIDTH, height: BASE_HEIGHT }]}>
+        {/* W - en haut */}
+        <Animated.View style={[logoStyles.part, logoStyles.partW, wStyle]}>
+          <Image
+            source={require('../assets/images/logo_W.png')}
+            style={logoStyles.imageW}
+            resizeMode="contain"
+          />
+        </Animated.View>
+        {/* Artywiz - en bas */}
+        <Animated.View style={[logoStyles.part, logoStyles.partArtywiz, artywizStyle]}>
+          <Image
+            source={require('../assets/images/logo_artywiz.png')}
+            style={logoStyles.imageArtywiz}
+            resizeMode="contain"
+          />
+        </Animated.View>
       </View>
-      <Animated.Text style={[logoStyles.footballText, footballStyle]}>Football</Animated.Text>
     </View>
   );
 };
+
+const BASE_WIDTH = 220 * 1.2;
+const BASE_HEIGHT = 130 * 1.2 * 0.8;
 
 const logoStyles = StyleSheet.create({
   container: {
     alignItems: 'center',
     justifyContent: 'center',
+    position: 'absolute',
+    top: 80,
+    left: 0,
+    right: 0,
+    zIndex: 0,
   },
-  textRow: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
+  wrapper: {
+    position: 'relative',
   },
-  wLetter: {
-    fontSize: 36,
-    fontWeight: '900',
-    color: '#FFFFFF',
-    textShadowColor: 'rgba(0,0,0,0.3)',
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 4,
+  part: {
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+    left: 0,
+    right: 0,
   },
-  artywizText: {
-    fontSize: 28,
-    fontWeight: '700',
-    color: '#FFFFFF',
-    marginLeft: 2,
-    textShadowColor: 'rgba(0,0,0,0.3)',
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 4,
+  partW: {
+    top: 0,
+    height: BASE_HEIGHT * 0.6,
   },
-  footballText: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: 'rgba(255,255,255,0.9)',
-    letterSpacing: 4,
-    textTransform: 'uppercase',
-    marginTop: 4,
+  partArtywiz: {
+    top: BASE_HEIGHT * 0.5,
+    height: BASE_HEIGHT * 0.4,
+  },
+  imageW: {
+    width: BASE_WIDTH * 0.45,
+    height: BASE_HEIGHT * 0.6,
+  },
+  imageArtywiz: {
+    width: BASE_WIDTH * 0.85,
+    height: BASE_HEIGHT * 0.35,
   },
 });
 
@@ -198,8 +200,7 @@ const SectorCard = ({ sector, index, onPress }: SectorCardProps) => {
   const pressScale = useSharedValue(1);
 
   useEffect(() => {
-    // Stagger animation for each card
-    const delay = 200 + index * 100;
+    const delay = 300 + index * 100;
     scale.value = withDelay(delay, withSpring(1, { damping: 12, stiffness: 100 }));
     opacity.value = withDelay(delay, withTiming(1, { duration: 300 }));
   }, []);
@@ -225,6 +226,7 @@ const SectorCard = ({ sector, index, onPress }: SectorCardProps) => {
         style={[
           styles.sectorCard,
           !sector.active && styles.sectorCardInactive,
+          sector.active && { borderColor: sector.color, borderWidth: 2 },
         ]}
         onPress={onPress}
         onPressIn={handlePressIn}
@@ -232,13 +234,6 @@ const SectorCard = ({ sector, index, onPress }: SectorCardProps) => {
         disabled={!sector.active}
         activeOpacity={0.9}
       >
-        {/* Badge "Bientôt" pour les secteurs inactifs */}
-        {!sector.active && (
-          <View style={styles.badgeBientot}>
-            <Text style={styles.badgeBientotText}>Bientôt</Text>
-          </View>
-        )}
-
         {/* Icône */}
         <View style={[
           styles.iconContainer,
@@ -246,7 +241,7 @@ const SectorCard = ({ sector, index, onPress }: SectorCardProps) => {
         ]}>
           <Ionicons 
             name={sector.icon as any} 
-            size={40} 
+            size={36} 
             color={sector.active ? '#FFFFFF' : '#9CA3AF'} 
           />
         </View>
@@ -259,10 +254,17 @@ const SectorCard = ({ sector, index, onPress }: SectorCardProps) => {
           {sector.name}
         </Text>
 
+        {/* Badge "Bientôt" SOUS l'icône pour les inactifs */}
+        {!sector.active && (
+          <View style={styles.badgeBientot}>
+            <Text style={styles.badgeBientotText}>Bientôt</Text>
+          </View>
+        )}
+
         {/* Indicateur de sélection pour le secteur actif */}
         {sector.active && (
           <View style={styles.selectIndicator}>
-            <Ionicons name="chevron-forward" size={20} color={Colors.primary} />
+            <Ionicons name="chevron-forward" size={18} color={sector.color} />
           </View>
         )}
       </TouchableOpacity>
@@ -277,13 +279,13 @@ export default function SectorSelectionScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
 
-  // Animation de la carte principale
+  // Animation de la carte
   const cardOpacity = useSharedValue(0);
   const cardTranslateY = useSharedValue(30);
 
   useEffect(() => {
-    cardOpacity.value = withDelay(100, withTiming(1, { duration: 400 }));
-    cardTranslateY.value = withDelay(100, withSpring(0, { damping: 15, stiffness: 100 }));
+    cardOpacity.value = withDelay(200, withTiming(1, { duration: 400 }));
+    cardTranslateY.value = withDelay(200, withSpring(0, { damping: 15, stiffness: 100 }));
   }, []);
 
   const cardAnimatedStyle = useAnimatedStyle(() => ({
@@ -316,69 +318,69 @@ export default function SectorSelectionScreen() {
       {/* Fond vidéo */}
       <VideoBackground />
 
-      {/* Contenu */}
-      <View style={[styles.content, { paddingTop: insets.top + Spacing.md }]}>
-        {/* Header avec bouton retour */}
-        <View style={styles.header}>
-          <TouchableOpacity 
-            style={styles.backButton}
-            onPress={handleBack}
-          >
-            <Ionicons name="arrow-back" size={24} color="#FFFFFF" />
-          </TouchableOpacity>
-        </View>
+      {/* Logo animé (sans Football) - en arrière plan */}
+      <AnimatedSectorLogo />
 
-        {/* Logo animé */}
-        <View style={styles.logoContainer}>
-          <AnimatedSectorLogo />
-        </View>
-
+      {/* Contenu scrollable */}
+      <ScrollView
+        style={styles.scrollView}
+        contentContainerStyle={[styles.scrollContent, { paddingTop: insets.top + Spacing.md }]}
+        showsVerticalScrollIndicator={false}
+      >
         {/* Carte principale */}
-        <Animated.View style={[styles.mainCard, cardAnimatedStyle]}>
-          <LinearGradient
-            colors={['rgba(255,255,255,0.98)', 'rgba(255,255,255,0.95)']}
-            style={styles.cardGradient}
-          >
-            {/* Titre */}
-            <Text style={styles.title}>Mon profil</Text>
-            <Text style={styles.subtitle}>
-              Sélectionnez votre secteur d'activité
+        <Animated.View style={[styles.card, cardAnimatedStyle]}>
+          {/* Header avec bouton retour et titre */}
+          <View style={styles.headerRow}>
+            <TouchableOpacity 
+              style={styles.backButton}
+              onPress={handleBack}
+            >
+              <Ionicons name="arrow-back" size={20} color="#FF6B6B" />
+            </TouchableOpacity>
+            <View style={styles.titleContainer}>
+              <Text style={styles.titleLine1}>Mon</Text>
+              <Text style={styles.titleLine2}>profil</Text>
+            </View>
+          </View>
+
+          {/* Sous-titre */}
+          <Text style={styles.subtitle}>
+            Sélectionnez votre secteur d'activité
+          </Text>
+
+          {/* Grille des secteurs (2x2) */}
+          <View style={styles.sectorsGrid}>
+            <View style={styles.sectorsRow}>
+              {SECTORS.slice(0, 2).map((sector, index) => (
+                <SectorCard
+                  key={sector.id}
+                  sector={sector}
+                  index={index}
+                  onPress={() => handleSectorPress(sector.id)}
+                />
+              ))}
+            </View>
+            <View style={styles.sectorsRow}>
+              {SECTORS.slice(2, 4).map((sector, index) => (
+                <SectorCard
+                  key={sector.id}
+                  sector={sector}
+                  index={index + 2}
+                  onPress={() => handleSectorPress(sector.id)}
+                />
+              ))}
+            </View>
+          </View>
+
+          {/* Note d'information */}
+          <View style={styles.infoNote}>
+            <Ionicons name="information-circle-outline" size={14} color={Colors.textSecondary} />
+            <Text style={styles.infoNoteText}>
+              D'autres secteurs bientôt disponibles
             </Text>
-
-            {/* Grille des secteurs (2x2) */}
-            <View style={styles.sectorsGrid}>
-              <View style={styles.sectorsRow}>
-                {SECTORS.slice(0, 2).map((sector, index) => (
-                  <SectorCard
-                    key={sector.id}
-                    sector={sector}
-                    index={index}
-                    onPress={() => handleSectorPress(sector.id)}
-                  />
-                ))}
-              </View>
-              <View style={styles.sectorsRow}>
-                {SECTORS.slice(2, 4).map((sector, index) => (
-                  <SectorCard
-                    key={sector.id}
-                    sector={sector}
-                    index={index + 2}
-                    onPress={() => handleSectorPress(sector.id)}
-                  />
-                ))}
-              </View>
-            </View>
-
-            {/* Note d'information */}
-            <View style={styles.infoNote}>
-              <Ionicons name="information-circle" size={16} color={Colors.textSecondary} />
-              <Text style={styles.infoNoteText}>
-                D'autres secteurs seront bientôt disponibles
-              </Text>
-            </View>
-          </LinearGradient>
+          </View>
         </Animated.View>
-      </View>
+      </ScrollView>
     </View>
   );
 }
@@ -388,11 +390,27 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'transparent',
   },
-  content: {
+  scrollView: {
     flex: 1,
-    paddingHorizontal: Spacing.lg,
+    zIndex: 1,
   },
-  header: {
+  scrollContent: {
+    flexGrow: 1,
+    paddingHorizontal: Spacing.lg,
+    paddingTop: 160, // Espace pour le logo
+  },
+  card: {
+    backgroundColor: Colors.white,
+    borderRadius: 24,
+    padding: Spacing.lg,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.1,
+    shadowRadius: 20,
+    elevation: 10,
+    marginBottom: Spacing.xl,
+  },
+  headerRow: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: Spacing.md,
@@ -401,111 +419,96 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: 22,
-    backgroundColor: 'rgba(255,255,255,0.2)',
+    backgroundColor: '#FFF0F0',
     justifyContent: 'center',
     alignItems: 'center',
+    marginRight: Spacing.md,
   },
-  logoContainer: {
-    alignItems: 'center',
-    marginBottom: Spacing.xl,
-  },
-  mainCard: {
+  titleContainer: {
     flex: 1,
-    maxHeight: height * 0.65,
-    borderRadius: 24,
-    overflow: 'hidden',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 10 },
-    shadowOpacity: 0.15,
-    shadowRadius: 20,
-    elevation: 10,
   },
-  cardGradient: {
-    flex: 1,
-    padding: Spacing.lg,
+  titleLine1: {
+    fontSize: 14,
+    color: Colors.textSecondary,
+    fontWeight: '500',
   },
-  title: {
+  titleLine2: {
     fontSize: 28,
     fontWeight: '700',
     color: Colors.text,
-    textAlign: 'center',
-    marginBottom: Spacing.xs,
+    marginTop: -2,
   },
   subtitle: {
     fontSize: 14,
     color: Colors.textSecondary,
-    textAlign: 'center',
-    marginBottom: Spacing.xl,
+    marginBottom: Spacing.lg,
   },
   sectorsGrid: {
-    flex: 1,
-    justifyContent: 'center',
+    marginBottom: Spacing.md,
   },
   sectorsRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: Spacing.md,
+    marginBottom: Spacing.sm,
   },
   cardWrapper: {
     width: '48%',
   },
   sectorCard: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#F9FAFB',
     borderRadius: 16,
-    padding: Spacing.lg,
+    padding: Spacing.md,
     alignItems: 'center',
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: '#E5E7EB',
-    minHeight: 140,
+    minHeight: 130,
     justifyContent: 'center',
     position: 'relative',
   },
   sectorCardInactive: {
     backgroundColor: '#F9FAFB',
-    borderColor: '#E5E7EB',
-    opacity: 0.7,
+    opacity: 0.6,
+  },
+  iconContainer: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: Spacing.xs,
+  },
+  sectorName: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: Colors.text,
+    textAlign: 'center',
+    marginTop: Spacing.xs,
+  },
+  sectorNameInactive: {
+    color: '#9CA3AF',
   },
   badgeBientot: {
-    position: 'absolute',
-    top: 8,
-    right: 8,
     backgroundColor: '#6B7280',
-    paddingHorizontal: 8,
+    paddingHorizontal: 10,
     paddingVertical: 3,
     borderRadius: 10,
+    marginTop: Spacing.xs,
   },
   badgeBientotText: {
     fontSize: 10,
     fontWeight: '600',
     color: '#FFFFFF',
   },
-  iconContainer: {
-    width: 72,
-    height: 72,
-    borderRadius: 36,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: Spacing.sm,
-  },
-  sectorName: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: Colors.text,
-    textAlign: 'center',
-  },
-  sectorNameInactive: {
-    color: '#9CA3AF',
-  },
   selectIndicator: {
     position: 'absolute',
-    bottom: 12,
-    right: 12,
+    top: 10,
+    right: 10,
   },
   infoNote: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingTop: Spacing.md,
+    paddingTop: Spacing.sm,
     gap: 6,
   },
   infoNoteText: {
