@@ -155,8 +155,8 @@ const initialSponsoringPrefs: SponsoringPrefs = {
 export const useUserPreferencesStore = create<UserPreferencesState>()(
   persist(
     (set, get) => ({
-      // Initialiser avec les 5 profils conteneurs de base
-      selectedProfiles: [...DEFAULT_BASE_PROFILES],
+      // Démarrer avec une liste vide - l'utilisateur ajoutera ses comptes
+      selectedProfiles: [],
       activeProfileIndex: 0,
       selectedThemes: [],
       sponsoringPrefs: initialSponsoringPrefs,
