@@ -184,57 +184,6 @@ const StatusIndicator = ({ status }: { status: DocumentStatus }) => {
   return null;
 };
 
-// Composant Badge de statut - SUPPRIMÉ (plus de bandeau BROUILLON)
-// Le StatusBadge est maintenant remplacé par StatusIndicator
-
-  // Pour les documents publiés, afficher les icônes des plateformes
-  if (status === 'published' && platforms && platforms.length > 0) {
-    // Mapping des plateformes vers les icônes
-    const getPlatformIcon = (platform: string): string => {
-      switch (platform.toLowerCase()) {
-        case 'facebook': return 'logo-facebook';
-        case 'instagram': return 'logo-instagram';
-        case 'linkedin': return 'logo-linkedin';
-        case 'post': return 'image-outline';
-        case 'reel': return 'play-circle-outline';
-        case 'affiche': return 'document-outline';
-        case 'flyer': return 'newspaper-outline';
-        case 'newsletter': return 'mail-outline';
-        case 'video': return 'videocam-outline';
-        case 'banniere': return 'browsers-outline';
-        default: return 'checkmark-circle';
-      }
-    };
-
-    return (
-      <View style={[styles.statusBadge, styles.publishedBadge, { backgroundColor: config.bg }]}>
-        {platforms.slice(0, 4).map((platform, index) => (
-          <Ionicons 
-            key={platform + index} 
-            name={getPlatformIcon(platform) as any} 
-            size={14} 
-            color={config.color} 
-          />
-        ))}
-        {platforms.length > 4 && (
-          <Text style={[styles.statusText, { color: config.color, fontSize: 10 }]}>+{platforms.length - 4}</Text>
-        )}
-      </View>
-    );
-  }
-
-  return (
-    <View style={[styles.statusBadge, { backgroundColor: config.bg }]}>
-      {status === 'generating' ? (
-        <Spinner size={14} color={config.color} />
-      ) : (
-        <Ionicons name={config.icon as any} size={14} color={config.color} />
-      )}
-      <Text style={[styles.statusText, { color: config.color }]}>{config.label}</Text>
-    </View>
-  );
-};
-
 // Composant Stats (likes, vues, etc.)
 const StatsRow = ({ stats }: { stats: { views: number; likes: number; shares: number; platforms: string[] } }) => {
   return (
