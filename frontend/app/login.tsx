@@ -47,12 +47,10 @@ const AnimatedLoginLogo = () => {
   // Opacités pour le fondu décalé
   const opacityW = useSharedValue(0);
   const opacityArtywiz = useSharedValue(0);
-  const opacityFootball = useSharedValue(0);
   
   // Scales pour l'animation
   const scaleW = useSharedValue(1);
   const scaleArtywiz = useSharedValue(1);
-  const scaleFootball = useSharedValue(1);
   
   const isAnimatingRef = useRef(false);
 
@@ -60,21 +58,20 @@ const AnimatedLoginLogo = () => {
     if (isAnimatingRef.current) return;
     isAnimatingRef.current = true;
 
-    // Cycle de 2.4 secondes = 1200ms par demi-cycle (20% plus lent)
     const halfCycleDuration = 1200;
     const easeConfig = { duration: halfCycleDuration, easing: Easing.inOut(Easing.ease) };
 
-    // W: décalage 0ms, ±15%, GRANDIT d'abord
+    // W: ±5%, GRANDIT d'abord
     scaleW.value = withRepeat(
       withSequence(
         withTiming(1.05, easeConfig),
         withTiming(0.95, easeConfig)
       ),
-      -1, // Boucle infinie
+      -1,
       true
     );
 
-    // Artywiz: décalage 500ms, ±15%, RÉDUIT d'abord
+    // Artywiz: décalage 500ms, ±5%, RÉDUIT d'abord
     setTimeout(() => {
       scaleArtywiz.value = withRepeat(
         withSequence(
@@ -85,41 +82,19 @@ const AnimatedLoginLogo = () => {
         true
       );
     }, 500);
-
-    // Football: décalage 1000ms, ±15%, GRANDIT d'abord
-    setTimeout(() => {
-      scaleFootball.value = withRepeat(
-        withSequence(
-          withTiming(1.15, easeConfig),
-          withTiming(0.85, easeConfig)
-        ),
-        -1,
-        true
-      );
-    }, 1000);
   }, []);
 
-  // Fondu décalé au chargement: W → +0.3s → Artywiz → +0.3s → Football
   useEffect(() => {
-    // W apparaît en premier
     opacityW.value = withTiming(1, { duration: 400, easing: Easing.out(Easing.ease) });
     
-    // Artywiz apparaît après 300ms
     setTimeout(() => {
       opacityArtywiz.value = withTiming(1, { duration: 400, easing: Easing.out(Easing.ease) });
     }, 300);
     
-    // Football apparaît après 600ms
-    setTimeout(() => {
-      opacityFootball.value = withTiming(1, { duration: 400, easing: Easing.out(Easing.ease) });
-    }, 600);
-    
-    // Démarrer l'animation de scale après le fondu complet
-    const timer = setTimeout(() => startAnimation(), 1000);
+    const timer = setTimeout(() => startAnimation(), 800);
     return () => clearTimeout(timer);
   }, [startAnimation]);
 
-  // Styles animés avec opacité + scale
   const animatedStyleW = useAnimatedStyle(() => ({
     opacity: opacityW.value,
     transform: [{ scale: scaleW.value }],
@@ -130,14 +105,8 @@ const AnimatedLoginLogo = () => {
     transform: [{ scale: scaleArtywiz.value }],
   }));
 
-  const animatedStyleFootball = useAnimatedStyle(() => ({
-    opacity: opacityFootball.value,
-    transform: [{ scale: scaleFootball.value }],
-  }));
-
   return (
     <View style={styles.animatedLogoContainer}>
-      {/* Container pour positionner les 3 parties */}
       <View style={styles.logoPartsWrapper}>
         {/* W - en haut */}
         <Animated.View style={[styles.logoPart, styles.logoW, animatedStyleW]}>
@@ -148,20 +117,11 @@ const AnimatedLoginLogo = () => {
           />
         </Animated.View>
         
-        {/* Artywiz - au milieu */}
+        {/* Artywiz - en bas */}
         <Animated.View style={[styles.logoPart, styles.logoArtywiz, animatedStyleArtywiz]}>
           <Image
             source={require('../assets/images/logo_artywiz.png')}
             style={styles.logoImageArtywiz}
-            resizeMode="contain"
-          />
-        </Animated.View>
-        
-        {/* Football - en bas */}
-        <Animated.View style={[styles.logoPart, styles.logoFootball, animatedStyleFootball]}>
-          <Image
-            source={require('../assets/images/logo_football.png')}
-            style={styles.logoImageFootball}
             resizeMode="contain"
           />
         </Animated.View>
