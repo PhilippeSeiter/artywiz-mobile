@@ -547,8 +547,17 @@ export default function ProfileSelectionScreen() {
     }
     const baseProfiles = existingProfiles.filter(p => p.id.startsWith('base_') || p.type === 'sponsor');
     setSelectedProfiles([...baseProfiles, ...accounts]);
+    
+    // Set default themes
+    const { setSelectedThemes, completeOnboarding } = useUserPreferencesStore.getState();
+    setSelectedThemes([
+      'match_com', 'community', 'marketing', 'events', 'sponsors', // Thématiques spécifiques
+      'ephemeride' // Thématique générique
+    ]);
+    completeOnboarding();
+    
     if (isEditing) router.back();
-    else router.push('/intro-animation');
+    else router.replace('/(tabs)'); // Direct to dashboard, skip intro
   };
 
   return (
