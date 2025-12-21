@@ -657,4 +657,19 @@ const styles = StyleSheet.create({
     color: Colors.primary,
     fontWeight: '500',
   },
+  signupLinkContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: Spacing.sm,
+  },
+  signupLinkText: {
+    fontSize: 14,
+    color: Colors.textSecondary,
+  },
+  signupLinkAction: {
+    fontSize: 14,
+    color: Colors.primary,
+    fontWeight: '600',
+  },
 });
