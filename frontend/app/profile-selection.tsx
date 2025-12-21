@@ -548,7 +548,7 @@ export default function ProfileSelectionScreen() {
     const baseProfiles = existingProfiles.filter(p => p.id.startsWith('base_') || p.type === 'sponsor');
     setSelectedProfiles([...baseProfiles, ...accounts]);
     if (isEditing) router.back();
-    else router.push('/onboarding-themes');
+    else router.push('/intro-animation');
   };
 
   return (
