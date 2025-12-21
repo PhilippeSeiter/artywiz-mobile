@@ -293,6 +293,7 @@ export default function SignupScreen() {
               }}
               error={errors.name}
               icon="person"
+              autoFocus={true}
             />
 
             <CustomInput
