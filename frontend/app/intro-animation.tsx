@@ -139,35 +139,36 @@ export default function IntroAnimationScreen() {
   }));
 
   return (
-    <View style={styles.container}>
+    <TouchableOpacity 
+      style={styles.container} 
+      activeOpacity={1} 
+      onPress={handleSkipIntro}
+    >
       {/* Video Background */}
       <VideoBackgroundIntro />
       
       {/* Dark overlay for better button visibility */}
-      <View style={styles.overlay} />
+      <View style={styles.overlay} pointerEvents="none" />
       
       {/* Gradient at bottom */}
       <LinearGradient
         colors={['transparent', 'rgba(0,0,0,0.8)']}
         style={styles.bottomGradient}
+        pointerEvents="none"
       />
 
       {/* Skip button at bottom - ALWAYS VISIBLE */}
-      <View style={[styles.skipButtonWrapper, { paddingBottom: Math.max(insets.bottom, 20) + 30 }]}>
+      <View style={[styles.skipButtonWrapper, { paddingBottom: Math.max(insets.bottom, 20) + 30 }]} pointerEvents="none">
         <Animated.View style={[styles.skipButtonAnimated, buttonAnimatedStyle]}>
-          <TouchableOpacity
-            style={styles.skipButton}
-            onPress={handleSkipIntro}
-            activeOpacity={0.8}
-          >
+          <View style={styles.skipButton}>
             <Text style={styles.skipButtonText}>Passer l'intro</Text>
             <View style={styles.skipButtonArrow}>
               <Ionicons name="arrow-forward" size={18} color="#FFF" />
             </View>
-          </TouchableOpacity>
+          </View>
         </Animated.View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 
