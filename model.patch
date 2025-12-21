@@ -1,199 +1,231 @@
-diff --git a/frontend/components/DocShowcase.tsx b/frontend/components/DocShowcase.tsx
-index aeca0ab..46ef6c2 100644
---- a/frontend/components/DocShowcase.tsx
-+++ b/frontend/components/DocShowcase.tsx
-@@ -139,7 +139,7 @@ export const DocShowcase: React.FC<DocShowcaseProps> = ({
-   }, []);
+diff --git a/frontend/app/profile-selection.tsx b/frontend/app/profile-selection.tsx
+index 0d3908a..70c489e 100644
+--- a/frontend/app/profile-selection.tsx
++++ b/frontend/app/profile-selection.tsx
+@@ -265,18 +265,18 @@ const UnifiedPopup = ({ visible, onClose, onAccountCreated }: UnifiedPopupProps)
  
-   // ============================================
--  // ANIMATION: Image entre avec rebond, puis zoom
-+  // ANIMATION: Image entre avec rebond, puis zoom CONTINU
-   // ============================================
-   const animateNewSlideIn = useCallback(() => {
-     // Reset
-@@ -158,16 +158,15 @@ export const DocShowcase: React.FC<DocShowcaseProps> = ({
-       mass: 0.8,
+   // Slide transition
+   const slideToNext = (nextStep: PopupStep) => {
+-    slideX.value = withTiming(-width, { duration: SLIDE_DURATION, easing: Easing.inOut(Easing.ease) }, () => {
++    slideX.value = withTiming(-POPUP_WIDTH, { duration: SLIDE_DURATION, easing: Easing.inOut(Easing.ease) }, () => {
+       runOnJS(setStep)(nextStep);
+-      slideX.value = width;
++      slideX.value = POPUP_WIDTH;
+       slideX.value = withTiming(0, { duration: SLIDE_DURATION, easing: Easing.inOut(Easing.ease) });
      });
-     
--    // 2. Démarre le zoom lent après 300ms
--    const zoomTimer = setTimeout(() => {
--      currentScale.value = withTiming(1.06, {
-+    // 2. Zoom CONTINU qui ne s'arrête jamais (2x plus rapide = zoom plus visible)
-+    setTimeout(() => {
-+      currentScale.value = withTiming(ZOOM_AMOUNT, {
-         duration: ZOOM_DURATION,
-         easing: Easing.linear,
-       });
-     }, 300);
--    animationTimers.current.push(zoomTimer);
-     
--    // 3. Après 1 seconde: overlay + texte glissent du bas vers le haut
-+    // 3. Après 1.5 seconde: overlay + texte glissent du bas vers le haut
-     const textTimer = setTimeout(() => {
-       overlayOpacity.value = withTiming(0.45, { duration: TEXT_APPEAR_DURATION });
-       textTranslateY.value = withTiming(0, { 
-@@ -175,13 +174,13 @@ export const DocShowcase: React.FC<DocShowcaseProps> = ({
-         easing: Easing.out(Easing.cubic),
-       });
-       
--      // 4. Badge sponsoring apparaît après le texte avec UN SEUL rebond
-+      // 4. Badge sponsoring avec UN SEUL rebond
-       const badgeTimer = setTimeout(() => {
--        badgeOpacity.value = withTiming(1, { duration: 200 });
-+        badgeOpacity.value = withTiming(1, { duration: 150 });
-         badgeScale.value = withSpring(1, {
--          damping: 14,
-+          damping: 10,
-           stiffness: 200,
--          mass: 0.6,
-+          mass: 0.5,
-         });
-       }, BADGE_APPEAR_DELAY);
-       animationTimers.current.push(badgeTimer);
+     setSearchQuery('');
+   };
+ 
+   const slideBack = (prevStep: PopupStep) => {
+-    slideX.value = withTiming(width, { duration: SLIDE_DURATION, easing: Easing.inOut(Easing.ease) }, () => {
++    slideX.value = withTiming(POPUP_WIDTH, { duration: SLIDE_DURATION, easing: Easing.inOut(Easing.ease) }, () => {
+       runOnJS(setStep)(prevStep);
+-      slideX.value = -width;
++      slideX.value = -POPUP_WIDTH;
+       slideX.value = withTiming(0, { duration: SLIDE_DURATION, easing: Easing.inOut(Easing.ease) });
+     });
+     setSearchQuery('');
 diff --git a/model.patch b/model.patch
-index b3ce17e..e69de29 100644
+index 65d3447..e69de29 100644
 --- a/model.patch
 +++ b/model.patch
-@@ -1,142 +0,0 @@
--diff --git a/frontend/app/sector-selection.tsx b/frontend/app/sector-selection.tsx
--index 7690dcb..bf77187 100644
----- a/frontend/app/sector-selection.tsx
--+++ b/frontend/app/sector-selection.tsx
--@@ -148,9 +148,6 @@ const AnimatedSectorLogo = () => {
--   );
-- };
+@@ -1,199 +0,0 @@
+-diff --git a/frontend/components/DocShowcase.tsx b/frontend/components/DocShowcase.tsx
+-index aeca0ab..46ef6c2 100644
+---- a/frontend/components/DocShowcase.tsx
+-+++ b/frontend/components/DocShowcase.tsx
+-@@ -139,7 +139,7 @@ export const DocShowcase: React.FC<DocShowcaseProps> = ({
+-   }, []);
 - 
---const BASE_WIDTH = 220 * 1.2;
---const BASE_HEIGHT = 130 * 1.2 * 0.8;
---
-- const logoStyles = StyleSheet.create({
--   container: {
--     alignItems: 'center',
+-   // ============================================
+--  // ANIMATION: Image entre avec rebond, puis zoom
+-+  // ANIMATION: Image entre avec rebond, puis zoom CONTINU
+-   // ============================================
+-   const animateNewSlideIn = useCallback(() => {
+-     // Reset
+-@@ -158,16 +158,15 @@ export const DocShowcase: React.FC<DocShowcaseProps> = ({
+-       mass: 0.8,
+-     });
+-     
+--    // 2. Démarre le zoom lent après 300ms
+--    const zoomTimer = setTimeout(() => {
+--      currentScale.value = withTiming(1.06, {
+-+    // 2. Zoom CONTINU qui ne s'arrête jamais (2x plus rapide = zoom plus visible)
+-+    setTimeout(() => {
+-+      currentScale.value = withTiming(ZOOM_AMOUNT, {
+-         duration: ZOOM_DURATION,
+-         easing: Easing.linear,
+-       });
+-     }, 300);
+--    animationTimers.current.push(zoomTimer);
+-     
+--    // 3. Après 1 seconde: overlay + texte glissent du bas vers le haut
+-+    // 3. Après 1.5 seconde: overlay + texte glissent du bas vers le haut
+-     const textTimer = setTimeout(() => {
+-       overlayOpacity.value = withTiming(0.45, { duration: TEXT_APPEAR_DURATION });
+-       textTranslateY.value = withTiming(0, { 
+-@@ -175,13 +174,13 @@ export const DocShowcase: React.FC<DocShowcaseProps> = ({
+-         easing: Easing.out(Easing.cubic),
+-       });
+-       
+--      // 4. Badge sponsoring apparaît après le texte avec UN SEUL rebond
+-+      // 4. Badge sponsoring avec UN SEUL rebond
+-       const badgeTimer = setTimeout(() => {
+--        badgeOpacity.value = withTiming(1, { duration: 200 });
+-+        badgeOpacity.value = withTiming(1, { duration: 150 });
+-         badgeScale.value = withSpring(1, {
+--          damping: 14,
+-+          damping: 10,
+-           stiffness: 200,
+--          mass: 0.6,
+-+          mass: 0.5,
+-         });
+-       }, BADGE_APPEAR_DELAY);
+-       animationTimers.current.push(badgeTimer);
 -diff --git a/model.patch b/model.patch
--index 557feee..e69de29 100644
+-index b3ce17e..e69de29 100644
 ---- a/model.patch
 -+++ b/model.patch
--@@ -1,123 +0,0 @@
---diff --git a/frontend/providers/VideoBackgroundProvider.tsx b/frontend/providers/VideoBackgroundProvider.tsx
---index 94e2dd5..5d1f16e 100644
------ a/frontend/providers/VideoBackgroundProvider.tsx
---+++ b/frontend/providers/VideoBackgroundProvider.tsx
---@@ -136,23 +136,8 @@ export function VideoBackgroundProvider({ children }: VideoBackgroundProviderPro
---             />
---           )}
+-@@ -1,142 +0,0 @@
+--diff --git a/frontend/app/sector-selection.tsx b/frontend/app/sector-selection.tsx
+--index 7690dcb..bf77187 100644
+----- a/frontend/app/sector-selection.tsx
+--+++ b/frontend/app/sector-selection.tsx
+--@@ -148,9 +148,6 @@ const AnimatedSectorLogo = () => {
+--   );
+-- };
 -- 
----          {/* Web video - using View with dangerouslySetInnerHTML for web */}
----          {Platform.OS === 'web' && !hasError && (
----            <View 
----              style={styles.video}
----              // @ts-ignore - web only
----              dangerouslySetInnerHTML={{
----                __html: `<video 
----                  src="${VIDEO_URL}" 
----                  autoplay 
----                  loop 
----                  muted 
----                  playsinline
----                  style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;"
----                ></video>`
----              }}
----            />
----          )}
---+          {/* Web video - using DOM API */}
---+          {Platform.OS === 'web' && !hasError && <WebVideoBackground />}
---         </View>
--- 
---         {/* Main content - on top of video */}
+---const BASE_WIDTH = 220 * 1.2;
+---const BASE_HEIGHT = 130 * 1.2 * 0.8;
+---
+-- const logoStyles = StyleSheet.create({
+--   container: {
+--     alignItems: 'center',
 --diff --git a/model.patch b/model.patch
---index c25c002..e69de29 100644
+--index 557feee..e69de29 100644
 ----- a/model.patch
 --+++ b/model.patch
---@@ -1,88 +0,0 @@
+--@@ -1,123 +0,0 @@
 ---diff --git a/frontend/providers/VideoBackgroundProvider.tsx b/frontend/providers/VideoBackgroundProvider.tsx
----index 559f806..75ea5ec 100644
+---index 94e2dd5..5d1f16e 100644
 ------ a/frontend/providers/VideoBackgroundProvider.tsx
 ---+++ b/frontend/providers/VideoBackgroundProvider.tsx
----@@ -97,23 +97,21 @@ export function VideoBackgroundProvider({ children }: VideoBackgroundProviderPro
+---@@ -136,23 +136,8 @@ export function VideoBackgroundProvider({ children }: VideoBackgroundProviderPro
 ---             />
 ---           )}
 --- 
-----          {/* Web video - HTML5 video element */}
----+          {/* Web video - using View with dangerouslySetInnerHTML for web */}
----           {Platform.OS === 'web' && !hasError && (
-----            <video
-----              src={VIDEO_URL}
-----              autoPlay
-----              loop
-----              muted
-----              playsInline
-----              style={{
-----                position: 'absolute',
-----                top: 0,
-----                left: 0,
-----                width: '100%',
-----                height: '100%',
-----                objectFit: 'cover',
----+            <View 
----+              style={styles.video}
----+              // @ts-ignore - web only
----+              dangerouslySetInnerHTML={{
----+                __html: `<video 
----+                  src="${VIDEO_URL}" 
----+                  autoplay 
----+                  loop 
----+                  muted 
----+                  playsinline
----+                  style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;"
----+                ></video>`
----               }}
-----              onError={() => setHasError(true)}
----             />
----           )}
+----          {/* Web video - using View with dangerouslySetInnerHTML for web */}
+----          {Platform.OS === 'web' && !hasError && (
+----            <View 
+----              style={styles.video}
+----              // @ts-ignore - web only
+----              dangerouslySetInnerHTML={{
+----                __html: `<video 
+----                  src="${VIDEO_URL}" 
+----                  autoplay 
+----                  loop 
+----                  muted 
+----                  playsinline
+----                  style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;"
+----                ></video>`
+----              }}
+----            />
+----          )}
+---+          {/* Web video - using DOM API */}
+---+          {Platform.OS === 'web' && !hasError && <WebVideoBackground />}
 ---         </View>
+--- 
+---         {/* Main content - on top of video */}
 ---diff --git a/model.patch b/model.patch
----index df9fd5e..e69de29 100644
+---index c25c002..e69de29 100644
 ------ a/model.patch
 ---+++ b/model.patch
----@@ -1,42 +0,0 @@
+---@@ -1,88 +0,0 @@
 ----diff --git a/frontend/providers/VideoBackgroundProvider.tsx b/frontend/providers/VideoBackgroundProvider.tsx
-----index 6139b2e..559f806 100644
+----index 559f806..75ea5ec 100644
 ------- a/frontend/providers/VideoBackgroundProvider.tsx
 ----+++ b/frontend/providers/VideoBackgroundProvider.tsx
-----@@ -130,25 +130,31 @@ export function VideoBackgroundProvider({ children }: VideoBackgroundProviderPro
----- const styles = StyleSheet.create({
-----   container: {
-----     flex: 1,
------    position: 'relative',
-----   },
-----   videoContainer: {
------    ...StyleSheet.absoluteFillObject,
------    zIndex: -1,
-----+    position: 'absolute',
-----+    top: 0,
-----+    left: 0,
-----+    right: 0,
-----+    bottom: 0,
-----   },
-----   fallbackImage: {
------    ...StyleSheet.absoluteFillObject,
-----+    position: 'absolute',
-----+    top: 0,
-----+    left: 0,
-----     width: '100%',
-----     height: '100%',
-----   },
-----   video: {
------    ...StyleSheet.absoluteFillObject,
-----+    position: 'absolute',
-----+    top: 0,
-----+    left: 0,
-----     width: '100%',
-----     height: '100%',
-----   },
-----   content: {
-----     flex: 1,
------    zIndex: 1,
-----+    backgroundColor: 'transparent',
-----   },
----- });
+----@@ -97,23 +97,21 @@ export function VideoBackgroundProvider({ children }: VideoBackgroundProviderPro
+----             />
+----           )}
 ---- 
+-----          {/* Web video - HTML5 video element */}
+----+          {/* Web video - using View with dangerouslySetInnerHTML for web */}
+----           {Platform.OS === 'web' && !hasError && (
+-----            <video
+-----              src={VIDEO_URL}
+-----              autoPlay
+-----              loop
+-----              muted
+-----              playsInline
+-----              style={{
+-----                position: 'absolute',
+-----                top: 0,
+-----                left: 0,
+-----                width: '100%',
+-----                height: '100%',
+-----                objectFit: 'cover',
+----+            <View 
+----+              style={styles.video}
+----+              // @ts-ignore - web only
+----+              dangerouslySetInnerHTML={{
+----+                __html: `<video 
+----+                  src="${VIDEO_URL}" 
+----+                  autoplay 
+----+                  loop 
+----+                  muted 
+----+                  playsinline
+----+                  style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;"
+----+                ></video>`
+----               }}
+-----              onError={() => setHasError(true)}
+----             />
+----           )}
+----         </View>
+----diff --git a/model.patch b/model.patch
+----index df9fd5e..e69de29 100644
+------- a/model.patch
+----+++ b/model.patch
+----@@ -1,42 +0,0 @@
+-----diff --git a/frontend/providers/VideoBackgroundProvider.tsx b/frontend/providers/VideoBackgroundProvider.tsx
+-----index 6139b2e..559f806 100644
+-------- a/frontend/providers/VideoBackgroundProvider.tsx
+-----+++ b/frontend/providers/VideoBackgroundProvider.tsx
+-----@@ -130,25 +130,31 @@ export function VideoBackgroundProvider({ children }: VideoBackgroundProviderPro
+----- const styles = StyleSheet.create({
+-----   container: {
+-----     flex: 1,
+------    position: 'relative',
+-----   },
+-----   videoContainer: {
+------    ...StyleSheet.absoluteFillObject,
+------    zIndex: -1,
+-----+    position: 'absolute',
+-----+    top: 0,
+-----+    left: 0,
+-----+    right: 0,
+-----+    bottom: 0,
+-----   },
+-----   fallbackImage: {
+------    ...StyleSheet.absoluteFillObject,
+-----+    position: 'absolute',
+-----+    top: 0,
+-----+    left: 0,
+-----     width: '100%',
+-----     height: '100%',
+-----   },
+-----   video: {
+------    ...StyleSheet.absoluteFillObject,
+-----+    position: 'absolute',
+-----+    top: 0,
+-----+    left: 0,
+-----     width: '100%',
+-----     height: '100%',
+-----   },
+-----   content: {
+-----     flex: 1,
+------    zIndex: 1,
+-----+    backgroundColor: 'transparent',
+-----   },
+----- });
+----- 
