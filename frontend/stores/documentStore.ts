@@ -5,12 +5,26 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 // Document status types
 export type DocStatus = 'brouillon' | 'en_cours' | 'pret' | 'publie';
 
+// Publication platform types
+export type PublishPlatform = 'facebook' | 'instagram' | 'linkedin' | 'download' | 'email';
+
+// Publication record
+export interface PublicationEntry {
+  platform: PublishPlatform;
+  publishedAt: number;
+  supportType: string;
+  postUrl?: string;
+}
+
 interface DocumentState {
   id: string;
   status: DocStatus;
+  profileId?: string; // Profile that owns this document
   selectedSupports: string[]; // 'post', 'reel', 'affiche', etc.
   generationStartedAt?: number;
   publishedAt?: number;
+  // Publication history
+  publications: PublicationEntry[];
 }
 
 interface DocumentStore {
