@@ -574,28 +574,7 @@ const styles = StyleSheet.create({
   },
   // Form
   form: {
-    gap: Spacing.md,
-    marginBottom: Spacing.lg,
-  },
-  inputWrapper: {
-    marginBottom: 4,
-  },
-  pillInputContainer: {
-    backgroundColor: '#F5F5F5',
-    borderRadius: 25,
-    overflow: 'hidden',
-  },
-  pillInput: {
-    paddingHorizontal: Spacing.lg,
-    paddingVertical: 14,
-    fontSize: 16,
-    color: Colors.textPrimary,
-  },
-  errorText: {
-    color: '#FF6B6B',
-    fontSize: 12,
-    marginTop: 4,
-    marginLeft: Spacing.md,
+    marginBottom: Spacing.md,
   },
   // Login button
   loginButton: {
