@@ -238,7 +238,7 @@ interface UnifiedPopupProps {
 }
 
 const UnifiedPopup = ({ visible, onClose, onAccountCreated }: UnifiedPopupProps) => {
-  const [step, setStep] = useState<PopupStep>('sport');
+  const [step, setStep] = useState<PopupStep>('types');
   const [selectedType, setSelectedType] = useState<string>('');
   const [selectedClub, setSelectedClub] = useState<any>(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -251,7 +251,7 @@ const UnifiedPopup = ({ visible, onClose, onAccountCreated }: UnifiedPopupProps)
   // Reset when opening
   useEffect(() => {
     if (visible) {
-      setStep('sport');
+      setStep('types');
       setSelectedType('');
       setSelectedClub(null);
       setSearchQuery('');
