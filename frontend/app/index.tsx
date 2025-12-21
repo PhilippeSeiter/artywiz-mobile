@@ -639,8 +639,8 @@ const styles = StyleSheet.create({
   },
   buttonTextSecondary: {
     fontSize: 13,         // Augmenté d'un corps
-    fontWeight: '300',    // Léger
-    color: '#334155',
+    fontWeight: '600',    // Plus visible
+    color: '#0066FF',
     letterSpacing: 0.5,
     flex: 1,
     textAlign: 'center',
