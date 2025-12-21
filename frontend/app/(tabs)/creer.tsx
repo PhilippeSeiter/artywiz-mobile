@@ -197,15 +197,13 @@ const StatsRow = ({ stats }: { stats: { views: number; likes: number; shares: nu
   );
 };
 
-// Composant Document Card
+// Composant Document Card - Nouvelle structure avec 4 lignes
 const DocumentCard = ({ 
   doc, 
   onPress, 
-  mockupIndex 
 }: { 
-  doc: EnrichedDocument; 
+  doc: ASDocument; 
   onPress: () => void;
-  mockupIndex: number;
 }) => {
   const scale = useSharedValue(1);
 
@@ -221,9 +219,6 @@ const DocumentCard = ({
     transform: [{ scale: scale.value }],
   }));
 
-  // Récupérer le vrai mockup du document
-  const mockupSource = MockDataService.getDocMockup(doc.id);
-
   return (
     <Pressable
       onPress={onPress}
@@ -234,50 +229,45 @@ const DocumentCard = ({
         {/* Mockup à gauche - 50% de la largeur */}
         <View style={styles.mockupContainer}>
           <Image 
-            source={mockupSource} 
+            source={doc.mockupImage} 
             style={styles.mockupImage} 
             resizeMode="cover" 
           />
         </View>
 
-        {/* Infos à droite - 50% de la largeur */}
+        {/* Infos à droite - 50% de la largeur avec 4 lignes */}
         <View style={styles.documentInfo}>
-          {/* Header avec sponsor et indicateur d'état */}
+          {/* Header avec indicateurs */}
           <View style={styles.docHeader}>
-            <Text style={styles.docTitle} numberOfLines={2}>{doc.title}</Text>
+            {/* Ligne 1: Date */}
+            <Text style={styles.ligne1}>{doc.ligne1}</Text>
             <View style={styles.rightIndicators}>
-              {doc.isSponsored && doc.sponsorAmount && (
-                <SponsorBadge amount={doc.sponsorAmount} />
+              {doc.isSponsored && doc.sponsorPrice && (
+                <SponsorBadge amount={doc.sponsorPrice} />
               )}
-              <StatusIndicator status={doc.displayStatus} />
+              <StatusIndicator status={doc.status} />
             </View>
           </View>
 
-          {/* Type de document */}
-          <View style={styles.docTypeRow}>
-            <Ionicons name={getDocTypeIcon(doc.typeLabel) as any} size={14} color="#6B7280" />
-            <Text style={styles.docType}>{doc.typeLabel}</Text>
+          {/* Ligne 2: Type de document */}
+          <Text style={styles.ligne2} numberOfLines={1}>{doc.ligne2}</Text>
+
+          {/* Ligne 3: Description / Compétition */}
+          <Text style={styles.ligne3} numberOfLines={2}>{doc.ligne3}</Text>
+
+          {/* Ligne 4: Équipe ou info complémentaire */}
+          <Text style={styles.ligne4} numberOfLines={1}>{doc.ligne4}</Text>
+
+          {/* Nombre de supports disponibles */}
+          <View style={styles.supportsRow}>
+            <Ionicons name="layers-outline" size={12} color="#9CA3AF" />
+            <Text style={styles.supportsCount}>{doc.supports.length} support(s)</Text>
           </View>
-
-          {/* Équipe/Club */}
-          <Text style={styles.docTeam}>FC. Artywiz Strasbourg</Text>
-
-          {/* Stats si publié */}
-          {doc.displayStatus === 'published' && doc.publishStats && (
-            <StatsRow stats={doc.publishStats} />
-          )}
-
-          {/* Message selon statut */}
-          {doc.displayStatus === 'generating' && (
-            <Text style={styles.generatingText}>Génération en cours...</Text>
-          )}
-          {doc.displayStatus === 'ready' && (
-            <Text style={styles.readyText}>Prêt à publier !</Text>
-          )}
         </View>
       </Animated.View>
     </Pressable>
   );
+};
 };
 
 // Fonction pour obtenir l'icône du type de document
