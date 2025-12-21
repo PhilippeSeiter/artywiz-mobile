@@ -347,10 +347,12 @@ export default function CreerScreen() {
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [showFilterModal, setShowFilterModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [filterSearchQuery, setFilterSearchQuery] = useState(''); // Recherche dans le modal filtre
   
-  // Filtres
-  const [filterStatus, setFilterStatus] = useState<DocumentStatus | 'all'>('all');
-  const [filterSponsored, setFilterSponsored] = useState<boolean | null>(null);
+  // Nouveaux états pour les filtres selon le mockup
+  const [displaySize, setDisplaySize] = useState<DisplaySize>('medium'); // Défaut = 4 docs
+  const [sortOption, setSortOption] = useState<SortOption>(null);
+  const [sponsorFilter, setSponsorFilter] = useState<SponsorFilter>(null);
 
   // Charger les documents selon le profil sélectionné
   const loadDocuments = useCallback(() => {
