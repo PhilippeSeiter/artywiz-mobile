@@ -240,6 +240,15 @@ export const DocShowcase: React.FC<DocShowcaseProps> = ({
     
     const nextIdx = (activeIndex + 1) % documents.length;
     
+    // Reset exiting opacity
+    exitingOpacity.value = 1;
+    
+    // Animer le slide sortant : glisse vers la gauche ET s'estompe progressivement
+    exitingOpacity.value = withTiming(0, { 
+      duration: 400, 
+      easing: Easing.bezier(0.4, 0, 0.2, 1) 
+    });
+    
     // Animer vers la gauche
     scrollX.value = withTiming(
       -EFFECTIVE_WIDTH,
