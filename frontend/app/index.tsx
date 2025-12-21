@@ -117,9 +117,8 @@ const AnimatedWelcomeLogo = () => {
   );
 };
 
-// Styles pour le logo animé de bienvenue
+// Styles pour le logo animé de bienvenue (sans Football)
 // Positionnement basé sur le logo original (220x130) - AGRANDI +20%
-// Point de fuite: étoile rouge au centre-bas du W
 const welcomeLogoStyles = StyleSheet.create({
   container: {
     alignItems: 'center',
@@ -127,7 +126,7 @@ const welcomeLogoStyles = StyleSheet.create({
   },
   wrapper: {
     width: 264,    // 220 * 1.2 = 264
-    height: 156,   // 130 * 1.2 = 156
+    height: 120,   // Réduit car pas de Football
     alignItems: 'center',
     justifyContent: 'flex-start',
   },
@@ -136,29 +135,21 @@ const welcomeLogoStyles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
   },
-  // W - positionné en haut (+20%)
+  // W - positionné en haut
   partW: {
     top: 0,
   },
   imageW: {
-    width: 108,    // 90 * 1.2 = 108
-    height: 66,    // 55 * 1.2 = 66
+    width: 108,
+    height: 66,
   },
-  // Artywiz - positionné sous le W (+20%)
+  // Artywiz - positionné sous le W
   partArtywiz: {
-    top: 62,       // 52 * 1.2 = 62
+    top: 62,
   },
   imageArtywiz: {
-    width: 216,    // 180 * 1.2 = 216
-    height: 48,    // 40 * 1.2 = 48
-  },
-  // Football - positionné en bas (+20%)
-  partFootball: {
-    top: 114,      // 95 * 1.2 = 114
-  },
-  imageFootball: {
-    width: 156,    // 130 * 1.2 = 156
-    height: 34,    // 28 * 1.2 = 34
+    width: 216,
+    height: 48,
   },
 });
 
