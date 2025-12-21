@@ -38,6 +38,7 @@ import { useUserPreferencesStore, UserProfile, DEFAULT_BASE_PROFILES } from '../
 
 const { width, height } = Dimensions.get('window');
 const SLIDE_DURATION = 300;
+const POPUP_WIDTH = Math.min(width - 32, 400); // Largeur du popup
 
 // ============================================
 // ANIMATED LOGO COMPONENT
