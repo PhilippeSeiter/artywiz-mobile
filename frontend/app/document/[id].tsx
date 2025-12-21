@@ -372,13 +372,13 @@ export default function DocumentDetailScreen() {
         if (isAvailable) {
           await Sharing.shareAsync(asset.localUri, {
             mimeType: 'image/png',
-            dialogTitle: `Partager ${document.title}`,
+            dialogTitle: `Partager ${document.ligne2}`,
           });
         } else {
           // Fallback vers Share natif
           await Share.share({
-            message: `${document.title} - Créé avec ArtyWiz`,
-            title: document.title,
+            message: `${document.ligne2} - Créé avec ArtyWiz`,
+            title: document.ligne2,
           });
         }
       }
