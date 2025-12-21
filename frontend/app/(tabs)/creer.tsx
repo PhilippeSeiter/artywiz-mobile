@@ -285,9 +285,9 @@ const DocumentCard = ({
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}
     >
-      <Animated.View style={[styles.documentCard, animatedStyle]}>
+      <Animated.View style={[styles.documentCard, { height: cardHeight }, animatedStyle]}>
         {/* Mockup à gauche - 50% de la largeur */}
-        <View style={styles.mockupContainer}>
+        <View style={[styles.mockupContainer, { height: cardHeight }]}>
           <Image 
             source={doc.mockupImage} 
             style={styles.mockupImage} 
@@ -298,16 +298,18 @@ const DocumentCard = ({
         {/* Infos à droite - Structure selon modèle XLS */}
         <View style={styles.documentInfo}>
           {/* Ligne 1A - Ligne 1B (ex: "Séniors 1 - 01/01/25") */}
-          <Text style={styles.ligne1}>{doc.ligne1}</Text>
+          <Text style={[styles.ligne1, displaySize === 'small' && { fontSize: 9 }]}>{doc.ligne1}</Text>
 
           {/* Ligne 2 (ex: "Annoncer un match") */}
-          <Text style={styles.ligne2}>{doc.ligne2}</Text>
+          <Text style={[styles.ligne2, displaySize === 'small' && { fontSize: 11 }]}>{doc.ligne2}</Text>
 
-          {/* Ligne 3 (ex: "Championnat R3") */}
-          <Text style={styles.ligne3} numberOfLines={2}>{doc.ligne3}</Text>
+          {/* Ligne 3 (ex: "Championnat R3") - masqué en petit */}
+          {displaySize !== 'small' && (
+            <Text style={[styles.ligne3, displaySize === 'large' && { fontSize: 14 }]} numberOfLines={2}>{doc.ligne3}</Text>
+          )}
 
           {/* Ligne 4 (ex: "ASS Strasbourg - FR Haguenau") - EN GRAS */}
-          <Text style={styles.ligne4}>{doc.ligne4}</Text>
+          <Text style={[styles.ligne4, displaySize === 'small' && { fontSize: 10 }, displaySize === 'large' && { fontSize: 14 }]}>{doc.ligne4}</Text>
 
           {/* Indicateurs en bas à droite */}
           <View style={styles.bottomIndicators}>
