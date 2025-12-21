@@ -598,6 +598,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 10,
+    overflow: 'hidden',
   },
   loadingText: {
     fontSize: 13,
