@@ -41,11 +41,13 @@ interface DocumentStore {
   viewedDocs: string[];
   
   // Actions
-  startGeneration: (docId: string, selectedSupports: string[]) => void;
+  startGeneration: (docId: string, selectedSupports: string[], profileId?: string) => void;
   completeGeneration: (docId: string) => void;
   publishDocument: (docId: string) => void;
+  publishToPlateform: (docId: string, platform: PublishPlatform, supportType: string, postUrl?: string) => void;
   getDocumentStatus: (docId: string) => DocStatus;
   getDocumentState: (docId: string) => DocumentState | undefined;
+  getPublicationHistory: (docId: string) => PublicationEntry[];
   isDocumentGenerating: (docId: string) => boolean;
   isDocumentReady: (docId: string) => boolean;
   isDocumentPublished: (docId: string) => boolean;
