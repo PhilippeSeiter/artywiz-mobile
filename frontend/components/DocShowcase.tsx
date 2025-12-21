@@ -139,7 +139,7 @@ export const DocShowcase: React.FC<DocShowcaseProps> = ({
   }, []);
 
   // ============================================
-  // ANIMATION: Image entre avec rebond, puis zoom
+  // ANIMATION: Image entre avec rebond, puis zoom CONTINU
   // ============================================
   const animateNewSlideIn = useCallback(() => {
     // Reset
@@ -158,16 +158,15 @@ export const DocShowcase: React.FC<DocShowcaseProps> = ({
       mass: 0.8,
     });
     
-    // 2. Démarre le zoom lent après 300ms
-    const zoomTimer = setTimeout(() => {
-      currentScale.value = withTiming(1.06, {
+    // 2. Zoom CONTINU qui ne s'arrête jamais (2x plus rapide = zoom plus visible)
+    setTimeout(() => {
+      currentScale.value = withTiming(ZOOM_AMOUNT, {
         duration: ZOOM_DURATION,
         easing: Easing.linear,
       });
     }, 300);
-    animationTimers.current.push(zoomTimer);
     
-    // 3. Après 1 seconde: overlay + texte glissent du bas vers le haut
+    // 3. Après 1.5 seconde: overlay + texte glissent du bas vers le haut
     const textTimer = setTimeout(() => {
       overlayOpacity.value = withTiming(0.45, { duration: TEXT_APPEAR_DURATION });
       textTranslateY.value = withTiming(0, { 
@@ -175,13 +174,13 @@ export const DocShowcase: React.FC<DocShowcaseProps> = ({
         easing: Easing.out(Easing.cubic),
       });
       
-      // 4. Badge sponsoring apparaît après le texte avec UN SEUL rebond
+      // 4. Badge sponsoring avec UN SEUL rebond
       const badgeTimer = setTimeout(() => {
-        badgeOpacity.value = withTiming(1, { duration: 200 });
+        badgeOpacity.value = withTiming(1, { duration: 150 });
         badgeScale.value = withSpring(1, {
-          damping: 14,
+          damping: 10,
           stiffness: 200,
-          mass: 0.6,
+          mass: 0.5,
         });
       }, BADGE_APPEAR_DELAY);
       animationTimers.current.push(badgeTimer);
