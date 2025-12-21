@@ -723,6 +723,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  profileLogoImage: {
+    width: 28,
+    height: 28,
+    borderRadius: 6,
+  },
   profileNameHeader: {
     fontSize: 14,
     fontWeight: '600',
