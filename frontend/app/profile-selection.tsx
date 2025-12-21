@@ -160,8 +160,8 @@ const ACCOUNT_TYPES = [
 // ============================================
 // ACCOUNT CARD
 // ============================================
-const AccountCard = ({ account, index, isActive, onPress, onDelete }: {
-  account: UserProfile; index: number; isActive: boolean; onPress: () => void; onDelete: () => void;
+const AccountCard = ({ account, index, isActive, onPress, onDelete, canDelete }: {
+  account: UserProfile; index: number; isActive: boolean; onPress: () => void; onDelete: () => void; canDelete: boolean;
 }) => {
   const scale = useSharedValue(1);
   const getTypeIcon = (type: string) => {
@@ -186,9 +186,14 @@ const AccountCard = ({ account, index, isActive, onPress, onDelete }: {
           <Text style={styles.accountType}>{account.type === 'equipe' ? 'Équipe' : account.type === 'club' ? 'Club' : account.type === 'district' ? 'District' : 'Ligue'}</Text>
         </View>
         {isActive && <View style={[styles.activeBadge, { backgroundColor: typeColor }]}><Ionicons name="checkmark" size={12} color="#FFF" /></View>}
-        <TouchableOpacity style={styles.deleteButton} onPress={(e) => { e.stopPropagation(); onDelete(); }} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
-          <Ionicons name="trash-outline" size={20} color="#EF4444" />
-        </TouchableOpacity>
+        {/* Bouton supprimer - seulement si on peut supprimer (pas le dernier compte) */}
+        {canDelete ? (
+          <TouchableOpacity style={styles.deleteButton} onPress={(e) => { e.stopPropagation(); onDelete(); }} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
+            <Ionicons name="trash-outline" size={20} color="#EF4444" />
+          </TouchableOpacity>
+        ) : (
+          <View style={styles.deleteButtonPlaceholder} />
+        )}
       </TouchableOpacity>
     </Animated.View>
   );
