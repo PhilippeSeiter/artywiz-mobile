@@ -249,28 +249,26 @@ const DocumentCard = ({
       onPressOut={handlePressOut}
     >
       <Animated.View style={[styles.documentCard, animatedStyle]}>
-        {/* Mockup à gauche - Image réelle */}
+        {/* Mockup à gauche - 50% de la largeur */}
         <View style={styles.mockupContainer}>
           <Image 
             source={mockupSource} 
             style={styles.mockupImage} 
             resizeMode="cover" 
           />
-          {/* Badge de statut sous le mockup */}
-          <StatusBadge 
-            status={doc.displayStatus} 
-            platforms={doc.publishStats?.platforms} 
-          />
         </View>
 
-        {/* Infos à droite */}
+        {/* Infos à droite - 50% de la largeur */}
         <View style={styles.documentInfo}>
-          {/* Header avec sponsor si applicable */}
+          {/* Header avec sponsor et indicateur d'état */}
           <View style={styles.docHeader}>
             <Text style={styles.docTitle} numberOfLines={2}>{doc.title}</Text>
-            {doc.isSponsored && doc.sponsorAmount && (
-              <SponsorBadge amount={doc.sponsorAmount} />
-            )}
+            <View style={styles.rightIndicators}>
+              {doc.isSponsored && doc.sponsorAmount && (
+                <SponsorBadge amount={doc.sponsorAmount} />
+              )}
+              <StatusIndicator status={doc.displayStatus} />
+            </View>
           </View>
 
           {/* Type de document */}
