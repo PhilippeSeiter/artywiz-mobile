@@ -803,17 +803,14 @@ export default function ProfileSelectionScreen() {
               style={styles.explanationContainer}
             >
               <Text style={styles.explanationText}>
-                Vous pouvez utiliser Artywiz avec un ou plusieurs comptes (profils) : une ou plusieurs équipes, un club, un district, une ligue…
+                Artywiz vous permet de gérer plusieurs comptes (équipe, club, district, ligue…).
               </Text>
               <Text style={styles.explanationText}>
-                Ajoutez-en autant que besoin, puis sélectionnez celui que vous souhaitez utiliser.
+                Ajoutez vos profils et choisissez celui à utiliser.
               </Text>
-              <View style={styles.explanationHighlight}>
-                <Text style={styles.explanationCheckmark}>✅</Text>
-                <Text style={styles.explanationHighlightText}>
-                  Pour démarrer, il vous faut au minimum 1 compte actif.
-                </Text>
-              </View>
+              <Text style={styles.explanationMinimum}>
+                Minimum : 1 compte actif pour démarrer.
+              </Text>
             </Animated.View>
           )}
 
