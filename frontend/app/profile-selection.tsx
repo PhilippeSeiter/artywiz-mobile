@@ -689,6 +689,7 @@ const styles = StyleSheet.create({
   accountType: { fontSize: 13, color: Colors.textSecondary },
   activeBadge: { width: 24, height: 24, borderRadius: 12, justifyContent: 'center', alignItems: 'center', marginRight: Spacing.sm },
   deleteButton: { width: 40, height: 40, justifyContent: 'center', alignItems: 'center' },
+  deleteButtonPlaceholder: { width: 40, height: 40 },
   addButtonContainer: { alignItems: 'center', marginVertical: Spacing.lg },
   addButton: { width: 80, height: 80, borderRadius: 40, overflow: 'hidden', shadowColor: '#10B981', shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 12, elevation: 8 },
   addButtonGradient: { width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center' },
