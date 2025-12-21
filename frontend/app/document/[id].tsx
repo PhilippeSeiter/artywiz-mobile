@@ -433,8 +433,8 @@ export default function DocumentDetailScreen() {
           user_id: activeProfile.id,
           platform: platform,
           content: {
-            title: document.title,
-            description: `${document.typeLabel} - ${document.teamLabel || ''}`,
+            title: document.ligne2,
+            description: `${document.ligne3} - ${document.ligne4 || ''}`,
             // En production, envoyer l'URL de l'image hébergée
             // image_url: 'https://...',
           }
