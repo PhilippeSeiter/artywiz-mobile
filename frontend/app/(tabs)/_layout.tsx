@@ -102,13 +102,13 @@ export default function TabLayout() {
         }}
       />
       
-      {/* Communication avec badge */}
+      {/* Docs avec badge */}
       <Tabs.Screen
         name="creer"
         options={{
-          title: 'Communiquer',
+          title: 'Docs',
           tabBarIcon: ({ color, size }) => (
-            <IconWithBadge name="megaphone" color={color} size={size} badgeCount={NEW_DOCS_COUNT} />
+            <IconWithBadge name="document-text" color={color} size={size} badgeCount={NEW_DOCS_COUNT} />
           ),
         }}
       />
@@ -135,11 +135,11 @@ export default function TabLayout() {
         }}
       />
       
-      {/* Mon compte */}
+      {/* Profil */}
       <Tabs.Screen
         name="compte"
         options={{
-          title: 'Mon compte',
+          title: 'Profil',
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="person" size={size} color={color} />
           ),
