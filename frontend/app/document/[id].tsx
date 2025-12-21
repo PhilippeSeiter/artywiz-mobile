@@ -17,7 +17,11 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { GradientHeader, CustomButton, RotatingStar, AnimatedAccordion, useChevronAnimation } from '../../components';
 import { Colors, Spacing } from '../../constants';
-import { MockDataService } from '../../services/mockDataService';
+import { ASStrasbourgDataService, ASDocument } from '../../services/asStrasbourgDataService';
+import { ASStrasbourgClubDataService } from '../../services/asStrasbourgClubDataService';
+import { LGEFDataService } from '../../services/lgefDataService';
+import { NormandieDataService } from '../../services/normandieDataService';
+import { AlsaceDataService } from '../../services/alsaceDataService';
 import { useUserPreferencesStore } from '../../stores/userPreferencesStore';
 import { useDocumentStore } from '../../stores/documentStore';
 import { GestureDetector, Gesture } from 'react-native-gesture-handler';
@@ -38,6 +42,31 @@ import { Asset } from 'expo-asset';
 
 const { width } = Dimensions.get('window');
 const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL || '';
+
+// Helper pour trouver un document dans tous les services
+const findDocumentById = (id: string) => {
+  // Chercher dans AS Strasbourg - Seniors 1
+  let doc = ASStrasbourgDataService.getDocumentById(id);
+  if (doc) return { doc, allDocs: ASStrasbourgDataService.getAllDocuments() };
+  
+  // Chercher dans AS Strasbourg Club
+  doc = ASStrasbourgClubDataService.getDocumentById(id);
+  if (doc) return { doc, allDocs: ASStrasbourgClubDataService.getAllDocuments() };
+  
+  // Chercher dans LGEF
+  doc = LGEFDataService.getDocumentById(id);
+  if (doc) return { doc, allDocs: LGEFDataService.getAllDocuments() };
+  
+  // Chercher dans Normandie
+  doc = NormandieDataService.getDocumentById(id);
+  if (doc) return { doc, allDocs: NormandieDataService.getAllDocuments() };
+  
+  // Chercher dans Alsace
+  doc = AlsaceDataService.getDocumentById(id);
+  if (doc) return { doc, allDocs: AlsaceDataService.getAllDocuments() };
+  
+  return null;
+};
 
 // Types
 type DocStatus = 'a_peaufiner' | 'pret_a_buzzer' | 'publie';
