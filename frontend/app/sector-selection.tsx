@@ -156,10 +156,10 @@ const logoStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     position: 'absolute',
-    top: 80,
+    top: 60,
     left: 0,
     right: 0,
-    zIndex: 0,
+    zIndex: 10,
   },
   wrapper: {
     position: 'relative',
