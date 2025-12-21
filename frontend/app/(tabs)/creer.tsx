@@ -402,13 +402,13 @@ export default function CreerScreen() {
             <Text style={styles.pageTitle}>Communication</Text>
           </TouchableOpacity>
           
-          {/* Sélecteur de club à droite */}
+          {/* Sélecteur de profil à droite */}
           <TouchableOpacity 
             style={styles.clubSelectorCompact}
-            onPress={() => setShowClubModal(true)}
+            onPress={() => setShowProfileModal(true)}
           >
-            <Ionicons name="shield" size={16} color="#FFFFFF" />
-            <Text style={styles.clubNameCompact} numberOfLines={1}>{selectedClub.name}</Text>
+            <Ionicons name={selectedProfile.type === 'club' ? 'business' : 'people'} size={16} color="#FFFFFF" />
+            <Text style={styles.clubNameCompact} numberOfLines={1}>{selectedProfile.name}</Text>
             <Ionicons name="chevron-down" size={16} color="#FFFFFF" />
           </TouchableOpacity>
         </View>
