@@ -573,10 +573,10 @@ export const DocShowcase: React.FC<DocShowcaseProps> = ({
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    height: IMAGE_HEIGHT + 20,
-    overflow: 'visible',
+    height: IMAGE_HEIGHT,
+    overflow: 'hidden',
     borderRadius: 16,
-    backgroundColor: '#1A1A2E',
+    backgroundColor: 'transparent',
     position: 'relative',
   },
   gestureContainer: {
