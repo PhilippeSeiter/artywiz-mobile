@@ -781,39 +781,19 @@ const styles = StyleSheet.create({
   },
   documentInfo: {
     flex: 1,
-    paddingVertical: 10,
+    paddingVertical: 8,
     paddingHorizontal: 10,
-    justifyContent: 'flex-start',
-  },
-  docHeader: {
-    flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    marginBottom: 3,
   },
-  docTitle: {
-    flex: 1,
-    fontSize: 13,
-    fontWeight: '600',
-    color: '#1F2937',
-    lineHeight: 16,
-    marginRight: 6,
-  },
-  rightIndicators: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-  },
-  // Styles pour les 4 lignes de texte
+  // Styles pour les 4 lignes de texte selon modèle XLS
   ligne1: {
     fontSize: 11,
-    fontWeight: '500',
+    fontWeight: '400',
     color: '#6B7280',
-    flex: 1,
   },
   ligne2: {
     fontSize: 13,
-    fontWeight: '600',
+    fontWeight: '500',
     color: '#1F2937',
     marginTop: 2,
   },
@@ -824,20 +804,17 @@ const styles = StyleSheet.create({
     lineHeight: 16,
   },
   ligne4: {
-    fontSize: 11,
-    color: '#9CA3AF',
+    fontSize: 12,
+    fontWeight: '700',
+    color: '#1F2937',
     marginTop: 2,
   },
-  supportsRow: {
+  bottomIndicators: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'flex-end',
     marginTop: 'auto',
-    paddingTop: 4,
-    gap: 4,
-  },
-  supportsCount: {
-    fontSize: 10,
-    color: '#9CA3AF',
+    gap: 8,
   },
   // Indicateur d'état (cercle)
   statusCircle: {
