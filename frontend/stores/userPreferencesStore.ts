@@ -251,7 +251,7 @@ export const useUserPreferencesStore = create<UserPreferencesState>()(
         profileSocialConnections: state.profileSocialConnections,
         hasCompletedOnboarding: state.hasCompletedOnboarding,
       }),
-      // Log rehydration for debugging and ensure default profiles exist
+      // Log rehydration for debugging
       onRehydrateStorage: () => (state, error) => {
         console.log('[UserPreferences] Rehydrated from storage:', state ? 'Success' : 'Failed');
         if (error) {
@@ -262,15 +262,9 @@ export const useUserPreferencesStore = create<UserPreferencesState>()(
           console.log('[UserPreferences] Themes:', state.selectedThemes?.length || 0);
           console.log('[UserPreferences] Onboarding completed:', state.hasCompletedOnboarding);
           
-          // S'assurer que les profils ne sont jamais vides après réhydratation
-          // Si les profils sont vides ou undefined, remettre les profils par défaut
-          if (!state.selectedProfiles || state.selectedProfiles.length === 0) {
-            console.log('[UserPreferences] No profiles found, restoring defaults');
-            // Utiliser setState directement via le store
-            useUserPreferencesStore.setState({ 
-              selectedProfiles: [...DEFAULT_BASE_PROFILES] 
-            });
-          }
+          // Pour un nouvel utilisateur, les profils restent vides
+          // Ils créeront leur premier compte via l'écran "Mes Comptes"
+          // Ne PAS restaurer les profils par défaut automatiquement
         }
       },
     }
