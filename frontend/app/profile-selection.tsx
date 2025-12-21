@@ -1084,7 +1084,7 @@ export default function ProfileSelectionScreen() {
             </TouchableOpacity>
             <View style={styles.titleContainer}>
               <Text style={styles.titleLine1}>Mes</Text>
-              <Text style={styles.titleLine2}>Profils</Text>
+              <Text style={styles.titleLine2}>Comptes</Text>
             </View>
           </View>
             {selectedProfiles.length > 0 && (
