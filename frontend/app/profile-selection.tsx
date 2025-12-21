@@ -608,7 +608,7 @@ export default function ProfileSelectionScreen() {
           {/* Continue button */}
           <TouchableOpacity style={[styles.continueButton, !hasAccounts && styles.continueButtonDisabled]} onPress={handleContinue} disabled={!hasAccounts}>
             <LinearGradient colors={hasAccounts ? ['#007BFF', '#0056CC'] : ['#CBD5E1', '#94A3B8']} style={styles.continueGradient}>
-              <Text style={styles.continueText}>{isEditing ? 'Enregistrer' : 'Continuer'}</Text>
+              <Text style={styles.continueText}>Continuer</Text>
               <View style={styles.continueArrow}>
                 <Ionicons name={isEditing ? 'checkmark' : 'arrow-forward'} size={18} color="#FFF" />
               </View>
