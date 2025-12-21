@@ -582,103 +582,185 @@ export default function CreerScreen() {
         </Pressable>
       </Modal>
 
-      {/* Modal Filtre */}
+      {/* Modal Filtre - Design Gaming */}
       <Modal
         visible={showFilterModal}
         transparent
-        animationType="slide"
+        animationType="none"
         onRequestClose={() => setShowFilterModal(false)}
       >
         <Pressable
-          style={styles.modalOverlay}
+          style={styles.filterModalOverlay}
           onPress={() => setShowFilterModal(false)}
         >
-          <View style={styles.filterModalContent}>
-            <View style={styles.filterModalHeader}>
-              <Text style={styles.modalTitle}>Filtrer les documents</Text>
-              <TouchableOpacity onPress={() => setShowFilterModal(false)}>
-                <Ionicons name="close" size={24} color="#6B7280" />
-              </TouchableOpacity>
-            </View>
-            
-            {/* Filtre par statut */}
-            <Text style={styles.filterLabel}>Statut</Text>
-            <View style={styles.filterOptions}>
-              {[
-                { id: 'all', label: 'Tous', icon: 'apps-outline' },
-                { id: 'to_generate', label: 'Brouillon', icon: 'document-text-outline', color: '#EF4444' },
-                { id: 'generating', label: 'En cours', icon: 'hourglass-outline', color: '#F59E0B' },
-                { id: 'ready', label: 'Prêt', icon: 'flash', color: '#10B981' },
-                { id: 'published', label: 'Publié', icon: 'checkmark-done', color: '#3B82F6' },
-              ].map(option => (
-                <TouchableOpacity
-                  key={option.id}
-                  style={[
-                    styles.filterOption,
-                    filterStatus === option.id && styles.filterOptionSelected,
-                    filterStatus === option.id && option.color && { borderColor: option.color, backgroundColor: option.color + '15' }
-                  ]}
-                  onPress={() => setFilterStatus(option.id as DocumentStatus | 'all')}
-                >
-                  <Ionicons 
-                    name={option.icon as any} 
-                    size={16} 
-                    color={filterStatus === option.id ? (option.color || Colors.primary) : '#6B7280'} 
-                  />
-                  <Text style={[
-                    styles.filterOptionText,
-                    filterStatus === option.id && { color: option.color || Colors.primary, fontWeight: '600' }
-                  ]}>
-                    {option.label}
-                  </Text>
-                </TouchableOpacity>
-              ))}
-            </View>
-            
-            {/* Filtre sponsorisé */}
-            <Text style={styles.filterLabel}>Sponsoring</Text>
-            <View style={styles.filterOptions}>
-              <TouchableOpacity
-                style={[styles.filterOption, filterSponsored === null && styles.filterOptionSelected]}
-                onPress={() => setFilterSponsored(null)}
-              >
-                <Text style={[styles.filterOptionText, filterSponsored === null && styles.filterOptionTextSelected]}>
-                  Tous
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[styles.filterOption, filterSponsored === true && styles.filterOptionSelected]}
-                onPress={() => setFilterSponsored(true)}
-              >
-                <Ionicons name="star" size={16} color={filterSponsored === true ? '#F59E0B' : '#6B7280'} />
-                <Text style={[styles.filterOptionText, filterSponsored === true && { color: '#F59E0B', fontWeight: '600' }]}>
-                  Sponsorisés
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[styles.filterOption, filterSponsored === false && styles.filterOptionSelected]}
-                onPress={() => setFilterSponsored(false)}
-              >
-                <Text style={[styles.filterOptionText, filterSponsored === false && styles.filterOptionTextSelected]}>
-                  Non sponsorisés
-                </Text>
-              </TouchableOpacity>
-            </View>
-            
-            {/* Boutons actions */}
-            <View style={styles.filterActions}>
-              <TouchableOpacity style={styles.resetButton} onPress={resetFilters}>
-                <Ionicons name="refresh" size={18} color="#6B7280" />
-                <Text style={styles.resetButtonText}>Réinitialiser</Text>
-              </TouchableOpacity>
+          <Animated.View 
+            entering={SlideInDown.duration(400).springify().damping(15)}
+            style={styles.filterModalContent}
+          >
+            <Pressable onPress={(e) => e.stopPropagation()}>
+              {/* Handle bar gaming style */}
+              <View style={styles.filterModalHandle}>
+                <View style={styles.filterModalHandleBar} />
+              </View>
+              
+              {/* Section 1: Rechercher */}
+              <View style={styles.filterSection}>
+                <Text style={styles.filterSectionTitle}>Rechercher</Text>
+                <View style={styles.filterSearchRow}>
+                  <View style={styles.filterSearchInputContainer}>
+                    <Ionicons name="search" size={18} color="#6B7280" />
+                    <TextInput
+                      style={styles.filterSearchInput}
+                      placeholder="Rechercher un document..."
+                      placeholderTextColor="#9CA3AF"
+                      value={filterSearchQuery}
+                      onChangeText={setFilterSearchQuery}
+                      returnKeyType="search"
+                      onSubmitEditing={applyFilterSearch}
+                    />
+                  </View>
+                  <TouchableOpacity 
+                    style={styles.filterSearchOkButton}
+                    onPress={applyFilterSearch}
+                  >
+                    <Text style={styles.filterSearchOkText}>OK</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+              
+              {/* Section 2: Afficher */}
+              <View style={styles.filterSection}>
+                <Text style={styles.filterSectionTitle}>Afficher</Text>
+                <View style={styles.filterChipsRow}>
+                  <TouchableOpacity
+                    style={[
+                      styles.filterChip,
+                      displaySize === 'small' && styles.filterChipSelected
+                    ]}
+                    onPress={() => setDisplaySize('small')}
+                  >
+                    <Text style={[
+                      styles.filterChipText,
+                      displaySize === 'small' && styles.filterChipTextSelected
+                    ]}>8 docs</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      styles.filterChip,
+                      displaySize === 'medium' && styles.filterChipSelected
+                    ]}
+                    onPress={() => setDisplaySize('medium')}
+                  >
+                    <Text style={[
+                      styles.filterChipText,
+                      displaySize === 'medium' && styles.filterChipTextSelected,
+                      displaySize === 'medium' && { fontWeight: '700' }
+                    ]}>4 docs</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      styles.filterChip,
+                      displaySize === 'large' && styles.filterChipSelected
+                    ]}
+                    onPress={() => setDisplaySize('large')}
+                  >
+                    <Text style={[
+                      styles.filterChipText,
+                      displaySize === 'large' && styles.filterChipTextSelected
+                    ]}>2 docs</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+              
+              {/* Section 3: Trier */}
+              <View style={styles.filterSection}>
+                <Text style={styles.filterSectionTitle}>Trier</Text>
+                <View style={styles.filterChipsRow}>
+                  <TouchableOpacity
+                    style={[
+                      styles.filterChip,
+                      sortOption === 'brouillons' && styles.filterChipSelected
+                    ]}
+                    onPress={() => setSortOption(sortOption === 'brouillons' ? null : 'brouillons')}
+                  >
+                    <Text style={[
+                      styles.filterChipText,
+                      sortOption === 'brouillons' && styles.filterChipTextSelected
+                    ]}>Brouillons</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      styles.filterChip,
+                      sortOption === 'prets' && styles.filterChipSelected
+                    ]}
+                    onPress={() => setSortOption(sortOption === 'prets' ? null : 'prets')}
+                  >
+                    <Text style={[
+                      styles.filterChipText,
+                      sortOption === 'prets' && styles.filterChipTextSelected
+                    ]}>Prêts</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      styles.filterChip,
+                      sortOption === 'publies' && styles.filterChipSelected
+                    ]}
+                    onPress={() => setSortOption(sortOption === 'publies' ? null : 'publies')}
+                  >
+                    <Text style={[
+                      styles.filterChipText,
+                      sortOption === 'publies' && styles.filterChipTextSelected
+                    ]}>Publiés</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+              
+              {/* Section 4: Sponsoring */}
+              <View style={styles.filterSection}>
+                <Text style={styles.filterSectionTitle}>Sponsoring</Text>
+                <View style={styles.filterChipsRow}>
+                  <TouchableOpacity
+                    style={[
+                      styles.filterChip,
+                      sponsorFilter === 'sponsored' && styles.filterChipSelectedGold
+                    ]}
+                    onPress={() => setSponsorFilter(sponsorFilter === 'sponsored' ? null : 'sponsored')}
+                  >
+                    <Ionicons 
+                      name="star" 
+                      size={14} 
+                      color={sponsorFilter === 'sponsored' ? '#D97706' : '#9CA3AF'} 
+                    />
+                    <Text style={[
+                      styles.filterChipText,
+                      sponsorFilter === 'sponsored' && styles.filterChipTextSelectedGold
+                    ]}>Docs sponsorisés</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      styles.filterChip,
+                      sponsorFilter === 'not_sponsored' && styles.filterChipSelected
+                    ]}
+                    onPress={() => setSponsorFilter(sponsorFilter === 'not_sponsored' ? null : 'not_sponsored')}
+                  >
+                    <Text style={[
+                      styles.filterChipText,
+                      sponsorFilter === 'not_sponsored' && styles.filterChipTextSelected
+                    ]}>Docs non sponsorisés</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+              
+              {/* Bouton Réinitialiser uniquement */}
               <TouchableOpacity 
-                style={styles.applyButton} 
-                onPress={() => setShowFilterModal(false)}
+                style={styles.filterResetButton} 
+                onPress={resetFilters}
               >
-                <Text style={styles.applyButtonText}>Appliquer</Text>
+                <Ionicons name="refresh" size={18} color="#FFFFFF" />
+                <Text style={styles.filterResetButtonText}>Réinitialiser</Text>
               </TouchableOpacity>
-            </View>
-          </View>
+            </Pressable>
+          </Animated.View>
         </Pressable>
       </Modal>
     </View>
