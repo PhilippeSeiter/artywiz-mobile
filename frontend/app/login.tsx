@@ -137,57 +137,6 @@ const BG_SCALE_AMPLITUDE = 0.02;  // Très léger zoom (2%)
 // Amplitude du déplacement - très subtil pour ne pas montrer les bords
 const BG_TRANSLATE_AMPLITUDE = width * 0.01;  // 1% de déplacement max
 
-// Composant Input personnalisé
-const PillInput = ({ 
-  placeholder, 
-  value, 
-  onChangeText, 
-  secureTextEntry = false,
-  keyboardType = 'default',
-  autoCapitalize = 'sentences',
-  error,
-}: {
-  placeholder: string;
-  value: string;
-  onChangeText: (text: string) => void;
-  secureTextEntry?: boolean;
-  keyboardType?: any;
-  autoCapitalize?: any;
-  error?: string;
-}) => {
-  const [isFocused, setIsFocused] = useState(false);
-  const focusAnimation = useSharedValue(0);
-
-  useEffect(() => {
-    focusAnimation.value = withTiming(isFocused ? 1 : 0, { duration: 200 });
-  }, [isFocused]);
-
-  const containerStyle = useAnimatedStyle(() => ({
-    borderWidth: interpolate(focusAnimation.value, [0, 1], [0, 2]),
-    borderColor: error ? '#FF6B6B' : '#007BFF',
-  }));
-
-  return (
-    <View style={styles.inputWrapper}>
-      <Animated.View style={[styles.pillInputContainer, containerStyle]}>
-        <TextInput
-          style={styles.pillInput}
-          placeholder={placeholder}
-          placeholderTextColor="#9E9E9E"
-          value={value}
-          onChangeText={onChangeText}
-          secureTextEntry={secureTextEntry}
-          keyboardType={keyboardType}
-          autoCapitalize={autoCapitalize}
-          onFocus={() => setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
-        />
-      </Animated.View>
-      {error && <Text style={styles.errorText}>{error}</Text>}
-    </View>
-  );
-};
-
 // Bouton social
 const SocialButton = ({ 
   type, 
