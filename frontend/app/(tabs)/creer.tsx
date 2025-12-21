@@ -122,7 +122,7 @@ const StatusIndicator = ({ status }: { status: DocumentStatus }) => {
   const colorAnim = useSharedValue(0);
 
   useEffect(() => {
-    if (status === 'generating') {
+    if (status === 'en-cours') {
       // Animation de clignotement vert/rouge
       colorAnim.value = withRepeat(
         withTiming(1, { duration: 600, easing: Easing.inOut(Easing.ease) }),
@@ -133,11 +133,6 @@ const StatusIndicator = ({ status }: { status: DocumentStatus }) => {
   }, [status]);
 
   const animatedStyle = useAnimatedStyle(() => {
-    const backgroundColor = interpolate(
-      colorAnim.value,
-      [0, 1],
-      [0, 1]
-    );
     // Interpoler entre vert (#22C55E) et rouge (#EF4444)
     return {
       backgroundColor: colorAnim.value < 0.5 ? '#22C55E' : '#EF4444',
@@ -145,22 +140,22 @@ const StatusIndicator = ({ status }: { status: DocumentStatus }) => {
   });
 
   // Brouillon: pas d'indicateur
-  if (status === 'to_generate') return null;
+  if (status === 'brouillon') return null;
 
   // En cours: cercle qui clignote vert/rouge
-  if (status === 'generating') {
+  if (status === 'en-cours') {
     return (
       <Animated.View style={[styles.statusCircle, animatedStyle]} />
     );
   }
 
   // Prêt: cercle vert fixe
-  if (status === 'ready') {
+  if (status === 'pret') {
     return <View style={[styles.statusCircle, styles.statusReady]} />;
   }
 
   // Publié: icône
-  if (status === 'published') {
+  if (status === 'publie') {
     return (
       <View style={styles.statusIconContainer}>
         <Ionicons name="checkmark-circle" size={18} color="#22C55E" />
