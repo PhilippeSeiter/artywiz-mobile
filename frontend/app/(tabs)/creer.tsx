@@ -915,7 +915,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     borderRadius: 14,
     marginBottom: 14,
-    height: CARD_HEIGHT,
     overflow: 'hidden',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -925,7 +924,6 @@ const styles = StyleSheet.create({
   },
   mockupContainer: {
     width: '50%', // 50% de la largeur de la carte
-    height: CARD_HEIGHT,
     backgroundColor: '#E5E7EB',
     overflow: 'hidden',
   },
