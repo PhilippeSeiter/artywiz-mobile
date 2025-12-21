@@ -72,10 +72,10 @@ const hybridStorage: StateStorage = {
 };
 
 export interface UserProfile {
-  type: 'ligue' | 'district' | 'club' | 'equipe' | 'sponsor';
+  type: 'ligue' | 'district' | 'club' | 'equipe';
   id: string;
   name: string;
-  logo?: string; // Base64 logo for sponsor profiles
+  logo?: string; // Logo du profil
   clubId?: string; // For equipe profiles
   numero?: string; // Profile number
 }
