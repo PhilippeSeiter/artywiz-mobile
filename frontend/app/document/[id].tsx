@@ -967,10 +967,15 @@ const styles = StyleSheet.create({
   proposeSponsorBtnText: { fontSize: 14, fontWeight: '600', color: '#FFF' },
   
   // Support section
+  supportsSection: { paddingHorizontal: Spacing.md, paddingVertical: Spacing.md, backgroundColor: Colors.background },
+  supportsSectionTitle: { fontSize: 14, fontWeight: '600', color: Colors.textPrimary, marginBottom: Spacing.sm },
+  supportsRow: { gap: Spacing.sm, paddingRight: Spacing.md },
   supportSection: { paddingHorizontal: Spacing.lg, paddingVertical: Spacing.md },
   supportsGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm },
-  supportChip: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: Spacing.md, paddingVertical: Spacing.sm, borderRadius: 20, backgroundColor: Colors.background, borderWidth: 1, borderColor: Colors.border, gap: 6 },
+  supportChip: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: Spacing.md, paddingVertical: Spacing.sm, borderRadius: 20, backgroundColor: Colors.white, borderWidth: 1, borderColor: Colors.border, gap: 6 },
   supportChipSelected: { backgroundColor: Colors.primary, borderColor: Colors.primary },
+  supportChipText: { fontSize: 13, color: Colors.textSecondary },
+  supportChipTextSelected: { color: Colors.white, fontWeight: '600' },
   supportLabel: { fontSize: 14, color: Colors.textSecondary },
   supportLabelSelected: { color: Colors.white, fontWeight: '500' },
   
