@@ -332,7 +332,7 @@ export default function SectorSelectionScreen() {
       {/* Contenu scrollable */}
       <ScrollView
         style={styles.scrollView}
-        contentContainerStyle={[styles.scrollContent, { paddingTop: insets.top + Spacing.md }]}
+        contentContainerStyle={[styles.scrollContent, { paddingTop: insets.top + 140 }]}
         showsVerticalScrollIndicator={false}
       >
         {/* Carte principale */}
