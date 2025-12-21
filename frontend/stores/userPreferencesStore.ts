@@ -169,11 +169,12 @@ export const useUserPreferencesStore = create<UserPreferencesState>()(
       activeProfileIndex: 0,
       selectedThemes: [],
       sponsoringPrefs: initialSponsoringPrefs,
+      profileSponsoringPrefs: {}, // Préférences par profil
       profileSocialConnections: {},
       hasCompletedOnboarding: false,
 
       setSelectedProfiles: (profiles) => {
-        // S'assurer qu'il y a toujours au minimum les 5 profils de base
+        // S'assurer qu'il y a toujours au minimum les profils de base
         if (profiles.length === 0) {
           set({ selectedProfiles: [...DEFAULT_BASE_PROFILES] });
         } else {
@@ -190,12 +191,15 @@ export const useUserPreferencesStore = create<UserPreferencesState>()(
       },
       
       removeProfile: (profileId) => {
-        const { profileSocialConnections } = get();
+        const { profileSocialConnections, profileSponsoringPrefs } = get();
         const newConnections = { ...profileSocialConnections };
+        const newSponsoringPrefs = { ...profileSponsoringPrefs };
         delete newConnections[profileId];
+        delete newSponsoringPrefs[profileId];
         set((state) => ({
           selectedProfiles: state.selectedProfiles.filter(p => p.id !== profileId),
           profileSocialConnections: newConnections,
+          profileSponsoringPrefs: newSponsoringPrefs,
         }));
       },
       
@@ -204,6 +208,22 @@ export const useUserPreferencesStore = create<UserPreferencesState>()(
       setSelectedThemes: (themes) => set({ selectedThemes: themes }),
       
       setSponsoringPrefs: (prefs) => set({ sponsoringPrefs: prefs }),
+      
+      // Profile-specific sponsoring actions
+      setProfileSponsoringPrefs: (profileId, prefs) => {
+        set((state) => ({
+          profileSponsoringPrefs: {
+            ...state.profileSponsoringPrefs,
+            [profileId]: prefs,
+          },
+        }));
+      },
+      
+      getProfileSponsoringPrefs: (profileId) => {
+        const prefs = get().profileSponsoringPrefs[profileId];
+        // Return profile-specific prefs or default
+        return prefs || initialSponsoringPrefs;
+      },
       
       // Social connection actions
       setSocialConnection: (profileId, connection) => {
