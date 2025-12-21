@@ -442,6 +442,7 @@ export default function CreerScreen() {
       doc={item as ASDocument} 
       onPress={() => handleDocumentPress(item)}
       index={index}
+      displaySize={displaySize}
     />
   );
 
