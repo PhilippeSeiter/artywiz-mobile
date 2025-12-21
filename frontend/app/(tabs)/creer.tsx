@@ -596,6 +596,7 @@ export default function CreerScreen() {
         >
           <Animated.View 
             entering={SlideInDown.duration(400).springify().damping(15)}
+            exiting={SlideOutDown.duration(300)}
             style={styles.filterModalContent}
           >
             <Pressable onPress={(e) => e.stopPropagation()}>
