@@ -153,6 +153,29 @@ export default function DocumentDetailScreen() {
 
   // Get status from store
   const storeStatus = getDocumentStatus(id as string);
+  
+  const getDisplayStatus = (): DocStatus => {
+    if (!document) return 'a_peaufiner';
+    if (document.status === 'pret') return 'pret_a_buzzer';
+    if (document.status === 'publie') return 'publie';
+    return 'a_peaufiner';
+  };
+  
+  const docStatus = getDisplayStatus();
+  const isAutoSponsoringEnabled = sponsoringPrefs?.autoSponsoringEnabled ?? false;
+
+  // Toggle support - multi ou single selon statut
+  const toggleSupport = (supportId: string) => {
+    if (docStatus === 'a_peaufiner') {
+      setSelectedSupports(prev => 
+        prev.includes(supportId)
+          ? prev.filter(id => id !== supportId)
+          : [...prev, supportId]
+      );
+    } else {
+      setSelectedSingleSupport(supportId);
+    }
+  };
 
   // Animation values
   const translateX = useSharedValue(0);
