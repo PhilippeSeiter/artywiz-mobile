@@ -812,55 +812,6 @@ export default function DocumentDetailScreen() {
           </View>
         )}
 
-        {/* === SECTION SUPPORTS (Accordéon) === */}
-        <View style={styles.accordionWrapper}>
-          <AnimatedAccordion
-            isOpen={supportsAccordionOpen}
-            onToggle={() => setSupportsAccordionOpen(!supportsAccordionOpen)}
-            maxHeight={200}
-            header={
-              <View style={styles.accordionHeader}>
-                <View style={styles.accordionHeaderLeft}>
-                  <View style={[styles.accordionIcon, { backgroundColor: '#EEF2FF' }]}>
-                    <Ionicons name="layers-outline" size={18} color="#6366F1" />
-                  </View>
-                  <View>
-                    <Text style={styles.accordionTitle}>Supports</Text>
-                    <Text style={styles.accordionSubtitle}>
-                      {docStatus === 'a_peaufiner' 
-                        ? `${selectedSupports.length} sélectionné(s)` 
-                        : SUPPORTS.find(s => s.id === selectedSingleSupport)?.label || 'Post'}
-                    </Text>
-                  </View>
-                </View>
-                <Animated.View style={supportsChevronStyle}>
-                  <Ionicons name="chevron-down" size={22} color={Colors.textSecondary} />
-                </Animated.View>
-              </View>
-            }
-          >
-            <View style={styles.supportsGrid}>
-              {SUPPORTS.map((support) => {
-                const isSelected = docStatus === 'a_peaufiner' 
-                  ? selectedSupports.includes(support.id)
-                  : selectedSingleSupport === support.id;
-                return (
-                  <TouchableOpacity
-                    key={support.id}
-                    style={[styles.supportChip, isSelected && styles.supportChipSelected]}
-                    onPress={() => toggleSupport(support.id)}
-                  >
-                    <Ionicons name={support.icon as any} size={18} color={isSelected ? Colors.white : Colors.textSecondary} />
-                    <Text style={[styles.supportLabel, isSelected && styles.supportLabelSelected]}>
-                      {support.label}
-                    </Text>
-                  </TouchableOpacity>
-                );
-              })}
-            </View>
-          </AnimatedAccordion>
-        </View>
-
         {/* === BOUTONS D'ACTION === */}
         <View style={styles.actions}>
           {docStatus === 'a_peaufiner' ? (
