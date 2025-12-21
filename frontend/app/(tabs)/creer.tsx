@@ -21,6 +21,7 @@ import { Colors, Spacing } from '../../constants';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ASStrasbourgDataService, ASDocument } from '../../services/asStrasbourgDataService';
 import { ASStrasbourgClubDataService, ASClubDocument } from '../../services/asStrasbourgClubDataService';
+import { LGEFDataService, LGEFDocument } from '../../services/lgefDataService';
 import { useDocumentStore } from '../../stores/documentStore';
 import Animated, { 
   useSharedValue, 
