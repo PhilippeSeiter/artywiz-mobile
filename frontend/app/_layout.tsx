@@ -4,6 +4,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { QueryProvider } from '../providers/QueryProvider';
+import { VideoDirectionProvider } from '../providers/VideoDirectionProvider';
 import { useCurrentUser } from '../hooks/useAuth';
 import { useNotificationStore } from '../stores/notificationStore';
 
