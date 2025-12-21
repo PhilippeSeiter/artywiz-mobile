@@ -631,8 +631,8 @@ export default function DocumentDetailScreen() {
   return (
     <View style={styles.container}>
       <GradientHeader 
-        title={document.title}
-        subtitle={document.typeLabel}
+        title={document.ligne2}
+        subtitle={document.ligne3}
         showBack
         onBackPress={() => router.back()}
       />
