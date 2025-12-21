@@ -176,7 +176,7 @@ const AccountCard = ({ account, index, isActive, onPress, onDelete, canDelete }:
   const typeColor = getTypeColor(account.type);
 
   return (
-    <Animated.View entering={SlideInDown.delay(index * 80).springify().damping(14)} exiting={FadeOut.duration(200)} layout={Layout.springify().damping(15)} style={animatedStyle}>
+    <Animated.View layout={Layout.springify().damping(15)} style={animatedStyle}>
       <TouchableOpacity style={[styles.accountCard, isActive && styles.accountCardActive, isActive && { borderColor: typeColor }]} onPress={onPress} onPressIn={handlePressIn} onPressOut={handlePressOut} activeOpacity={1}>
         <View style={[styles.accountLogo, { backgroundColor: typeColor + '20' }]}>
           <Ionicons name={getTypeIcon(account.type) as any} size={24} color={typeColor} />
