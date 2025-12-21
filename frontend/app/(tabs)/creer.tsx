@@ -702,6 +702,33 @@ const styles = StyleSheet.create({
     color: Colors.white,
     maxWidth: 100,
   },
+  // Nouveau header centré
+  profileSelectorCenter: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255,255,255,0.15)',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 20,
+    gap: 8,
+  },
+  profileLogoSmall: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  profileNameHeader: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#FFFFFF',
+    maxWidth: 180,
+  },
+  headerSpacer: {
+    width: 40,
+  },
   clubSelector: {
     flexDirection: 'row',
     alignItems: 'center',
