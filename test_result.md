@@ -101,3 +101,179 @@
 #====================================================================================================
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
+
+user_problem_statement: |
+  Build Artywiz Mobile V1 MVP - A mobile app client for the existing Artywiz backend system.
+  Features: User authentication, document management, social media publishing.
+  The app should work on mobile and web (unified codebase with Expo).
+
+backend:
+  - task: "User Registration API"
+    implemented: true
+    working: true
+    file: "routes/users_routes.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Registration endpoint with email validation, password hashing, JWT tokens"
+      - working: true
+        agent: "main"
+        comment: "Added validation for special characters (<, >, etc.) in email and name"
+
+  - task: "User Login API"
+    implemented: true
+    working: true
+    file: "routes/users_routes.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Login with email/password, returns JWT access and refresh tokens"
+
+  - task: "Token Refresh API"
+    implemented: true
+    working: true
+    file: "routes/users_routes.py"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Refresh token endpoint for extending sessions"
+
+  - task: "User Profile API"
+    implemented: true
+    working: true
+    file: "routes/users_routes.py"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "GET /me, PUT /me endpoints for profile management"
+
+frontend:
+  - task: "Welcome Screen"
+    implemented: true
+    working: true
+    file: "app/index.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Video background, animated logo, navigation buttons"
+
+  - task: "Login Screen"
+    implemented: true
+    working: true
+    file: "app/login.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Email/password login with validation"
+
+  - task: "Signup Screen"
+    implemented: true
+    working: true
+    file: "app/signup.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Registration form with validation for special characters"
+      - working: true
+        agent: "main"
+        comment: "Added autoFocus on first input field"
+
+  - task: "Profile Selection Screen (Mes Comptes)"
+    implemented: true
+    working: true
+    file: "app/profile-selection.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Account creation popup with horizontal slide animations, search functionality"
+
+  - task: "Intro Animation Screen"
+    implemented: true
+    working: true
+    file: "app/intro-animation.tsx"
+    stuck_count: 1
+    priority: "medium"
+    needs_retesting: true
+    status_history:
+      - working: false
+        agent: "user"
+        comment: "Button not clickable - video intercepting pointer events"
+      - working: true
+        agent: "main"
+        comment: "Fixed: Added pointer-events:none to video element"
+
+  - task: "Dashboard Screen"
+    implemented: true
+    working: true
+    file: "app/(tabs)/index.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Main dashboard with tab navigation"
+
+  - task: "Data Persistence (Zustand)"
+    implemented: true
+    working: "NA"
+    file: "stores/userPreferencesStore.ts"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Zustand store with AsyncStorage persistence - needs verification"
+
+metadata:
+  created_by: "main_agent"
+  version: "1.0"
+  test_sequence: 1
+  run_ui: false
+
+test_plan:
+  current_focus:
+    - "User Registration API"
+    - "User Login API"
+    - "Signup Screen validation"
+    - "Profile Selection Screen"
+    - "Intro Animation Screen"
+    - "Data Persistence"
+  stuck_tasks: []
+  test_all: true
+  test_priority: "high_first"
+
+agent_communication:
+  - agent: "main"
+    message: |
+      Requesting deployment health check. Recent changes:
+      1. Fixed intro animation button (pointer-events issue)
+      2. Added input validation for special characters in signup
+      3. Backend validation for email/name fields
+      4. Profile selection with animated popup
+      Please verify all endpoints and screens are functional.
