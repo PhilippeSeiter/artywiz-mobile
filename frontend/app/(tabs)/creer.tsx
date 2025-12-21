@@ -758,20 +758,40 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 6,
   },
-  docTypeRow: {
+  // Styles pour les 4 lignes de texte
+  ligne1: {
+    fontSize: 11,
+    fontWeight: '500',
+    color: '#6B7280',
+    flex: 1,
+  },
+  ligne2: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#1F2937',
+    marginTop: 2,
+  },
+  ligne3: {
+    fontSize: 12,
+    color: '#4B5563',
+    marginTop: 2,
+    lineHeight: 16,
+  },
+  ligne4: {
+    fontSize: 11,
+    color: '#9CA3AF',
+    marginTop: 2,
+  },
+  supportsRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 1,
+    marginTop: 'auto',
+    paddingTop: 4,
+    gap: 4,
   },
-  docType: {
-    fontSize: 11,
-    color: '#6B7280',
-    marginLeft: 3,
-  },
-  docTeam: {
+  supportsCount: {
     fontSize: 10,
     color: '#9CA3AF',
-    marginTop: 1,
   },
   // Indicateur d'état (cercle)
   statusCircle: {
@@ -801,7 +821,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: '#D97706',
   },
-  // Stats
+  // Stats (gardés pour compatibilité)
   statsRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -821,19 +841,6 @@ const styles = StyleSheet.create({
   platformIcons: {
     flexDirection: 'row',
     marginLeft: 'auto',
-  },
-  // Messages
-  generatingText: {
-    fontSize: 11,
-    color: '#F59E0B',
-    fontWeight: '500',
-    marginTop: 6,
-  },
-  readyText: {
-    fontSize: 11,
-    color: '#10B981',
-    fontWeight: '500',
-    marginTop: 6,
   },
   // Empty
   emptyContainer: {
