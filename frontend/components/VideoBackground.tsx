@@ -19,11 +19,14 @@ interface VideoBackgroundProps {
 
 // Web-only video component using DOM API directly
 const WebVideo = () => {
-  const containerRef = useRef<HTMLDivElement | null>(null);
+  const containerRef = useRef<any>(null);
   const { registerVideo } = useVideoDirection();
 
   useEffect(() => {
-    if (Platform.OS !== 'web' || !containerRef.current) return;
+    // Only run on web
+    if (Platform.OS !== 'web') return;
+    if (typeof document === 'undefined') return;
+    if (!containerRef.current) return;
 
     // Create video element via DOM
     const video = document.createElement('video');
@@ -71,10 +74,12 @@ const WebVideo = () => {
     };
   }, [registerVideo]);
 
+  // Return null on native platforms
   if (Platform.OS !== 'web') return null;
 
+  // Use View with ref for web (will be converted to div)
   return (
-    <div
+    <View
       ref={containerRef}
       style={{
         position: 'absolute',
