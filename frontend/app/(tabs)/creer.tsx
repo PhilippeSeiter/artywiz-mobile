@@ -32,7 +32,8 @@ import Animated, {
 } from 'react-native-reanimated';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
-const CARD_HEIGHT = 140;
+const CARD_HEIGHT = 120;
+const MOCKUP_WIDTH_PERCENT = 0.5; // 50% de la largeur de la carte
 
 // Types
 type DocumentStatus = 'to_generate' | 'generating' | 'ready' | 'published';
