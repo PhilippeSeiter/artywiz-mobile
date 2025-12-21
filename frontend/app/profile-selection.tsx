@@ -574,7 +574,7 @@ export default function ProfileSelectionScreen() {
     const newAccounts = [...accounts, account];
     setAccounts(newAccounts);
     setActiveAccountId(account.id);
-    const baseProfiles = existingProfiles.filter(p => p.id.startsWith('base_') || p.type === 'sponsor');
+    const baseProfiles = existingProfiles.filter(p => p.id.startsWith('base_'));
     setSelectedProfiles([...baseProfiles, ...newAccounts]);
   };
 
@@ -588,7 +588,7 @@ export default function ProfileSelectionScreen() {
           setAccounts(newAccounts);
           if (activeAccountId === accountId && newAccounts.length > 0) setActiveAccountId(newAccounts[0].id);
           else if (newAccounts.length === 0) setActiveAccountId(null);
-          const baseProfiles = existingProfiles.filter(p => p.id.startsWith('base_') || p.type === 'sponsor');
+          const baseProfiles = existingProfiles.filter(p => p.id.startsWith('base_'));
           setSelectedProfiles([...baseProfiles, ...newAccounts]);
         },
       },
