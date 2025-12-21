@@ -356,9 +356,9 @@ export default function CreerScreen() {
   };
 
   // Render document item
-  const renderDocument = ({ item }: { item: ASDocument }) => (
+  const renderDocument = ({ item }: { item: UnifiedDocument }) => (
     <DocumentCard 
-      doc={item} 
+      doc={item as ASDocument} 
       onPress={() => handleDocumentPress(item)}
     />
   );
