@@ -107,7 +107,7 @@ export const useDocumentStore = create<DocumentStore>()(
         }));
       },
 
-      // Publish document
+      // Publish document (legacy - marks as published without platform details)
       publishDocument: (docId) => {
         set((state) => ({
           documentStates: {
@@ -116,9 +116,39 @@ export const useDocumentStore = create<DocumentStore>()(
               ...state.documentStates[docId],
               status: 'publie',
               publishedAt: Date.now(),
+              publications: state.documentStates[docId]?.publications || [],
             },
           },
         }));
+      },
+
+      // Publish to specific platform with details
+      publishToPlateform: (docId, platform, supportType, postUrl) => {
+        const newPublication: PublicationEntry = {
+          platform,
+          publishedAt: Date.now(),
+          supportType,
+          postUrl,
+        };
+        
+        set((state) => {
+          const currentState = state.documentStates[docId];
+          const existingPublications = currentState?.publications || [];
+          
+          return {
+            documentStates: {
+              ...state.documentStates,
+              [docId]: {
+                ...currentState,
+                id: docId,
+                status: 'publie',
+                publishedAt: Date.now(),
+                selectedSupports: currentState?.selectedSupports || [supportType],
+                publications: [...existingPublications, newPublication],
+              },
+            },
+          };
+        });
       },
 
       // Get document status
@@ -130,6 +160,11 @@ export const useDocumentStore = create<DocumentStore>()(
       // Get document state
       getDocumentState: (docId) => {
         return get().documentStates[docId];
+      },
+
+      // Get publication history for a document
+      getPublicationHistory: (docId) => {
+        return get().documentStates[docId]?.publications || [];
       },
 
       // Check if generating
