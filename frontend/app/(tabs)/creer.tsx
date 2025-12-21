@@ -20,6 +20,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Colors, Spacing } from '../../constants';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ASStrasbourgDataService, ASDocument } from '../../services/asStrasbourgDataService';
+import { ASStrasbourgClubDataService, ASClubDocument } from '../../services/asStrasbourgClubDataService';
 import { useDocumentStore } from '../../stores/documentStore';
 import Animated, { 
   useSharedValue, 
@@ -38,16 +39,19 @@ const MOCKUP_WIDTH_PERCENT = 0.5; // 50% de la largeur de la carte
 // Types
 type DocumentStatus = 'brouillon' | 'en-cours' | 'pret' | 'publie';
 
-interface Club {
+// Type unifié pour les documents (équipe ou club)
+type UnifiedDocument = ASDocument | ASClubDocument;
+
+interface Profile {
   id: string;
   name: string;
+  type: 'equipe' | 'club';
 }
 
-// Données mock pour les clubs
-const CLUBS: Club[] = [
-  { id: 'artywiz', name: 'FC. Artywiz Strasbourg' },
-  { id: 'u18', name: 'Équipe U18' },
-  { id: 'u15', name: 'Équipe U15' },
+// Profils disponibles
+const PROFILES: Profile[] = [
+  { id: 'seniors1', name: 'AS Strasbourg - Séniors 1', type: 'equipe' },
+  { id: 'club', name: 'AS Strasbourg (Club)', type: 'club' },
 ];
 
 // Couleurs de fond pour les mockups (fallback)
