@@ -338,8 +338,10 @@ export const DocShowcase: React.FC<DocShowcaseProps> = ({
     });
 
   // Styles animés pour les 3 slides
+  // Le slide courant s'estompe progressivement quand il sort
   const currentStyle = useAnimatedStyle(() => ({
     transform: [{ translateX: scrollX.value }],
+    opacity: exitingOpacity.value,
     zIndex: 2,
   }));
 
