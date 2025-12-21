@@ -412,7 +412,7 @@ export default function CreerScreen() {
             style={styles.clubSelectorCompact}
             onPress={() => setShowProfileModal(true)}
           >
-            <Ionicons name={selectedProfile.type === 'club' ? 'business' : 'people'} size={16} color="#FFFFFF" />
+            <Ionicons name={selectedProfile.type === 'club' ? 'business' : selectedProfile.type === 'ligue' ? 'globe' : 'people'} size={16} color="#FFFFFF" />
             <Text style={styles.clubNameCompact} numberOfLines={1}>{selectedProfile.name}</Text>
             <Ionicons name="chevron-down" size={16} color="#FFFFFF" />
           </TouchableOpacity>
