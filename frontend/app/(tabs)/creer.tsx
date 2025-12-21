@@ -217,11 +217,36 @@ const DocumentCard = ({
 }: { 
   doc: ASDocument; 
   onPress: () => void;
+  index: number; // Index pour l'animation Tetris
 }) => {
   const scale = useSharedValue(1);
+  const translateY = useSharedValue(SCREEN_HEIGHT); // Commence hors de l'écran (en bas)
+  const opacity = useSharedValue(0);
+
+  // Animation d'entrée Tetris avec délai basé sur l'index
+  useEffect(() => {
+    const delay = index * 100; // 100ms entre chaque carte
+    
+    // Animation de glissement du bas vers le haut avec rebond
+    translateY.value = withDelay(
+      delay,
+      withSpring(0, {
+        damping: 12,      // Rebond modéré
+        stiffness: 100,   // Vitesse de ressort
+        mass: 0.8,        // Légèreté
+        overshootClamping: false, // Permet le dépassement (rebond)
+      })
+    );
+    
+    // Fade in avec le même délai
+    opacity.value = withDelay(
+      delay,
+      withTiming(1, { duration: 300, easing: Easing.out(Easing.ease) })
+    );
+  }, [index]);
 
   const handlePressIn = () => {
-    scale.value = withSpring(0.98, { damping: 15, stiffness: 300 });
+    scale.value = withSpring(0.96, { damping: 15, stiffness: 300 });
   };
 
   const handlePressOut = () => {
@@ -229,7 +254,11 @@ const DocumentCard = ({
   };
 
   const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: scale.value }],
+    transform: [
+      { translateY: translateY.value },
+      { scale: scale.value }
+    ],
+    opacity: opacity.value,
   }));
 
   return (
