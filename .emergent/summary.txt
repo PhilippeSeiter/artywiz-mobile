@@ -3,199 +3,146 @@
 **original_problem_statement:**
 The user wants to build a V1 MVP of the Artywiz mobile app, a client for an existing backend. The primary focus is on a polished, dynamic, gaming-style UI/UX.
 
-**PRODUCT REQUIREMENTS (V1 MVP):**
--   Connect to the existing Artywiz user authentication system.
--   The app should allow users (from football clubs, districts, etc.) to log in.
--   Display a list of documents available to the user.
--   Allow users to visualize and validate documents.
--   The Artywiz backend will send an alert when a final document is ready.
--   The user can then receive the final document (image/PDF) and publish it to social media.
+In this session, the user requested several UI fixes and a major refactoring of the application's data persistence layer to support more complex features like per-profile settings and document history tracking.
 
-**Recent User Requests in this Session:**
--   Complete overhaul of the Docs screen () based on a provided PDF, including a new 4-line layout, dynamic status indicators, and a split-view for details.
--   Refine the document carousel () animations with very specific timings for a bounce effect, continuous zoom, and delayed text appearance.
--   Resolve a recurring issue where an intro animation screen was blocking the user. This was a major point of frustration and was ultimately resolved by removing the screen entirely.
--   Fix the Mes Comptes () screen to correctly display the active user's profile name (e.g., AS Strasbourg) instead of a generic Une Équipe.
--   Fix a new bug on the Mes Comptes screen where the content of the add account popup is misaligned and invisible.
--   Rename the Enregistrer button to Continuer on the Mes Comptes screen.
--   Assist the user with setting up their local environment for an EAS build to create a native app package, as Expo Go is not working.
+**PRODUCT REQUIREMENTS (V1 MVP):**
+-   Connect to an existing authentication system.
+-   Allow users to log in and manage multiple profiles (teams, clubs, etc.).
+-   Display a list of documents available to the user.
+-   Allow users to visualize and edit/validate documents.
+-   Implement a highly polished, animated UI based on detailed user feedback.
+-   **NEW:** Persist user data, including accounts, per-account preferences, document history, and social media insights.
 
 **User's preferred language**: French
 
 **what currently exists?**
-A full-stack application with a React Native/Expo frontend and a temporary FastAPI/MongoDB backend. The UI has been significantly enhanced based on detailed user feedback.
+The application is a React Native/Expo app with a temporary backend. The frontend is heavily customized.
 
-Key features implemented:
--   A self-contained JWT authentication system with persistence using a hybrid AsyncStorage/localStorage solution.
--   A refactored Mes Comptes () screen that allows adding multiple profiles via an animated multi-step popup. The active profile's name is now correctly displayed on the dashboard.
--   A completely redesigned Docs screen () with a new 4-line card layout and centered header, as per the user's PDF.
--   A highly customized document carousel () on the dashboard with complex, chained animations ().
--   The  screen has been completely **deleted** to resolve a recurring blocking issue for the user. The navigation now correctly goes from profile selection directly to the dashboard.
--   Project configuration for EAS builds ().
+-   **Core Screens**: The main screens like the Dashboard (), Docs List (), Document Editor (), and Profile Management () are functional.
+-   **Data Model**: The app uses mock data services for different user profiles.
+-   **State Management (Recently Refactored)**: The application uses Zustand for state management. The persistence logic was just overhauled:
+    -    was modified to support **per-profile sponsoring preferences**, moving away from a global setting.
+    -    was enhanced to track **publication history** for each document, including the platform and date.
+    -   A new  was created as a placeholder to store social media statistics (likes, clicks) for documents.
+-   **UI Fixes**: Numerous UI fixes were implemented in this session, including correcting the login/signup flow, redesigning the document editor header, and fixing the add account popup.
 
 **Last working item**:
--   Last item agent was working: The user reported a visual bug on the Mes Comptes screen where the content of the multi-step popup for adding accounts is misaligned and not visible. The agent correctly diagnosed that the slide animation was using the full screen width instead of the popup's width. The agent introduced a  constant and started replacing the hardcoded  dimension in the animation logic within .
--   Status: IN PROGRESS
--   Agent Testing Done: N
--   Which testing method agent to use? screenshot tool (to visually verify the popup layout after the fix).
+-   Last item agent was working: The agent just completed a major structural refactor of the application's state management to support enhanced data persistence. This involved creating a new , and heavily modifying  and .
+-   Status: IN PROGRESS (The data store structures have been updated, but the UI has not been connected to this new logic yet).
+-   Agent Testing Done: N (Agent confirmed the app starts without crashing but did not test the new store functionality).
+-   Which testing method agent to use? manual testing by curl. First, the agent should implement the UI changes, then test the full flow: change a setting, see it persisted, and check if the UI reflects it.
 -   User Testing Done: N
 
 **All Pending/In progress Issue list**:
-  Issue 1: Popup for adding accounts on Mes Comptes screen is broken. (Priority: P0)
-  Issue 2: The document carousel () animations need further refinement. (Priority: P1)
-  Issue 3: Expo Go QR code does not work. (Priority: P2 - Informational Blocker)
-  Issue 4: Background video restarts on every screen navigation. (Priority: P3)
+  Issue 1: UI is disconnected from the new persistence model. (Priority: P0)
   
   Issues Detail:
   - Issue 1: 
-     - Attempted fixes: The agent identified the root cause: the sliding animation in  uses the device  for translation, but the popup has a  of 400, causing the content to slide too far and become invisible. The agent began implementing a fix by defining a  constant.
-     - Next debug checklist: 
-        1. Open .
-        2. Find all instances where  is calculated using  (the screen width).
-        3. Replace  with the new  constant to ensure the slide animation is constrained to the popup's dimensions.
-        4. Test the Ajouter un compte flow using the screenshot tool to verify all steps of the popup are visually correct.
-     - Why fix this issue and what will be achieved with the fix? This bug completely blocks the user from adding or managing their accounts, which is a core part of the onboarding flow.
-     - Status:  IN PROGRESS
-     - Is recurring issue? Y (The popup has been a source of multiple bugs).
-     - Should Test frontend/backend/both after fix? frontend
-     - Blocked on other issue: None
-
-  - Issue 2:
-     - Attempted fixes: The agent has made several iterations on the animations in . The latest user feedback requires a new sequence: continuous zoom that never stops, a 1.5s delay before text appears, and a bounce off animation for the sponsoring badge.
+     - Attempted fixes: The agent has successfully refactored the data stores (, , ). However, the UI components that rely on this data have not been updated.
      - Next debug checklist:
-        1. Open .
-        2. Modify the  for the image to implement a continuous zoom that runs for the entire duration the slide is visible.
-        3. Adjust the  and  calls in the  hook to match the user's latest timing request (1.5s delay for text, etc.).
-        4. Create a new bounce off animation for the sponsoring badge when it disappears.
-     - Why fix this issue and what will be achieved with the fix? To meet the user's high standards for a gaming-style UI and provide a more polished and dynamic user experience.
-     - Status:  NOT STARTED
-     - Is recurring issue? Y
-     - Should Test frontend/backend/both after fix? frontend
-     - Blocked on other issue: None
-
-  - Issue 3:
-     - Attempted fixes: This is an environmental issue, not a code issue. The agent correctly diagnosed that the  flag in the execution environment prevents the Expo Go tunnel from authenticating.
-     - Next debug checklist: **Do not attempt to fix this in code.** The next agent must inform the user that the only workarounds are (1) testing via the web preview URL on a mobile browser or (2) completing an EAS build on their local machine.
-     - Why fix this issue and what will be achieved with the fix? This is not fixable, but explaining the situation clearly is critical to unblock the user's testing workflow and manage expectations.
-     - Status:  BLOCKED
-     - Is recurring issue? Y
-     - Should Test frontend/backend/both after fix? NA
-     - Blocked on other issue: None
-  
-  - Issue 4:
-     - Attempted fixes: A previous attempt using a  was reverted due to complexity.
-     - Next debug checklist: This is a low-priority UX polish. It can be revisited by exploring state management (Zustand) to control a single video instance or by lifting the  component to the root layout.
-     - Why fix this issue and what will be achieved with the fix? To enhance UI fluidity as per an early user request.
-     - Status:  NOT STARTED
-     - Is recurring issue? Y
+        1.  **Dashboard ():** The Sponsoring teaser card logic needs to be updated. It currently uses a global preference. It must now read from the new per-profile preference system: .
+        2.  **Document Editor ():** The Publish functionality needs to be connected to the new  action in  to log the publication event.
+        3.  **Settings/Preferences UI (To be created/updated):** A UI needs to exist where the user can view and edit the sponsoring preferences for each of their profiles.
+     - Why fix this issue and what will be achieved with the fix? This is critical to complete the persistence feature requested by the user. It will enable per-account settings and lay the groundwork for tracking document history and stats.
+     - Status:  IN PROGRESS
+     - Is recurring issue? N
      - Should Test frontend/backend/both after fix? frontend
      - Blocked on other issue: None
 
 **In progress Task List**:
-- None beyond the issues listed above.
+  - Task 1: Complete the data persistence feature. (Priority: P0)
+ 
+ Task Detail:
+  - Task 1: 
+     - Where to resume: The data stores are ready. The next step is to update the UI components to use the new store actions and state structure, as detailed in Issue 1 above.
+     - What will be achieved with this? Users will have per-profile settings for auto-sponsoring, and the app will track when and where documents are published.
+     - Status:  IN PROGRESS
+     - Should Test frontend/backend/both after fix? frontend
+     - Blocked on something: None
 
 **Upcoming and Future Tasks**
 Upcoming Tasks:
--   **P0: Implement dynamic status indicators on Docs screen**: In , add the visual indicators for document status (blinking green/red circle for en cours, green circle for finalisé, etc.) as specified in the user's PDF. This will require creating a new animated component for the blinking effect.
--   **P0: Integrate with existing Artywiz Backend API**: This is the most critical V1 MVP task. The current FastAPI backend is a placeholder. The agent must get API documentation and refactor  and  to connect to the real Artywiz endpoints.
--   **P1: Implement V1 MVP Core Document Flow**:
-    -   Build screens to list, view, and validate documents from the real API.
-    -   Implement the right-side details panel on the Docs screen.
-    -   Implement handling for document ready alerts.
-    -   Implement the flow to retrieve and publish the final document to social media (Meta API integration).
+-   **P1: Implement popup filtre for Docs List**: The user mentioned providing a mockup for a filter popup on the Docs screen (). The agent should ask for this mockup and implement it.
+-   **P2: Create UI to display document history and insights**: The stores are now structured to hold this data. A new UI section is needed (perhaps in the document editor or a new stats screen) to display  from  and insights from .
 
 Future Tasks:
--   Implement a responsive desktop layout with an adaptive navigation system.
--   Correctly implement OAuth for social logins against the real Artywiz backend.
+-   **Implement a test agent/suite**: The placeholder file  is still empty.
+-   **Integrate with the real Artywiz Backend API**: This remains the main long-term goal to move beyond the mocked frontend data.
 
 **Completed work in this session**
--   **CRITICAL: Resolved Intro Screen Blockage**: After multiple failed attempts to fix a non-interactive intro screen, the screen () was **deleted entirely** and the navigation in  was updated to go directly to the dashboard, resolving a major source of user frustration.
--   **Docs Screen Restructure**: The  screen was completely overhauled to match the user's PDF specification, featuring a new 4-line card layout, a centered header, and removal of text banners.
--   **Data Persistence**: Implemented a hybrid storage solution for Zustand ( on web) in  and  to ensure user profiles, preferences, and auth state persist across browser sessions.
--   **Dashboard Header Fix**: Modified the dashboard to display the *actual* active profile name (e.g., AS Strasbourg) from the user's created accounts, instead of a generic placeholder like Une Équipe.
--   **Mes Comptes UI Fix**: Renamed the Enregistrer button to Continuer for better UX.
--   **Doc Showcase Animations**: Multiple iterations on the carousel animations in  to add bounce effects, fade-outs, and specific timings as requested by the user.
--   **EAS Build Guidance**: Guided the user through installing Node.js, EAS CLI, and troubleshooting initial build steps on their local machine.
--   **UI Audit & Refinements**: Harmonized the welcome, login, and signup screens with a new  component, icons, and improved validation feedback.
-
-**Earlier issues found/mentioned but not fixed**
--   The non-continuous video background (Issue #4 in the list above) remains unfixed.
-
-**Known issue recurrence from previous fork**
--   None.
+- Recently completed:
+  - **Data Persistence Refactor (Structure only)**: Created  and updated  &  for per-profile settings and history.
+  - **Document Detail Screen () Fix**: Corrected data binding issues after the data services were updated.
+  - **Document Editor () UI Overhaul**:
+      - Header now shows 4 lines of document info.
+      - Pagination indicator () was removed.
+      - Redundant text and brouillon badge below the mockup were removed.
+      - A second, redundant supports section was removed.
+  - **Login/Signup Flow Fixes**:
+      - Login now correctly redirects directly to the Dashboard ().
+      - Add Account popup in  now correctly shows account types (équipe, club) instead of sports, fixing a regression.
+      - Added a create account link to the login page.
+  - **Welcome Screen ()**: Removed the old blue/green gradient, now shows the video background on load.
+  - **Account Management**: Removed the sponsor account type from the user onboarding flow and default data.
+  - **Animation Removal**: Removed the  animation for account cards appearing in .
 
 **Code Architecture**
 
 
 **Key Technical Concepts**
--   **Frontend**: React Native, Expo (with Expo Router), TypeScript,  (for complex, chained animations), React Query, Axios, Zustand (with ).
--   **Backend**: Python, FastAPI, MongoDB (temporary).
--   **Architecture**: Full-stack monorepo.
--   **Deployment**: Configured for EAS (Expo Application Services).
+-   **Frontend**: React Native, Expo, TypeScript, Expo Router, .
+-   **State Management**: Zustand with  and . The data model was just significantly refactored to be more granular.
+-   **Backend**: Python, FastAPI (still a placeholder).
 
 **key DB schema**
--   **users**:  (No change)
-
-**changes in tech stack**
--   None.
+-   No DB changes. All persistence changes were on the client-side using Zustand and AsyncStorage.
 
 **All files of reference**
--   : **Heavily modified & currently broken**. Contains the Mes Comptes screen and the buggy multi-step popup. This is the location of the highest priority bug.
--   : **Heavily modified**. Contains the document carousel with complex, user-specified animations. Needs further refinement.
--   : **Heavily modified**. This is the new Docs screen, restructured based on the user's PDF. Upcoming tasks relate to this file.
--   : **DELETED**. This file was removed to fix a recurring user-blocking issue.
--   : **Modified** to use a hybrid storage creator for web persistence.
--   : **Modified** to use the  middleware for saving user data.
-
-**Areas that need refactoring**:
--    is a monolithic component. The entire multi-step animated popup () should be extracted into its own component file to improve readability and isolation, which would also make it easier to debug.
-
-**key api endpoints**
--   
--   
+-   : **MODIFIED**. Core file for the new per-profile settings.
+-   : **MODIFIED**. Core file for the new publication history.
+-   : **NEW**. File for future social media stats.
+-   : **NEEDS UPDATE**. The UI here is out of sync with .
+-   : **NEEDS UPDATE**. The UI here is out of sync with .
 
 **Critical Info for New Agent**
--   **IMMEDIATE P0 BUG**: The Ajouter un compte popup in  is broken. The animation logic is incorrect. Fix this first.
--   **DO NOT RE-IMPLEMENT THE INTRO SCREEN**: The user was extremely frustrated by the  screen. It has been intentionally deleted. The flow is now  -> . Do not re-introduce the intro screen.
--   **EXPO GO IS BROKEN**: You cannot test using the QR code due to an un-fixable  environment setting. You MUST guide the user to test via the web preview URL on their mobile browser. Do not waste time trying to fix the Expo Go tunnel.
--   **USER IS VERY UI/UX FOCUSED**: The user provides highly detailed, iterative feedback on animations and timings (gaming feel). Be prepared for multiple revisions on UI components.
--   **TESTING ENVIRONMENT PERSISTENCE**: The screenshot tool starts a new browser session for each call, which clears . The persistence logic in the code is correct; do not waste time debugging a non-existent persistence issue.
+-   **IMMEDIATE P0 TASK**: The app's state management was just refactored, but the UI is not yet connected to the new logic. Your first task is to update the UI components (especially the Dashboard's sponsoring teaser and the Document Editor's publish action) to use the new, more granular state management functions. See All Pending/In progress Issue list for the exact files and logic.
 -   **RESPOND IN FRENCH**.
+-   **USER IS PRECISE**: The user gives very specific instructions. Do exactly what is asked, without making extra changes.
+-   **WAITING FOR MOCKUP**: The user intends to provide a mockup for a popup filtre. Do not proceed with this until the mockup is received.
 
 **documents created in this job**
--   None.
+-   
 
 **Last 10 User Messages and any pending user messages**
--   User requests optimization of the Docs screen via PDF. (Status: Partially done, screen restructured).
--   User reports being blocked by the intro animation again. (Status: Resolved, screen deleted).
--   User reports Expo Go QR code not working. (Status: Addressed, explained it's an env issue).
--   User asks for guidance on EAS build. (Status: Provided, but build failed on user's machine).
--   User chooses to stick with web preview for testing. (Status: Acknowledged).
--   User requests to rename Enregistrer to Continuer. (Status: Completed).
--   User reports intro animation *still* appearing. (Status: Resolved by deleting file and clearing cache).
--   User reports dashboard header shows wrong profile name. (Status: Resolved).
--   **User reports popup on Mes Comptes screen is broken/invisible.** (Status: **PENDING - CURRENT TASK**).
--   User provides new, detailed timing feedback for the  carousel animation. (Status: **PENDING**).
+-   User asks to fix profile-selection popup, which incorrectly showed sports instead of account types. (Status: Completed)
+-   User asks to remove an animation when a new account card appears. (Status: Completed)
+-   User requests a major overhaul of data persistence for per-account preferences, doc history, and social stats. (Status: IN PROGRESS - data structures are done, UI integration is pending).
+-   User confirms to proceed with the persistence refactor. (Status: Acknowledged)
+-   User provides more instructions for  and  screens. (Status: Completed)
+-   User points out that the add account screen is broken again and should only allow equipe, club, district, ligue. (Status: Completed)
+-   User confirms the login flow and asks to check if auto-sponsoring is per-account and off by default. (Status: Partially completed - setting is now  by default, but UI work for per-account is pending)
+-   User reports broken links (all links were verified and are OK). (Status: Completed)
+-   User provides instructions to modify the  header and layout. (Status: Completed)
+-   User asks to add a create account link to the login screen. (Status: Completed)
 
 **Project Health Check:**
 -   **Broken**:
-    -   The Ajouter un compte popup on the  screen.
-    -   Testing via **Expo Go** is non-functional due to the CI environment.
--   **Mocked**: The entire backend and all user data (documents, clubs, etc.) are mocked.
+    -   The connection between the UI and the recently refactored state for sponsoring preferences. The feature appears broken to the user until the UI is updated.
+-   **Mocked**: The entire backend, all document data, and all social media insights.
 
 **3rd Party Integrations**
--   None active. Meta API integration is planned.
+-   None.
 
 **Testing status**
 -   Testing agent used after significant changes: NO
 -   Troubleshoot agent used after agent stuck in loop: NO
--   Test files created: []
--   Known regressions: Testing on mobile via Expo Go is non-functional.
+-   Test files created: None.
+-   Known regressions: None.
 
 **Credentials to test flow:**
--   User registration can be done with any fake //.
+-   Register a new user with any fake email/password to test the full onboarding flow.
 
 **What agent forgot to execute**
--   The agent has not yet implemented the dynamic status indicators (blinking dots, icons) or the right-hand details panel for the new Docs screen (), which were part of the user's PDF-based request. These are pending upcoming tasks.
+-   The agent completed the structural data persistence refactor but did not update the UI components to use the new data model. This is the most critical pending task.
 
 </analysis>
