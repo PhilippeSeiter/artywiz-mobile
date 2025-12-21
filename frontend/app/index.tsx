@@ -391,12 +391,8 @@ export default function WelcomeScreen() {
   if (isCheckingAuth) {
     return (
       <View style={styles.container}>
-        <LinearGradient
-          colors={['#0066FF', '#00AAFF', '#00DDCC']}
-          start={{ x: 0.5, y: 0 }}
-          end={{ x: 0.5, y: 1 }}
-          style={StyleSheet.absoluteFill}
-        />
+        {/* Fond vidéo même pendant le chargement */}
+        <VideoBackground />
         <View style={styles.loadingContainer}>
           <Image
             source={require('../assets/images/logo_artywiz_blanc.png')}
