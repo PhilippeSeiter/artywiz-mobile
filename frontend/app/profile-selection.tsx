@@ -466,7 +466,9 @@ const UnifiedPopup = ({ visible, onClose, onAccountCreated }: UnifiedPopupProps)
                 </ScrollView>
               </View>
             )}
-          </Animated.View>
+              </View>
+            </Animated.View>
+          </View>
         </Animated.View>
       </Animated.View>
     </Modal>
