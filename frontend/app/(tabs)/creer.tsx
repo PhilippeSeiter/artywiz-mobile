@@ -42,7 +42,19 @@ import Animated, {
 } from 'react-native-reanimated';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
-const CARD_HEIGHT = 120;
+
+// Types pour les tailles d'affichage
+type DisplaySize = 'small' | 'medium' | 'large'; // 8 docs, 4 docs, 2 docs
+type SortOption = 'brouillons' | 'prets' | 'publies' | null;
+type SponsorFilter = 'sponsored' | 'not_sponsored' | null;
+
+// Configuration des tailles de cartes
+const CARD_CONFIGS: Record<DisplaySize, { height: number; columns: number }> = {
+  small: { height: 90, columns: 1 },    // 8 docs - petites cartes
+  medium: { height: 120, columns: 1 },  // 4 docs - taille actuelle (défaut)
+  large: { height: 180, columns: 1 },   // 2 docs - grandes cartes
+};
+
 const MOCKUP_WIDTH_PERCENT = 0.5; // 50% de la largeur de la carte
 
 // Types
