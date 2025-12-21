@@ -416,17 +416,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logoImageArtywiz: {
-    width: 154,  // +10%
-    height: 33,  // +10%
-  },
-  logoFootball: {
-    top: 66,     // Sous Artywiz, repositionné
-    width: '100%',
-    alignItems: 'center',
-  },
-  logoImageFootball: {
-    width: 110,  // +10%
-    height: 22,  // +10%
+    width: 154,
+    height: 33,
   },
   scrollView: {
     flex: 1,
