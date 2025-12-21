@@ -887,22 +887,14 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   mockupContainer: {
-    width: SCREEN_WIDTH * 0.35,
-    minWidth: 120,
-    maxWidth: 150,
+    width: '50%', // 50% de la largeur de la carte
     height: CARD_HEIGHT,
     backgroundColor: '#E5E7EB',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    paddingBottom: 0,
+    overflow: 'hidden',
   },
   mockupImage: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    height: CARD_HEIGHT - 30,
     width: '100%',
+    height: '100%',
   },
   mockupGradient: {
     position: 'absolute',
