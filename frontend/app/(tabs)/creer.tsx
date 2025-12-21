@@ -437,14 +437,16 @@ export default function CreerScreen() {
             />
           </View>
           
-          {/* Sélecteur de profil centré avec logo du compte actif */}
+          {/* Sélecteur de profil centré avec logo réel du compte actif */}
           <TouchableOpacity 
             style={styles.profileSelectorCenter}
             onPress={() => setShowProfileModal(true)}
           >
-            <View style={styles.profileLogoSmall}>
-              <Ionicons name={selectedProfile.type === 'club' ? 'business' : selectedProfile.type === 'ligue' ? 'globe' : 'people'} size={18} color="#FFFFFF" />
-            </View>
+            <Image 
+              source={selectedProfile.logo} 
+              style={styles.profileLogoImage} 
+              resizeMode="contain"
+            />
             <Text style={styles.profileNameHeader} numberOfLines={1}>{selectedProfile.name}</Text>
             <Ionicons name="chevron-down" size={16} color="#FFFFFF" />
           </TouchableOpacity>
