@@ -1,10 +1,12 @@
 /**
  * VideoBackground component - Full screen looping video background
  * Used on login, signup, and welcome screens
+ * Supports forward/backward playback via VideoDirectionProvider
  */
 import React, { useRef, useEffect, useState } from 'react';
 import { View, StyleSheet, Platform, Image } from 'react-native';
 import { Video, ResizeMode, AVPlaybackStatus } from 'expo-av';
+import { useVideoDirection } from '../providers/VideoDirectionProvider';
 
 const VIDEO_URL = 'https://customer-assets.emergentagent.com/job_artywiz-transfer/artifacts/8qc6s5v8_bg-login%20%282%29.mp4';
 
@@ -18,6 +20,7 @@ interface VideoBackgroundProps {
 // Web-only video component using DOM API directly
 const WebVideo = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const { registerVideo } = useVideoDirection();
 
   useEffect(() => {
     if (Platform.OS !== 'web' || !containerRef.current) return;
@@ -41,6 +44,9 @@ const WebVideo = () => {
     `;
 
     containerRef.current.appendChild(video);
+    
+    // Register video with direction provider
+    registerVideo(video);
 
     // Attempt to play
     const playVideo = () => {
@@ -59,10 +65,11 @@ const WebVideo = () => {
     playVideo();
 
     return () => {
+      registerVideo(null);
       video.pause();
       video.remove();
     };
-  }, []);
+  }, [registerVideo]);
 
   if (Platform.OS !== 'web') return null;
 
