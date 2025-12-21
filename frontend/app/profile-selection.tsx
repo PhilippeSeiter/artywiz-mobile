@@ -647,6 +647,8 @@ const styles = StyleSheet.create({
   // Popup
   popupOverlay: { flex: 1, backgroundColor: 'rgba(0, 0, 0, 0.6)', justifyContent: 'center', alignItems: 'center', paddingHorizontal: Spacing.md },
   popupContainer: { backgroundColor: Colors.white, borderRadius: 24, width: '100%', maxWidth: 400, maxHeight: height * 0.8, overflow: 'hidden' },
+  popupSlideWrapper: { overflow: 'hidden' },
+  popupSlideContent: { width: '100%' },
   popupHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: Spacing.lg, paddingTop: Spacing.lg, paddingBottom: Spacing.sm },
   popupBackBtn: { width: 40, height: 40, borderRadius: 20, backgroundColor: Colors.primary + '15', justifyContent: 'center', alignItems: 'center' },
   popupCloseBtn: { width: 40, height: 40, borderRadius: 20, backgroundColor: '#F1F5F9', justifyContent: 'center', alignItems: 'center' },
