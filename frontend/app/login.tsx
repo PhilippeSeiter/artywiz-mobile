@@ -513,8 +513,8 @@ const styles = StyleSheet.create({
     zIndex: 1,  // EN DESSOUS du scrollView (zIndex 10)
   },
   logoPartsWrapper: {
-    width: 220,  // +10% (était 200)
-    height: 105, // Ajusté pour contenir les 3 parties
+    width: 220,
+    height: 75, // Réduit car pas de Football
     alignItems: 'center',
     justifyContent: 'center',
   },
