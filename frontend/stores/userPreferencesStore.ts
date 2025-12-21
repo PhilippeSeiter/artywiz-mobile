@@ -122,8 +122,11 @@ interface UserPreferencesState {
   // Selected themes
   selectedThemes: string[];
   
-  // Sponsoring preferences
+  // Sponsoring preferences (global - legacy, kept for compatibility)
   sponsoringPrefs: SponsoringPrefs;
+  
+  // Sponsoring preferences per profile (new)
+  profileSponsoringPrefs: ProfileSponsoringPrefs;
   
   // Social connections per profile
   profileSocialConnections: ProfileSocialConnections;
@@ -138,6 +141,10 @@ interface UserPreferencesState {
   setActiveProfile: (index: number) => void;
   setSelectedThemes: (themes: string[]) => void;
   setSponsoringPrefs: (prefs: SponsoringPrefs) => void;
+  
+  // Profile-specific sponsoring actions (new)
+  setProfileSponsoringPrefs: (profileId: string, prefs: SponsoringPrefs) => void;
+  getProfileSponsoringPrefs: (profileId: string) => SponsoringPrefs;
   
   // Social connection actions
   setSocialConnection: (profileId: string, connection: SocialConnection) => void;
