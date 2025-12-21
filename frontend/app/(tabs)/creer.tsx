@@ -516,7 +516,7 @@ export default function CreerScreen() {
 
       {/* Liste des documents avec animation Tetris */}
       <FlatList
-        key={selectedProfile.id} // Force re-render pour rejouer l'animation
+        key={`${selectedProfile.id}-${displaySize}`} // Force re-render pour rejouer l'animation
         data={filteredDocuments}
         renderItem={renderDocument}
         keyExtractor={(item) => item.id}
