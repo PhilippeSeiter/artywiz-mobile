@@ -405,11 +405,12 @@ export default function CreerScreen() {
     setShowFilterModal(false);
   };
 
-  // Render document item
-  const renderDocument = ({ item }: { item: UnifiedDocument }) => (
+  // Render document item avec animation Tetris
+  const renderDocument = ({ item, index }: { item: UnifiedDocument; index: number }) => (
     <DocumentCard 
       doc={item as ASDocument} 
       onPress={() => handleDocumentPress(item)}
+      index={index}
     />
   );
 
