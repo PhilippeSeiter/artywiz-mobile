@@ -325,6 +325,9 @@ export default function CreerScreen() {
     } else if (selectedProfile.id === 'normandie') {
       const allDocs = NormandieDataService.getAllDocuments();
       setDocuments(allDocs);
+    } else if (selectedProfile.id === 'alsace') {
+      const allDocs = AlsaceDataService.getAllDocuments();
+      setDocuments(allDocs);
     }
     setIsLoading(false);
   }, [selectedProfile]);
