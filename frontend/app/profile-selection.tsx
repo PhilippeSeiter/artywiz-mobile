@@ -628,7 +628,15 @@ export default function ProfileSelectionScreen() {
           {hasAccounts && (
             <View style={styles.accountsList}>
               {accounts.map((account, index) => (
-                <AccountCard key={account.id} account={account} index={index} isActive={account.id === activeAccountId} onPress={() => handleActivateAccount(account.id)} onDelete={() => handleDeleteAccount(account.id)} />
+                <AccountCard 
+                  key={account.id} 
+                  account={account} 
+                  index={index} 
+                  isActive={account.id === activeAccountId} 
+                  onPress={() => handleActivateAccount(account.id)} 
+                  onDelete={() => handleDeleteAccount(account.id)} 
+                  canDelete={accounts.length > 1} // Ne peut supprimer que s'il y a plus d'1 compte
+                />
               ))}
             </View>
           )}
