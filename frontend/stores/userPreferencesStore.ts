@@ -94,6 +94,9 @@ export interface SponsoringPrefs {
   maxSponsorsPerDoc: number;
 }
 
+// Map profileId -> SponsoringPrefs (préférences par profil)
+export type ProfileSponsoringPrefs = Record<string, SponsoringPrefs>;
+
 // Social account connection info stored per profile
 export interface SocialConnection {
   platform: 'meta' | 'linkedin';
