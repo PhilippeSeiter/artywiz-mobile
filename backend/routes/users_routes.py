@@ -65,15 +65,37 @@ async def get_current_user(authorization: Optional[str] = Header(None)) -> UserI
 @router.post("/register", response_model=TokenResponse)
 async def register(user_data: UserCreate):
     """Register a new user"""
+    import re
+    
+    # Validate email format and characters
+    email = user_data.email.strip().lower()
+    if re.search(r'[<>"\'\&;(){}\[\]\\]', email):
+        raise HTTPException(status_code=400, detail="Caractères non autorisés dans l'email")
+    
+    if not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email):
+        raise HTTPException(status_code=400, detail="Format email invalide")
+    
+    # Validate name
+    name = user_data.name.strip()
+    if len(name) < 2:
+        raise HTTPException(status_code=400, detail="Le nom doit contenir au moins 2 caractères")
+    
+    if re.search(r'[<>"\'\&]', name):
+        raise HTTPException(status_code=400, detail="Caractères spéciaux non autorisés dans le nom")
+    
+    # Validate password
+    if len(user_data.password) < 6:
+        raise HTTPException(status_code=400, detail="Le mot de passe doit contenir au moins 6 caractères")
+    
     # Check if email already exists
-    existing = await db.users.find_one({"email": user_data.email.lower()})
+    existing = await db.users.find_one({"email": email})
     if existing:
         raise HTTPException(status_code=400, detail="Cet email est déjà utilisé")
     
     # Create user
     user = UserInDB(
-        email=user_data.email.lower(),
-        name=user_data.name,
+        email=email,
+        name=name,
         hashed_password=get_password_hash(user_data.password),
         profiles=[p.model_dump() for p in DEFAULT_PROFILES],
     )
