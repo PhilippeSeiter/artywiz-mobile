@@ -457,16 +457,16 @@ export default function CreerScreen() {
         }
       />
 
-      {/* Modal sélection club */}
+      {/* Modal sélection profil */}
       <Modal
-        visible={showClubModal}
+        visible={showProfileModal}
         transparent
         animationType="fade"
-        onRequestClose={() => setShowClubModal(false)}
+        onRequestClose={() => setShowProfileModal(false)}
       >
         <Pressable 
           style={styles.modalOverlay}
-          onPress={() => setShowClubModal(false)}
+          onPress={() => setShowProfileModal(false)}
         >
           <View style={styles.modalContent}>
             <Text style={styles.modalTitle}>Sélectionner un profil</Text>
