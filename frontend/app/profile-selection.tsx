@@ -405,37 +405,8 @@ const UnifiedPopup = ({ visible, onClose, onAccountCreated }: UnifiedPopupProps)
 
               {/* Content */}
               <View style={styles.popupContent}>
-            {/* Étape 1: Choix du sport */}
-            {step === 'sport' && (
-              <View style={styles.sportsList}>
-                <TouchableOpacity
-                  style={styles.sportItem}
-                  onPress={handleSelectSport}
-                  activeOpacity={0.7}
-                >
-                  <View style={[styles.sportIcon, { backgroundColor: '#22C55E20' }]}>
-                    <Ionicons name="football" size={32} color="#22C55E" />
-                  </View>
-                  <Text style={styles.sportLabel}>Football</Text>
-                  <Ionicons name="chevron-forward" size={20} color={Colors.textLight} />
-                </TouchableOpacity>
-                {/* Sports désactivés pour l'instant */}
-                <View style={[styles.sportItem, styles.sportDisabled]}>
-                  <View style={[styles.sportIcon, { backgroundColor: '#9CA3AF20' }]}>
-                    <Ionicons name="basketball" size={32} color="#9CA3AF" />
-                  </View>
-                  <Text style={[styles.sportLabel, { color: '#9CA3AF' }]}>Basket (bientôt)</Text>
-                </View>
-                <View style={[styles.sportItem, styles.sportDisabled]}>
-                  <View style={[styles.sportIcon, { backgroundColor: '#9CA3AF20' }]}>
-                    <Ionicons name="tennisball" size={32} color="#9CA3AF" />
-                  </View>
-                  <Text style={[styles.sportLabel, { color: '#9CA3AF' }]}>Tennis (bientôt)</Text>
-                </View>
-              </View>
-            )}
 
-            {/* Étape 2: Choix du type de compte */}
+            {/* Étape 1: Choix du type de compte */}
             {step === 'types' && (
               <View style={styles.typesList}>
                 {ACCOUNT_TYPES.map((type, index) => (
