@@ -268,7 +268,6 @@ const DocumentCard = ({
     </Pressable>
   );
 };
-};
 
 // Fonction pour obtenir l'icône du type de document
 const getDocTypeIcon = (typeLabel: string): string => {
