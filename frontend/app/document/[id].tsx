@@ -665,20 +665,12 @@ export default function DocumentDetailScreen() {
           <View style={styles.metaRow}>
             <View style={styles.metaItem}>
               <Ionicons name="calendar-outline" size={16} color={Colors.textSecondary} />
-              <Text style={styles.metaText}>
-                {new Date(document.date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}
-              </Text>
+              <Text style={styles.metaText}>{document.ligne1}</Text>
             </View>
-            {document.teamLabel && (
+            {document.ligne4 && (
               <View style={styles.metaItem}>
                 <Ionicons name="people-outline" size={16} color={Colors.textSecondary} />
-                <Text style={styles.metaText}>{document.teamLabel}</Text>
-              </View>
-            )}
-            {document.competitionLabel && (
-              <View style={styles.metaItem}>
-                <Ionicons name="trophy-outline" size={16} color={Colors.textSecondary} />
-                <Text style={styles.metaText}>{document.competitionLabel}</Text>
+                <Text style={styles.metaText}>{document.ligne4}</Text>
               </View>
             )}
           </View>
