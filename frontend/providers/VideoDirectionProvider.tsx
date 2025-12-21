@@ -1,8 +1,10 @@
 /**
  * VideoDirectionContext - Gère la direction de lecture de la vidéo de fond
  * Alterne entre avant et arrière à chaque changement d'écran
+ * Note: Fonctionne uniquement sur le web (pas de video native)
  */
 import React, { createContext, useContext, useState, useCallback, useRef, useEffect } from 'react';
+import { Platform } from 'react-native';
 import { usePathname } from 'expo-router';
 
 // Écrans où la vidéo doit être active
@@ -10,8 +12,8 @@ const AUTH_SCREENS = ['/', '/login', '/signup', '/sector-selection', '/profile-s
 
 interface VideoDirectionContextType {
   isForward: boolean;
-  videoRef: React.MutableRefObject<HTMLVideoElement | null>;
-  registerVideo: (video: HTMLVideoElement | null) => void;
+  videoRef: React.MutableRefObject<any>;
+  registerVideo: (video: any) => void;
 }
 
 const VideoDirectionContext = createContext<VideoDirectionContextType>({
@@ -31,14 +33,23 @@ interface VideoDirectionProviderProps {
 export function VideoDirectionProvider({ children }: VideoDirectionProviderProps) {
   const pathname = usePathname();
   const [isForward, setIsForward] = useState(true);
-  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const videoRef = useRef<any>(null);
   const previousPathname = useRef<string>(pathname);
   const animationFrameRef = useRef<number | null>(null);
   const isAnimatingRef = useRef(false);
 
-  const registerVideo = useCallback((video: HTMLVideoElement | null) => {
+  const registerVideo = useCallback((video: any) => {
     videoRef.current = video;
   }, []);
+
+  // Skip video logic on native platforms
+  if (Platform.OS !== 'web') {
+    return (
+      <VideoDirectionContext.Provider value={{ isForward: true, videoRef, registerVideo }}>
+        {children}
+      </VideoDirectionContext.Provider>
+    );
+  }
 
   // Fonction pour animer la vidéo en arrière (manipulation du currentTime)
   const animateBackward = useCallback(() => {
