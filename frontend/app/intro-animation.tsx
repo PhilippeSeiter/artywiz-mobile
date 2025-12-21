@@ -2,29 +2,26 @@ import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { 
   View, 
   StyleSheet, 
-  TouchableOpacity, 
+  Pressable, 
   Platform,
-  Dimensions,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Video, ResizeMode, AVPlaybackStatus } from 'expo-av';
 import { useUserPreferencesStore, ARTYWIZ_THEMES } from '../stores/userPreferencesStore';
 
-const { width, height } = Dimensions.get('window');
 const VIDEO_URL = 'https://customer-assets.emergentagent.com/job_artywiz-transfer/artifacts/8qc6s5v8_bg-login%20%282%29.mp4';
 
 export default function IntroAnimationScreen() {
   const router = useRouter();
   const videoRef = useRef<Video>(null);
-  const [hasNavigated, setHasNavigated] = useState(false);
-  const webVideoRef = useRef<HTMLVideoElement | null>(null);
+  const hasNavigatedRef = useRef(false);
 
-  // Navigate to dashboard
+  // Navigate to dashboard - using ref to avoid stale closure
   const goToDashboard = useCallback(() => {
-    if (hasNavigated) return;
-    setHasNavigated(true);
+    if (hasNavigatedRef.current) return;
+    hasNavigatedRef.current = true;
     
-    console.log('[Intro] Navigating to dashboard...');
+    console.log('[Intro] >>> Going to dashboard');
     
     // Set default themes and complete onboarding
     const { setSelectedThemes, completeOnboarding } = useUserPreferencesStore.getState();
@@ -33,13 +30,30 @@ export default function IntroAnimationScreen() {
     
     // Navigate
     router.replace('/(tabs)');
-  }, [hasNavigated, router]);
+  }, [router]);
 
-  // Web: Create video element
+  // WEB: Setup video directly in DOM with click handler
   useEffect(() => {
     if (Platform.OS !== 'web') return;
     if (typeof document === 'undefined') return;
 
+    console.log('[Intro] Setting up web video...');
+
+    // Create container for video
+    const container = document.createElement('div');
+    container.id = 'intro-video-container';
+    container.style.cssText = `
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 9999;
+      background-color: #0A1628;
+      cursor: pointer;
+    `;
+
+    // Create video
     const video = document.createElement('video');
     video.src = VIDEO_URL;
     video.autoplay = true;
@@ -47,37 +61,49 @@ export default function IntroAnimationScreen() {
     video.playsInline = true;
     video.setAttribute('playsinline', '');
     video.style.cssText = `
-      position: fixed;
+      position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
-      z-index: 0;
+      pointer-events: none;
     `;
 
-    // When video ends -> go to dashboard
+    container.appendChild(video);
+    document.body.appendChild(container);
+
+    // Click handler on container
+    const handleClick = () => {
+      console.log('[Intro] Container clicked!');
+      goToDashboard();
+    };
+    container.addEventListener('click', handleClick);
+    container.addEventListener('touchstart', handleClick);
+
+    // Video ended handler
     video.addEventListener('ended', () => {
       console.log('[Intro] Video ended');
       goToDashboard();
     });
 
-    document.body.appendChild(video);
-    webVideoRef.current = video;
-
+    // Try to play
     video.play().catch(err => {
       console.log('[Intro] Video play error:', err);
-      // If video can't play, go to dashboard after 3s
-      setTimeout(goToDashboard, 3000);
+      // If video fails, wait 2s then go
+      setTimeout(goToDashboard, 2000);
     });
 
+    // Cleanup
     return () => {
+      container.removeEventListener('click', handleClick);
+      container.removeEventListener('touchstart', handleClick);
       video.pause();
-      video.remove();
+      container.remove();
     };
   }, [goToDashboard]);
 
-  // Native: Handle video status
+  // NATIVE: Handle video status
   const handlePlaybackStatus = (status: AVPlaybackStatus) => {
     if (status.isLoaded && status.didJustFinish) {
       console.log('[Intro] Native video ended');
@@ -85,25 +111,19 @@ export default function IntroAnimationScreen() {
     }
   };
 
-  // Fallback: if video doesn't end after 15s, navigate anyway
+  // Fallback: 10 seconds max
   useEffect(() => {
     const fallback = setTimeout(() => {
-      if (!hasNavigated) {
-        console.log('[Intro] Fallback timeout');
-        goToDashboard();
-      }
-    }, 15000);
+      console.log('[Intro] Fallback timeout (10s)');
+      goToDashboard();
+    }, 10000);
     return () => clearTimeout(fallback);
-  }, [hasNavigated, goToDashboard]);
+  }, [goToDashboard]);
 
-  return (
-    <TouchableOpacity 
-      style={styles.container} 
-      activeOpacity={1}
-      onPress={goToDashboard}
-    >
-      {/* Native Video */}
-      {Platform.OS !== 'web' && (
+  // Native render
+  if (Platform.OS !== 'web') {
+    return (
+      <Pressable style={styles.container} onPress={goToDashboard}>
         <Video
           ref={videoRef}
           source={{ uri: VIDEO_URL }}
@@ -113,12 +133,12 @@ export default function IntroAnimationScreen() {
           isMuted
           onPlaybackStatusUpdate={handlePlaybackStatus}
         />
-      )}
-      
-      {/* Web: Video is added to document.body directly */}
-      {Platform.OS === 'web' && <View style={styles.webPlaceholder} />}
-    </TouchableOpacity>
-  );
+      </Pressable>
+    );
+  }
+
+  // Web: just render placeholder, actual video is in DOM
+  return <View style={styles.container} />;
 }
 
 const styles = StyleSheet.create({
@@ -132,8 +152,5 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-  },
-  webPlaceholder: {
-    flex: 1,
   },
 });
