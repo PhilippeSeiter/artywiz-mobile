@@ -559,15 +559,15 @@ export const DocShowcase: React.FC<DocShowcaseProps> = ({
                     <Image source={getMockup(currentDoc.id)} style={styles.image} resizeMode="cover" />
                     
                     {/* Overlay */}
-                    <Animated.View style={[styles.overlay, { opacity: overlayOpacity }]} />
+                    <Animated.View style={[styles.overlay, useAnimatedStyle(() => ({ opacity: overlayOpacity.value }))]} />
                     
                     {/* Texte qui glisse du bas */}
                     <Animated.View style={[
                       styles.titleContainer, 
-                      { 
+                      useAnimatedStyle(() => ({
                         opacity: interpolate(textTranslateY.value, [30, 0], [0, 1]),
                         transform: [{ translateY: textTranslateY.value }],
-                      }
+                      }))
                     ]}>
                       <Text style={styles.docType}>{currentDoc.ligne2 || currentDoc.typeLabel || currentDoc.title}</Text>
                       {(currentDoc.ligne3 || currentDoc.competitionLabel) && (
