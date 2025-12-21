@@ -215,7 +215,7 @@ function AnimatedButton({ title, onPress, icon, variant = 'primary', style }: An
             <Text style={styles.buttonTextSecondary}>{title}</Text>
             {icon && (
               <View style={styles.iconCircleSecondary}>
-                <Ionicons name={icon as any} size={14} color="#64748B" />
+                <Ionicons name={icon as any} size={14} color="#0066FF" />
               </View>
             )}
             <Animated.View style={[styles.buttonOverlaySecondary, overlayStyle]} />
