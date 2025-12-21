@@ -486,8 +486,9 @@ export default function CreerScreen() {
         </View>
       </LinearGradient>
 
-      {/* Liste des documents */}
+      {/* Liste des documents avec animation Tetris */}
       <FlatList
+        key={selectedProfile.id} // Force re-render pour rejouer l'animation
         data={filteredDocuments}
         renderItem={renderDocument}
         keyExtractor={(item) => item.id}
