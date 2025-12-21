@@ -201,9 +201,6 @@ export const DocShowcase: React.FC<DocShowcaseProps> = ({
     badgeScale.value = withTiming(0.9, { duration: 100 });
   }, []);
 
-  // Opacity pour le fade durant la transition
-  const slidesOpacity = useSharedValue(1);
-
   // Animation terminée - mettre à jour l'index React sans flash
   const onAnimationComplete = useCallback((targetIndex: number) => {
     // Reset immédiat pendant que le slide est hors écran
