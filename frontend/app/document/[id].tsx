@@ -640,13 +640,6 @@ export default function DocumentDetailScreen() {
       />
       
       <ScrollView style={styles.scrollView} contentContainerStyle={styles.contentNoPadding} showsVerticalScrollIndicator={false}>
-        
-        {/* Swipe indicator - compact */}
-        <View style={styles.swipeIndicatorCompact}>
-          <Ionicons name="chevron-back" size={16} color={prevDocument ? Colors.textSecondary : Colors.border} />
-          <Text style={styles.swipeText}>{currentIndex >= 0 ? `${currentIndex + 1} / ${totalDocs}` : ''}</Text>
-          <Ionicons name="chevron-forward" size={16} color={nextDocument ? Colors.textSecondary : Colors.border} />
-        </View>
 
         {/* Mockup PLEINE LARGEUR - sans card, sans espaces */}
         <GestureDetector gesture={panGesture}>
