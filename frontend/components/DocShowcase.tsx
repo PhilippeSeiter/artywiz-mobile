@@ -35,12 +35,12 @@ const VELOCITY_THRESHOLD = 500;
 // TIMING CONSTANTS (en ms)
 // ============================================
 const SLIDE_DURATION = 450;        // Durée du glissement
-const ZOOM_DURATION = 4000;        // Durée totale du zoom (lent et continu)
-const TEXT_APPEAR_DELAY = 1000;    // Délai avant apparition texte
-const TEXT_APPEAR_DURATION = 400;  // Durée animation texte
-const BADGE_APPEAR_DELAY = 400;    // Délai badge après texte
-const DISPLAY_DURATION = 5000;     // Temps d'affichage total avant transition
-const TEXT_HIDE_DURATION = 300;    // Durée disparition texte
+const ZOOM_DURATION = 1300;        // Durée du zoom (3x plus rapide: 4000/3)
+const TEXT_APPEAR_DELAY = 2000;    // Attendre 2 secondes avant d'afficher le texte
+const TEXT_APPEAR_DURATION = 600;  // Durée animation texte (glisse lentement)
+const BADGE_APPEAR_DELAY = 300;    // Délai badge après texte
+const DISPLAY_DURATION = 3300;     // 2s attente + 0.6s anim texte + 0.4s badge + 1s affichage = ~4s total
+const TEXT_HIDE_DURATION = 400;    // Durée disparition texte (glisse vers le bas)
 
 interface Document {
   id: string;
