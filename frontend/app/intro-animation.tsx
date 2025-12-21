@@ -1,25 +1,15 @@
-import React, { useEffect, useRef, useCallback } from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
   View,
   Text,
   StyleSheet,
-  TouchableOpacity,
+  Pressable,
   Dimensions,
   Platform,
 } from 'react-native';
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withTiming,
-  withDelay,
-  withSequence,
-  withRepeat,
-  Easing,
-} from 'react-native-reanimated';
 import { useRouter } from 'expo-router';
-import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
-import { Colors, Spacing } from '../constants';
+import { Colors } from '../constants';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useUserPreferencesStore, ARTYWIZ_THEMES } from '../stores/userPreferencesStore';
 
@@ -30,73 +20,21 @@ const VIDEO_URL = 'https://customer-assets.emergentagent.com/job_artywiz-transfe
 // Auto-skip delay in milliseconds (10 seconds)
 const AUTO_SKIP_DELAY = 10000;
 
-// ============================================
-// VIDEO BACKGROUND (Web only)
-// ============================================
-const VideoBackgroundIntro = () => {
-  const videoRef = useRef<HTMLVideoElement | null>(null);
-
-  useEffect(() => {
-    if (Platform.OS !== 'web') return;
-
-    const createVideo = () => {
-      const video = document.createElement('video');
-      video.src = VIDEO_URL;
-      video.autoplay = true;
-      video.loop = true;
-      video.muted = true;
-      video.playsInline = true;
-      video.setAttribute('playsinline', '');
-      video.setAttribute('webkit-playsinline', '');
-      video.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        object-fit: cover;
-        z-index: 0;
-      `;
-      document.body.appendChild(video);
-      videoRef.current = video;
-      video.play().catch(console.warn);
-    };
-
-    createVideo();
-
-    return () => {
-      if (videoRef.current) {
-        videoRef.current.pause();
-        videoRef.current.remove();
-        videoRef.current = null;
-      }
-    };
-  }, []);
-
-  return null;
-};
-
-// ============================================
-// MAIN COMPONENT
-// ============================================
 export default function IntroAnimationScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { setSelectedThemes, completeOnboarding } = useUserPreferencesStore();
   const hasNavigatedRef = useRef(false);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
 
-  // Button animation
-  const buttonOpacity = useSharedValue(0);
-  const pulseScale = useSharedValue(1);
-
-  const handleSkipIntro = useCallback(() => {
+  const handleSkipIntro = () => {
     // Prevent double navigation
     if (hasNavigatedRef.current) return;
     hasNavigatedRef.current = true;
 
-    // Set default themes:
-    // - All ARTYWIZ_THEMES (thématiques spécifiques)
-    // - Only 'ephemeride' from GENERIC_THEMES
+    console.log('Skipping intro...');
+
+    // Set default themes
     const defaultThemes = [
       ...ARTYWIZ_THEMES.map(t => t.id),
       'ephemeride',
@@ -107,68 +45,69 @@ export default function IntroAnimationScreen() {
     
     // Navigate to main app
     router.replace('/(tabs)');
-  }, [setSelectedThemes, completeOnboarding, router]);
+  };
 
+  // Setup video and auto-skip
   useEffect(() => {
-    // Button appears immediately
-    buttonOpacity.value = withDelay(500, withTiming(1, { duration: 400 }));
-    
-    // Subtle pulse animation
-    pulseScale.value = withDelay(1000, withRepeat(
-      withSequence(
-        withTiming(1.05, { duration: 1200, easing: Easing.inOut(Easing.ease) }),
-        withTiming(1, { duration: 1200, easing: Easing.inOut(Easing.ease) })
-      ),
-      -1,
-      true
-    ));
+    console.log('IntroAnimationScreen mounted');
+
+    // Create video for web
+    if (Platform.OS === 'web' && typeof document !== 'undefined') {
+      const video = document.createElement('video');
+      video.src = VIDEO_URL;
+      video.autoplay = true;
+      video.loop = true;
+      video.muted = true;
+      video.playsInline = true;
+      video.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        object-fit: cover;
+        z-index: -1;
+      `;
+      document.body.appendChild(video);
+      videoRef.current = video;
+      video.play().catch(console.warn);
+    }
 
     // Auto-skip after 10 seconds
     const autoSkipTimer = setTimeout(() => {
+      console.log('Auto-skip triggered');
       handleSkipIntro();
     }, AUTO_SKIP_DELAY);
 
     return () => {
       clearTimeout(autoSkipTimer);
+      if (videoRef.current) {
+        videoRef.current.pause();
+        videoRef.current.remove();
+        videoRef.current = null;
+      }
     };
-  }, [handleSkipIntro]);
-
-  const buttonAnimatedStyle = useAnimatedStyle(() => ({
-    opacity: buttonOpacity.value,
-    transform: [{ scale: pulseScale.value }],
-  }));
+  }, []);
 
   return (
-    <TouchableOpacity 
+    <Pressable 
       style={styles.container} 
-      activeOpacity={1} 
       onPress={handleSkipIntro}
     >
-      {/* Video Background */}
-      <VideoBackgroundIntro />
+      {/* Overlay */}
+      <View style={styles.overlay} />
       
-      {/* Dark overlay for better button visibility */}
-      <View style={styles.overlay} pointerEvents="none" />
-      
-      {/* Gradient at bottom */}
-      <LinearGradient
-        colors={['transparent', 'rgba(0,0,0,0.8)']}
-        style={styles.bottomGradient}
-        pointerEvents="none"
-      />
-
-      {/* Skip button at bottom - ALWAYS VISIBLE */}
-      <View style={[styles.skipButtonWrapper, { paddingBottom: Math.max(insets.bottom, 20) + 30 }]} pointerEvents="none">
-        <Animated.View style={[styles.skipButtonAnimated, buttonAnimatedStyle]}>
-          <View style={styles.skipButton}>
-            <Text style={styles.skipButtonText}>Passer l'intro</Text>
-            <View style={styles.skipButtonArrow}>
-              <Ionicons name="arrow-forward" size={18} color="#FFF" />
-            </View>
+      {/* Button at bottom */}
+      <View style={[styles.buttonContainer, { paddingBottom: Math.max(insets.bottom, 20) + 40 }]}>
+        <View style={styles.skipButton}>
+          <Text style={styles.skipButtonText}>Passer l'intro</Text>
+          <View style={styles.skipButtonArrow}>
+            <Ionicons name="arrow-forward" size={18} color="#FFF" />
           </View>
-        </Animated.View>
+        </View>
+        <Text style={styles.hintText}>Touchez n'importe où pour continuer</Text>
       </View>
-    </TouchableOpacity>
+    </Pressable>
   );
 }
 
@@ -176,30 +115,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#000',
+    justifyContent: 'flex-end',
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0,0,0,0.3)',
-    zIndex: 1,
+    backgroundColor: 'rgba(0,0,0,0.2)',
   },
-  bottomGradient: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: 250,
-    zIndex: 2,
-  },
-  skipButtonWrapper: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
+  buttonContainer: {
     alignItems: 'center',
-    zIndex: 100,
-  },
-  skipButtonAnimated: {
-    // Container for animation
+    paddingHorizontal: 20,
   },
   skipButton: {
     flexDirection: 'row',
@@ -211,12 +135,6 @@ const styles = StyleSheet.create({
     paddingRight: 20,
     borderRadius: 30,
     gap: 12,
-    // Shadow
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.4,
-    shadowRadius: 12,
-    elevation: 10,
   },
   skipButtonText: {
     fontSize: 16,
@@ -230,5 +148,10 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255,255,255,0.2)',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  hintText: {
+    marginTop: 16,
+    fontSize: 14,
+    color: 'rgba(255,255,255,0.7)',
   },
 });
