@@ -147,7 +147,7 @@ interface UserPreferencesState {
 }
 
 const initialSponsoringPrefs: SponsoringPrefs = {
-  autoSponsoringEnabled: true, // Activé par défaut pour test
+  autoSponsoringEnabled: false, // Désactivé par défaut
   pricePerDoc: 10,
   maxSponsorsPerDoc: 5,
 };
