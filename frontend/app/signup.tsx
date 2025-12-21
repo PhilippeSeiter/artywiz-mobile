@@ -195,11 +195,17 @@ export default function SignupScreen() {
     
     if (!name.trim()) {
       newErrors.name = 'Nom ou pseudo requis';
+    } else if (name.length < 2) {
+      newErrors.name = 'Au moins 2 caractères';
+    } else if (/[<>\"\'&]/.test(name)) {
+      newErrors.name = 'Caractères spéciaux non autorisés';
     }
 
     if (!email.trim()) {
       newErrors.email = 'Email requis';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    } else if (/[<>\"\'&;(){}[\]\\]/.test(email)) {
+      newErrors.email = 'Caractères non autorisés dans l\'email';
+    } else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
       newErrors.email = 'Format email invalide';
     }
 
