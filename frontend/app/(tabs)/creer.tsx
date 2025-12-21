@@ -227,15 +227,19 @@ const StatsRow = ({ stats }: { stats: { views: number; likes: number; shares: nu
 const DocumentCard = ({ 
   doc, 
   onPress,
-  index, 
+  index,
+  displaySize = 'medium',
 }: { 
   doc: ASDocument; 
   onPress: () => void;
   index: number; // Index pour l'animation Tetris
+  displaySize?: DisplaySize;
 }) => {
   const scale = useSharedValue(1);
   const translateY = useSharedValue(SCREEN_HEIGHT); // Commence hors de l'écran (en bas)
   const opacity = useSharedValue(0);
+  
+  const cardHeight = CARD_CONFIGS[displaySize].height;
 
   // Animation d'entrée Tetris avec délai basé sur l'index
   useEffect(() => {
