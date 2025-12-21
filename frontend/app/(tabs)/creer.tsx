@@ -38,6 +38,7 @@ import Animated, {
   FadeIn,
   FadeInDown,
   SlideInDown,
+  SlideOutDown,
   Layout,
 } from 'react-native-reanimated';
 
