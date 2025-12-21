@@ -283,9 +283,10 @@ export default function DocumentDetailScreen() {
     );
   }
 
-  const sponsoringPrice = MockDataService.getSponsoringPrice(document.id);
-  const mockup = MockDataService.getDocMockup(document.id);
-  const nextMockup = nextDocument ? MockDataService.getDocMockup(nextDocument.id) : null;
+  // Utiliser les propriétés du nouveau modèle de données
+  const sponsoringPrice = document.sponsorPrice || 0;
+  const mockup = document.mockupImage;
+  const nextMockup = nextDocument ? nextDocument.mockupImage : null;
 
   // === HANDLERS ===
 
