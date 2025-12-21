@@ -529,7 +529,7 @@ export default function ProfileSelectionScreen() {
   const { selectedProfiles: existingProfiles, setSelectedProfiles, activeProfileIndex, setActiveProfile, hasCompletedOnboarding } = useUserPreferencesStore();
   const scrollViewRef = useRef<ScrollView>(null);
 
-  const getRealAccounts = (profiles: UserProfile[]) => profiles.filter(p => !p.id.startsWith('base_') && p.type !== 'sponsor');
+  const getRealAccounts = (profiles: UserProfile[]) => profiles.filter(p => !p.id.startsWith('base_'));
   const [accounts, setAccounts] = useState<UserProfile[]>(getRealAccounts(existingProfiles));
   const [activeAccountId, setActiveAccountId] = useState<string | null>(accounts.length > 0 ? accounts[activeProfileIndex]?.id || accounts[0]?.id : null);
   const [showPopup, setShowPopup] = useState(false);
