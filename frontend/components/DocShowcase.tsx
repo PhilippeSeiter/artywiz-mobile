@@ -139,7 +139,7 @@ export const DocShowcase: React.FC<DocShowcaseProps> = ({
   }, []);
 
   // ============================================
-  // ANIMATION: Image entre avec rebond, puis zoom CONTINU
+  // ANIMATION: Image entre avec rebond, puis zoom CONTINU de 10%
   // ============================================
   const animateNewSlideIn = useCallback(() => {
     // Reset
@@ -158,13 +158,14 @@ export const DocShowcase: React.FC<DocShowcaseProps> = ({
       mass: 0.8,
     });
     
-    // 2. Zoom CONTINU qui ne s'arrête jamais (2x plus rapide = zoom plus visible)
+    // 2. Zoom CONTINU de 10% qui démarre une fois l'image en place
+    // Le zoom dure toute la durée d'affichage (4 secondes)
     setTimeout(() => {
       currentScale.value = withTiming(ZOOM_AMOUNT, {
         duration: ZOOM_DURATION,
-        easing: Easing.linear,
+        easing: Easing.linear, // Zoom linéaire constant
       });
-    }, 300);
+    }, 400); // Commence après le rebond d'entrée
     
     // 3. Après 1.5 seconde: overlay + texte glissent du bas vers le haut
     const textTimer = setTimeout(() => {
