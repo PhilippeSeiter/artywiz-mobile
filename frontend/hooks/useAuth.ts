@@ -67,12 +67,8 @@ export function useLogin() {
       // Update user in cache
       queryClient.setQueryData(AUTH_KEYS.user, response.user);
       
-      // Navigate based on onboarding status
-      if (response.user.has_completed_onboarding) {
-        router.replace('/(tabs)');
-      } else {
-        router.replace('/profile-selection');
-      }
+      // Login always goes directly to dashboard
+      router.replace('/(tabs)');
     },
     onError: (error: ApiError) => {
       console.error('Login error:', error.message);
