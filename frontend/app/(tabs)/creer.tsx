@@ -305,14 +305,17 @@ export default function CreerScreen() {
   // Charger les documents selon le profil sélectionné
   const loadDocuments = useCallback(() => {
     setIsLoading(true);
-    if (selectedProfile.type === 'equipe') {
+    if (selectedProfile.id === 'seniors1') {
       const allDocs = ASStrasbourgDataService.getAllDocuments();
       setDocuments(allDocs);
-    } else if (selectedProfile.type === 'club') {
+    } else if (selectedProfile.id === 'club') {
       const allDocs = ASStrasbourgClubDataService.getAllDocuments();
       setDocuments(allDocs);
-    } else if (selectedProfile.type === 'ligue') {
+    } else if (selectedProfile.id === 'lgef') {
       const allDocs = LGEFDataService.getAllDocuments();
+      setDocuments(allDocs);
+    } else if (selectedProfile.id === 'normandie') {
+      const allDocs = NormandieDataService.getAllDocuments();
       setDocuments(allDocs);
     }
     setIsLoading(false);
