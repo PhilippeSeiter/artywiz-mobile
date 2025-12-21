@@ -1,7 +1,62 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Platform } from 'react-native';
 import { User } from '../types';
 
 const AUTH_KEY = '@artywiz_auth';
+
+// Hybrid storage that works on both web and native
+const hybridAuthStorage = {
+  getItem: async (key: string): Promise<string | null> => {
+    try {
+      if (Platform.OS === 'web') {
+        if (typeof window !== 'undefined' && typeof window.localStorage !== 'undefined') {
+          const value = window.localStorage.getItem(key);
+          console.log('[AuthService] Web getItem:', key, value ? 'found' : 'not found');
+          return value;
+        }
+        return null;
+      }
+      const value = await AsyncStorage.getItem(key);
+      console.log('[AuthService] Native getItem:', key, value ? 'found' : 'not found');
+      return value;
+    } catch (error) {
+      console.error('[AuthService] getItem error:', error);
+      return null;
+    }
+  },
+  setItem: async (key: string, value: string): Promise<void> => {
+    try {
+      if (Platform.OS === 'web') {
+        if (typeof window !== 'undefined' && typeof window.localStorage !== 'undefined') {
+          window.localStorage.setItem(key, value);
+          console.log('[AuthService] Web setItem:', key);
+          return;
+        }
+        return;
+      }
+      await AsyncStorage.setItem(key, value);
+      console.log('[AuthService] Native setItem:', key);
+    } catch (error) {
+      console.error('[AuthService] setItem error:', error);
+    }
+  },
+  removeItem: async (key: string): Promise<void> => {
+    try {
+      if (Platform.OS === 'web') {
+        if (typeof window !== 'undefined' && typeof window.localStorage !== 'undefined') {
+          window.localStorage.removeItem(key);
+          console.log('[AuthService] Web removeItem:', key);
+          return;
+        }
+        return;
+      }
+      await AsyncStorage.removeItem(key);
+      console.log('[AuthService] Native removeItem:', key);
+    } catch (error) {
+      console.error('[AuthService] removeItem error:', error);
+    }
+  },
+};
 
 export class AuthService {
   static async login(email: string, password: string, profileId: string): Promise<User> {
@@ -21,8 +76,8 @@ export class AuthService {
       profileId,
     };
 
-    // Save to AsyncStorage
-    await AsyncStorage.setItem(AUTH_KEY, JSON.stringify(user));
+    // Save to storage
+    await hybridAuthStorage.setItem(AUTH_KEY, JSON.stringify(user));
     return user;
   }
 
@@ -47,30 +102,35 @@ export class AuthService {
       profileId,
     };
 
-    // Save to AsyncStorage
-    await AsyncStorage.setItem(AUTH_KEY, JSON.stringify(user));
+    // Save to storage
+    await hybridAuthStorage.setItem(AUTH_KEY, JSON.stringify(user));
     return user;
   }
 
   static async getCurrentUser(): Promise<User | null> {
     try {
-      const userJson = await AsyncStorage.getItem(AUTH_KEY);
-      return userJson ? JSON.parse(userJson) : null;
+      const userJson = await hybridAuthStorage.getItem(AUTH_KEY);
+      if (userJson) {
+        console.log('[AuthService] Current user found');
+        return JSON.parse(userJson);
+      }
+      console.log('[AuthService] No current user');
+      return null;
     } catch (error) {
-      console.error('Error getting current user:', error);
+      console.error('[AuthService] Error getting current user:', error);
       return null;
     }
   }
 
   static async logout(): Promise<void> {
-    await AsyncStorage.removeItem(AUTH_KEY);
+    await hybridAuthStorage.removeItem(AUTH_KEY);
   }
 
   static async updateProfile(profileId: string): Promise<void> {
     const user = await this.getCurrentUser();
     if (user) {
       user.profileId = profileId;
-      await AsyncStorage.setItem(AUTH_KEY, JSON.stringify(user));
+      await hybridAuthStorage.setItem(AUTH_KEY, JSON.stringify(user));
     }
   }
 
