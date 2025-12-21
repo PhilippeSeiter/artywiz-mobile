@@ -278,14 +278,11 @@ export default function WelcomeScreen() {
         
         console.log('[Welcome] User logged in, checking profiles:', selectedProfiles?.length || 0, 'onboarding:', hasCompletedOnboarding);
         
-        if (!selectedProfiles || selectedProfiles.length === 0) {
-          // No profiles -> go to profile selection first
-          console.log('[Welcome] No profiles, redirecting to profile-selection');
+        // Always redirect to profile-selection first for new users
+        // Profile-selection will redirect to dashboard if profiles exist
+        setTimeout(() => {
           router.replace('/profile-selection');
-        } else {
-          // Has profiles -> go to main dashboard
-          router.replace('/(tabs)');
-        }
+        }, 100);
       }
     }
   }, [isCheckingAuth, isInitialized, user]);
