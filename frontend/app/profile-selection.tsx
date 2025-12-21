@@ -545,8 +545,10 @@ export default function ProfileSelectionScreen() {
       Alert.alert('Compte requis', 'Vous devez avoir au minimum 1 compte actif pour continuer.');
       return;
     }
-    const baseProfiles = existingProfiles.filter(p => p.id.startsWith('base_') || p.type === 'sponsor');
-    setSelectedProfiles([...baseProfiles, ...accounts]);
+    
+    // Only save user's accounts (not default base profiles)
+    setSelectedProfiles(accounts);
+    setActiveProfile(0); // Set first account as active
     
     // Set default themes and complete onboarding
     const { setSelectedThemes, completeOnboarding } = useUserPreferencesStore.getState();
