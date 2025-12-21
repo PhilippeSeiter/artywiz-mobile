@@ -19,7 +19,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Colors, Spacing } from '../../constants';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { MockDataService, Document } from '../../services/mockDataService';
+import { ASStrasbourgDataService, ASDocument } from '../../services/asStrasbourgDataService';
 import { useDocumentStore } from '../../stores/documentStore';
 import Animated, { 
   useSharedValue, 
@@ -36,20 +36,7 @@ const CARD_HEIGHT = 120;
 const MOCKUP_WIDTH_PERCENT = 0.5; // 50% de la largeur de la carte
 
 // Types
-type DocumentStatus = 'to_generate' | 'generating' | 'ready' | 'published';
-
-interface EnrichedDocument extends Document {
-  displayStatus: DocumentStatus;
-  isSponsored?: boolean;
-  sponsorAmount?: number;
-  publishStats?: {
-    views: number;
-    likes: number;
-    shares: number;
-    platforms: string[];
-  };
-  generationStartTime?: number;
-}
+type DocumentStatus = 'brouillon' | 'en-cours' | 'pret' | 'publie';
 
 interface Club {
   id: string;
