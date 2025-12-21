@@ -23,20 +23,18 @@ import { VideoBackground } from '../components/VideoBackground';
 const { width, height } = Dimensions.get('window');
 
 // ============================================
-// ANIMATED WELCOME LOGO - 3 parties (même animation que signup)
-// Animation: décalage 500ms, ±15%, cycles 2.4s (20% plus lent), boucle infinie
-// W et Football: GRANDIT d'abord | Artywiz: RÉDUIT d'abord
+// ANIMATED WELCOME LOGO - 2 parties (W + Artywiz, sans Football)
+// Animation: décalage 500ms, ±5%, cycles 2.4s, boucle infinie
+// W: GRANDIT d'abord | Artywiz: RÉDUIT d'abord
 // ============================================
 const AnimatedWelcomeLogo = () => {
   // Opacités pour le fondu décalé
-  const opacityW = useSharedValue(1);  // Visible dès le départ
+  const opacityW = useSharedValue(1);
   const opacityArtywiz = useSharedValue(1);
-  const opacityFootball = useSharedValue(1);
   
   // Scales pour l'animation
   const scaleW = useSharedValue(1);
   const scaleArtywiz = useSharedValue(1);
-  const scaleFootball = useSharedValue(1);
   
   const isAnimatingRef = React.useRef(false);
 
@@ -44,21 +42,20 @@ const AnimatedWelcomeLogo = () => {
     if (isAnimatingRef.current) return;
     isAnimatingRef.current = true;
 
-    // Cycle de 2.4 secondes = 1200ms par demi-cycle (20% plus lent, comme signup)
     const halfCycleDuration = 1200;
     const easeConfig = { duration: halfCycleDuration, easing: Easing.inOut(Easing.ease) };
 
-    // W: décalage 0ms, ±5% (réduit de 2/3), GRANDIT d'abord
+    // W: ±5%, GRANDIT d'abord
     scaleW.value = withRepeat(
       withSequence(
         withTiming(1.05, easeConfig),
         withTiming(0.95, easeConfig)
       ),
-      -1, // Boucle infinie
+      -1,
       true
     );
 
-    // Artywiz: décalage 500ms, ±5% (réduit de 2/3), RÉDUIT d'abord
+    // Artywiz: décalage 500ms, ±5%, RÉDUIT d'abord
     setTimeout(() => {
       scaleArtywiz.value = withRepeat(
         withSequence(
@@ -69,41 +66,19 @@ const AnimatedWelcomeLogo = () => {
         true
       );
     }, 500);
-
-    // Football: décalage 1000ms, ±5% (réduit de 2/3), GRANDIT d'abord
-    setTimeout(() => {
-      scaleFootball.value = withRepeat(
-        withSequence(
-          withTiming(1.05, easeConfig),
-          withTiming(0.95, easeConfig)
-        ),
-        -1,
-        true
-      );
-    }, 1000);
   }, []);
 
-  // Fondu décalé au chargement: W → +0.3s → Artywiz → +0.3s → Football
   React.useEffect(() => {
-    // W apparaît en premier
     opacityW.value = withTiming(1, { duration: 400, easing: Easing.out(Easing.ease) });
     
-    // Artywiz apparaît après 300ms
     setTimeout(() => {
       opacityArtywiz.value = withTiming(1, { duration: 400, easing: Easing.out(Easing.ease) });
     }, 300);
     
-    // Football apparaît après 600ms
-    setTimeout(() => {
-      opacityFootball.value = withTiming(1, { duration: 400, easing: Easing.out(Easing.ease) });
-    }, 600);
-    
-    // Démarrer l'animation de scale après le fondu complet
-    const timer = setTimeout(() => startAnimation(), 1000);
+    const timer = setTimeout(() => startAnimation(), 800);
     return () => clearTimeout(timer);
   }, [startAnimation]);
 
-  // Styles animés avec opacité + scale
   const animatedStyleW = useAnimatedStyle(() => ({
     opacity: opacityW.value,
     transform: [{ scale: scaleW.value }],
@@ -112,11 +87,6 @@ const AnimatedWelcomeLogo = () => {
   const animatedStyleArtywiz = useAnimatedStyle(() => ({
     opacity: opacityArtywiz.value,
     transform: [{ scale: scaleArtywiz.value }],
-  }));
-
-  const animatedStyleFootball = useAnimatedStyle(() => ({
-    opacity: opacityFootball.value,
-    transform: [{ scale: scaleFootball.value }],
   }));
 
   return (
@@ -134,19 +104,11 @@ const AnimatedWelcomeLogo = () => {
             resizeMode="contain"
           />
         </Animated.View>
-        {/* Artywiz - au milieu */}
+        {/* Artywiz - en bas */}
         <Animated.View style={[welcomeLogoStyles.part, welcomeLogoStyles.partArtywiz, animatedStyleArtywiz]}>
           <Image
             source={require('../assets/images/logo_artywiz.png')}
             style={welcomeLogoStyles.imageArtywiz}
-            resizeMode="contain"
-          />
-        </Animated.View>
-        {/* Football - en bas */}
-        <Animated.View style={[welcomeLogoStyles.part, welcomeLogoStyles.partFootball, animatedStyleFootball]}>
-          <Image
-            source={require('../assets/images/logo_football.png')}
-            style={welcomeLogoStyles.imageFootball}
             resizeMode="contain"
           />
         </Animated.View>
