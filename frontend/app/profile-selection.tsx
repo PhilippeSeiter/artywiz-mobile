@@ -287,11 +287,6 @@ const UnifiedPopup = ({ visible, onClose, onAccountCreated }: UnifiedPopupProps)
     setSearchQuery('');
   };
 
-  // Handler pour le choix du sport
-  const handleSelectSport = () => {
-    slideToNext('types');
-  };
-
   // Handlers
   const handleSelectType = (type: string) => {
     setSelectedType(type);
