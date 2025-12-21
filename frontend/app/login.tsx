@@ -417,21 +417,29 @@ export default function LoginScreen() {
 
           {/* Formulaire */}
           <View style={styles.form}>
-            <PillInput
+            <CustomInput
               placeholder="Email"
               value={email}
-              onChangeText={setEmail}
+              onChangeText={(text) => {
+                setEmail(text);
+                if (errors.email) setErrors({ ...errors, email: undefined });
+              }}
               keyboardType="email-address"
               autoCapitalize="none"
               error={errors.email}
+              icon="mail"
             />
 
-            <PillInput
+            <CustomInput
               placeholder="Mot de passe"
               value={password}
-              onChangeText={setPassword}
-              secureTextEntry
+              onChangeText={(text) => {
+                setPassword(text);
+                if (errors.password) setErrors({ ...errors, password: undefined });
+              }}
+              isPassword
               error={errors.password}
+              icon="lock-closed"
             />
           </View>
 
