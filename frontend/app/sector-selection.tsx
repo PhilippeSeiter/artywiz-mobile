@@ -121,12 +121,9 @@ const AnimatedSectorLogo = () => {
     transform: [{ scale: scaleArtywiz.value }],
   }));
 
-  const BASE_WIDTH = 220 * 1.2;
-  const BASE_HEIGHT = 130 * 1.2 * 0.8; // Réduit car pas de Football
-
   return (
     <View style={logoStyles.container}>
-      <View style={[logoStyles.wrapper, { width: BASE_WIDTH, height: BASE_HEIGHT }]}>
+      <View style={logoStyles.wrapper}>
         {/* W - en haut */}
         <Animated.View style={[logoStyles.part, logoStyles.partW, wStyle]}>
           <Image
