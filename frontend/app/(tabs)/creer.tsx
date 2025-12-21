@@ -896,27 +896,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
-  mockupGradient: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 28,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  mockupLines: {
-    position: 'absolute',
-    bottom: 10,
-    left: 10,
-    right: 10,
-  },
-  mockupLine: {
-    height: 4,
-    backgroundColor: 'rgba(255,255,255,0.4)',
-    borderRadius: 2,
-    marginBottom: 4,
-  },
   documentInfo: {
     flex: 1,
     paddingVertical: 10,
