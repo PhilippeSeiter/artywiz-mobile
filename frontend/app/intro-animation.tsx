@@ -26,6 +26,8 @@ import { useUserPreferencesStore, ARTYWIZ_THEMES, GENERIC_THEMES } from '../stor
 
 const { width, height } = Dimensions.get('window');
 
+const VIDEO_URL = 'https://customer-assets.emergentagent.com/job_artywiz-transfer/artifacts/8qc6s5v8_bg-login%20%282%29.mp4';
+
 // ============================================
 // VIDEO BACKGROUND (Web only)
 // ============================================
@@ -37,7 +39,7 @@ const VideoBackgroundIntro = () => {
 
     const createVideo = () => {
       const video = document.createElement('video');
-      video.src = '/assets/videos/Intro_artywiz_sans son.mp4';
+      video.src = VIDEO_URL;
       video.autoplay = true;
       video.loop = true;
       video.muted = true;
