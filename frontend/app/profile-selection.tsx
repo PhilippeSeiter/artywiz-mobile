@@ -265,18 +265,18 @@ const UnifiedPopup = ({ visible, onClose, onAccountCreated }: UnifiedPopupProps)
 
   // Slide transition
   const slideToNext = (nextStep: PopupStep) => {
-    slideX.value = withTiming(-width, { duration: SLIDE_DURATION, easing: Easing.inOut(Easing.ease) }, () => {
+    slideX.value = withTiming(-POPUP_WIDTH, { duration: SLIDE_DURATION, easing: Easing.inOut(Easing.ease) }, () => {
       runOnJS(setStep)(nextStep);
-      slideX.value = width;
+      slideX.value = POPUP_WIDTH;
       slideX.value = withTiming(0, { duration: SLIDE_DURATION, easing: Easing.inOut(Easing.ease) });
     });
     setSearchQuery('');
   };
 
   const slideBack = (prevStep: PopupStep) => {
-    slideX.value = withTiming(width, { duration: SLIDE_DURATION, easing: Easing.inOut(Easing.ease) }, () => {
+    slideX.value = withTiming(POPUP_WIDTH, { duration: SLIDE_DURATION, easing: Easing.inOut(Easing.ease) }, () => {
       runOnJS(setStep)(prevStep);
-      slideX.value = -width;
+      slideX.value = -POPUP_WIDTH;
       slideX.value = withTiming(0, { duration: SLIDE_DURATION, easing: Easing.inOut(Easing.ease) });
     });
     setSearchQuery('');
