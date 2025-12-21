@@ -548,16 +548,20 @@ export default function ProfileSelectionScreen() {
     const baseProfiles = existingProfiles.filter(p => p.id.startsWith('base_') || p.type === 'sponsor');
     setSelectedProfiles([...baseProfiles, ...accounts]);
     
-    // Set default themes
-    const { setSelectedThemes, completeOnboarding } = useUserPreferencesStore.getState();
-    setSelectedThemes([
-      'match_com', 'community', 'marketing', 'events', 'sponsors', // Thématiques spécifiques
-      'ephemeride' // Thématique générique
-    ]);
-    completeOnboarding();
-    
-    if (isEditing) router.back();
-    else router.replace('/(tabs)'); // Direct to dashboard, skip intro
+    // Set default themes (will be finalized in intro-animation)
+    if (isEditing) {
+      // Editing mode: save and go back
+      const { setSelectedThemes, completeOnboarding } = useUserPreferencesStore.getState();
+      setSelectedThemes([
+        'match_com', 'community', 'marketing', 'events', 'sponsors',
+        'ephemeride'
+      ]);
+      completeOnboarding();
+      router.back();
+    } else {
+      // First time: go to intro animation
+      router.replace('/intro-animation');
+    }
   };
 
   return (
