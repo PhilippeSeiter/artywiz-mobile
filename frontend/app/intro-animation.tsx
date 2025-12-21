@@ -1,63 +1,43 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
-  Dimensions,
   Platform,
   Image,
 } from 'react-native';
 import { useRouter } from 'expo-router';
-import { Colors } from '../constants';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useUserPreferencesStore, ARTYWIZ_THEMES } from '../stores/userPreferencesStore';
-
-const { width, height } = Dimensions.get('window');
 
 const VIDEO_URL = 'https://customer-assets.emergentagent.com/job_artywiz-transfer/artifacts/8qc6s5v8_bg-login%20%282%29.mp4';
 
-// Number of video loops before auto-skip
-const MAX_VIDEO_LOOPS = 3;
-
 export default function IntroAnimationScreen() {
   const router = useRouter();
-  const insets = useSafeAreaInsets();
   const { setSelectedThemes, completeOnboarding } = useUserPreferencesStore();
   const hasNavigatedRef = useRef(false);
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  const [loopCount, setLoopCount] = useState(0);
 
-  const handleSkipIntro = () => {
-    // Prevent double navigation
+  const goToDashboard = () => {
     if (hasNavigatedRef.current) return;
     hasNavigatedRef.current = true;
 
-    console.log('Navigating to dashboard...');
-
     // Set default themes
-    const defaultThemes = [
-      ...ARTYWIZ_THEMES.map(t => t.id),
-      'ephemeride',
-    ];
-    
+    const defaultThemes = [...ARTYWIZ_THEMES.map(t => t.id), 'ephemeride'];
     setSelectedThemes(defaultThemes);
     completeOnboarding();
     
-    // Navigate to main app
+    // Go to dashboard
     router.replace('/(tabs)');
   };
 
-  // Setup video
   useEffect(() => {
-    console.log('IntroAnimationScreen mounted');
-
-    // Create video for web
+    // Web: create video, play once, then go to dashboard
     if (Platform.OS === 'web' && typeof document !== 'undefined') {
       const video = document.createElement('video');
       video.src = VIDEO_URL;
       video.autoplay = true;
-      video.loop = true;
+      video.loop = false; // NO LOOP - play once
       video.muted = true;
       video.playsInline = true;
       video.style.cssText = `
@@ -70,76 +50,48 @@ export default function IntroAnimationScreen() {
         z-index: -1;
       `;
       
-      // Count video loops
-      video.addEventListener('ended', () => {
-        // Note: with loop=true, 'ended' doesn't fire, so we use 'timeupdate'
-      });
+      // When video ends, go to dashboard
+      video.onended = () => {
+        console.log('Video ended, going to dashboard');
+        goToDashboard();
+      };
       
-      let lastTime = 0;
-      video.addEventListener('timeupdate', () => {
-        // Detect when video loops (time jumps back to start)
-        if (video.currentTime < lastTime - 1) {
-          console.log('Video looped, count:', loopCount + 1);
-          setLoopCount(prev => {
-            const newCount = prev + 1;
-            if (newCount >= MAX_VIDEO_LOOPS) {
-              console.log('Max loops reached, auto-skipping...');
-              handleSkipIntro();
-            }
-            return newCount;
-          });
-        }
-        lastTime = video.currentTime;
-      });
+      // If video fails, go to dashboard after 5 seconds
+      video.onerror = () => {
+        console.log('Video error, going to dashboard');
+        setTimeout(goToDashboard, 2000);
+      };
       
       document.body.appendChild(video);
       videoRef.current = video;
-      video.play().catch(console.warn);
+      video.play().catch(() => {
+        // If autoplay fails, go to dashboard
+        setTimeout(goToDashboard, 2000);
+      });
+    } else {
+      // Native: go to dashboard after 3 seconds
+      setTimeout(goToDashboard, 3000);
     }
 
-    // Fallback: auto-skip after 30 seconds if video doesn't work
-    const fallbackTimer = setTimeout(() => {
-      console.log('Fallback timer triggered');
-      handleSkipIntro();
-    }, 30000);
+    // Fallback: go to dashboard after 15 seconds no matter what
+    const fallback = setTimeout(goToDashboard, 15000);
 
     return () => {
-      clearTimeout(fallbackTimer);
+      clearTimeout(fallback);
       if (videoRef.current) {
         videoRef.current.pause();
         videoRef.current.remove();
-        videoRef.current = null;
       }
     };
   }, []);
 
   return (
     <View style={styles.container}>
-      {/* Overlay */}
-      <View style={styles.overlay} />
-      
-      {/* Clickable Logo in center */}
-      <TouchableOpacity 
-        style={styles.logoContainer}
-        onPress={handleSkipIntro}
-        activeOpacity={0.8}
-      >
-        <Image 
-          source={require('../assets/images/logo_W.png')} 
-          style={styles.logoW}
-          resizeMode="contain"
-        />
-        <Image 
-          source={require('../assets/images/logo_artywiz.png')} 
-          style={styles.logoArtywiz}
-          resizeMode="contain"
-        />
-        <Image 
-          source={require('../assets/images/logo_football.png')} 
-          style={styles.logoFootball}
-          resizeMode="contain"
-        />
-        <Text style={styles.tapText}>Touchez pour continuer</Text>
+      {/* Clickable logo to skip */}
+      <TouchableOpacity style={styles.logoArea} onPress={goToDashboard} activeOpacity={0.9}>
+        <Image source={require('../assets/images/logo_W.png')} style={styles.logoW} resizeMode="contain" />
+        <Image source={require('../assets/images/logo_artywiz.png')} style={styles.logoArtywiz} resizeMode="contain" />
+        <Text style={styles.skipText}>Touchez pour passer</Text>
       </TouchableOpacity>
     </View>
   );
@@ -152,34 +104,23 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  overlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0,0,0,0.3)',
-  },
-  logoContainer: {
+  logoArea: {
     alignItems: 'center',
-    justifyContent: 'center',
     padding: 40,
-    zIndex: 10,
+    zIndex: 100,
   },
   logoW: {
-    width: 80,
-    height: 56,
-    marginBottom: 8,
+    width: 70,
+    height: 50,
+    marginBottom: 10,
   },
   logoArtywiz: {
-    width: 200,
-    height: 44,
-    marginBottom: 8,
+    width: 180,
+    height: 40,
+    marginBottom: 20,
   },
-  logoFootball: {
-    width: 140,
-    height: 28,
-    marginBottom: 24,
-  },
-  tapText: {
+  skipText: {
+    color: 'rgba(255,255,255,0.7)',
     fontSize: 14,
-    color: 'rgba(255,255,255,0.8)',
-    marginTop: 20,
   },
 });
