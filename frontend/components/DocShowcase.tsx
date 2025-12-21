@@ -401,7 +401,7 @@ export const DocShowcase: React.FC<DocShowcaseProps> = ({
 
           <GestureHandlerRootView style={styles.gestureContainer}>
             <GestureDetector gesture={panGesture}>
-              <Animated.View style={[styles.slidesWrapper, slidesWrapperStyle]}>
+              <Animated.View style={styles.slidesWrapper}>
                 {/* Slide précédent */}
                 <Slide
                   doc={prevDoc}
