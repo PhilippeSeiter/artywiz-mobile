@@ -587,12 +587,19 @@ export default function ProfileSelectionScreen() {
             </View>
           </View>
 
-          {/* Explanatory text */}
+          {/* Explanatory text - shown when no accounts exist */}
           {!hasAccounts && (
             <Animated.View entering={FadeIn.duration(300)} exiting={FadeOut.duration(200)} style={styles.explanationContainer}>
-              <Text style={styles.explanationText}>Artywiz vous permet de gérer plusieurs comptes (équipe, club, district, ligue…).</Text>
-              <Text style={styles.explanationText}>Ajoutez vos profils et choisissez celui à utiliser.</Text>
-              <Text style={styles.explanationMinimum}>Minimum : 1 compte actif pour démarrer.</Text>
+              <View style={styles.welcomeIconContainer}>
+                <Ionicons name="sparkles" size={32} color="#6366F1" />
+              </View>
+              <Text style={styles.welcomeTitle}>Bienvenue sur Artywiz !</Text>
+              <Text style={styles.explanationText}>
+                Gérez tous vos comptes depuis une seule application : équipe, club, district ou ligue.
+              </Text>
+              <Text style={styles.explanationText}>
+                Cliquez sur le bouton + ci-dessous pour créer votre premier compte et commencer à communiquer.
+              </Text>
             </Animated.View>
           )}
 
