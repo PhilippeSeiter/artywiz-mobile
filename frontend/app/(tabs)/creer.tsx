@@ -470,30 +470,30 @@ export default function CreerScreen() {
         >
           <View style={styles.modalContent}>
             <Text style={styles.modalTitle}>Sélectionner un profil</Text>
-            {CLUBS.map((club) => (
+            {PROFILES.map((profile) => (
               <TouchableOpacity
-                key={club.id}
+                key={profile.id}
                 style={[
                   styles.clubOption,
-                  selectedClub.id === club.id && styles.clubOptionSelected
+                  selectedProfile.id === profile.id && styles.clubOptionSelected
                 ]}
                 onPress={() => {
-                  setSelectedClub(club);
-                  setShowClubModal(false);
+                  setSelectedProfile(profile);
+                  setShowProfileModal(false);
                 }}
               >
                 <Ionicons 
-                  name="shield" 
+                  name={profile.type === 'club' ? 'business' : 'people'} 
                   size={20} 
-                  color={selectedClub.id === club.id ? Colors.primary : '#6B7280'} 
+                  color={selectedProfile.id === profile.id ? Colors.primary : '#6B7280'} 
                 />
                 <Text style={[
                   styles.clubOptionText,
-                  selectedClub.id === club.id && styles.clubOptionTextSelected
+                  selectedProfile.id === profile.id && styles.clubOptionTextSelected
                 ]}>
-                  {club.name}
+                  {profile.name}
                 </Text>
-                {selectedClub.id === club.id && (
+                {selectedProfile.id === profile.id && (
                   <Ionicons name="checkmark-circle" size={20} color={Colors.primary} />
                 )}
               </TouchableOpacity>
