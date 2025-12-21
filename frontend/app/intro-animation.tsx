@@ -233,6 +233,7 @@ export default function IntroAnimationScreen() {
 
   // Navigate to dashboard
   const navigateToDashboard = useCallback(() => {
+    console.log('[IntroAnimation] navigateToDashboard called, hasNavigated:', hasNavigated);
     if (hasNavigated) return;
     setHasNavigated(true);
     
@@ -241,6 +242,7 @@ export default function IntroAnimationScreen() {
     setSelectedThemes([...ARTYWIZ_THEMES.map(t => t.id), 'ephemeride']);
     completeOnboarding();
     
+    console.log('[IntroAnimation] Navigating to dashboard...');
     // Navigate to dashboard
     router.replace('/(tabs)');
   }, [hasNavigated, router]);
@@ -249,6 +251,7 @@ export default function IntroAnimationScreen() {
   const handleVideoLoop = useCallback(() => {
     setLoopCount(prev => {
       const newCount = prev + 1;
+      console.log('[IntroAnimation] Video loop:', newCount);
       if (newCount >= MAX_LOOPS && !hasNavigated) {
         navigateToDashboard();
       }
@@ -258,7 +261,9 @@ export default function IntroAnimationScreen() {
 
   // Timer: auto-navigate after MAX_TIME_SECONDS
   useEffect(() => {
+    console.log('[IntroAnimation] Setting up auto-navigate timer for', MAX_TIME_SECONDS, 'seconds');
     const timer = setTimeout(() => {
+      console.log('[IntroAnimation] Timer expired, navigating...');
       if (!hasNavigated) {
         navigateToDashboard();
       }
@@ -298,36 +303,48 @@ export default function IntroAnimationScreen() {
     }
   };
 
-  // Handle screen tap
-  const handleScreenTap = () => {
+  // Handle screen tap - Simplified for better touch handling
+  const handleScreenTap = useCallback(() => {
+    console.log('[IntroAnimation] Screen tapped!');
     navigateToDashboard();
-  };
+  }, [navigateToDashboard]);
+
+  // Handle button press
+  const handleButtonPress = useCallback(() => {
+    console.log('[IntroAnimation] Button pressed!');
+    navigateToDashboard();
+  }, [navigateToDashboard]);
 
   return (
-    <TouchableWithoutFeedback onPress={handleScreenTap}>
-      <View style={styles.container}>
-        {/* Video Background */}
-        <View style={styles.videoWrapper}>
-          {/* Native Video (iOS/Android) */}
-          {Platform.OS !== 'web' && (
-            <Video
-              ref={videoRef}
-              source={{ uri: VIDEO_URL }}
-              style={styles.video}
-              resizeMode={ResizeMode.COVER}
-              shouldPlay
-              isLooping
-              isMuted
-              onPlaybackStatusUpdate={handlePlaybackStatusUpdate}
-            />
-          )}
+    <View style={styles.container}>
+      {/* Video Background - avec pointerEvents none pour laisser passer les touches */}
+      <View style={styles.videoWrapper} pointerEvents="none">
+        {/* Native Video (iOS/Android) */}
+        {Platform.OS !== 'web' && (
+          <Video
+            ref={videoRef}
+            source={{ uri: VIDEO_URL }}
+            style={styles.video}
+            resizeMode={ResizeMode.COVER}
+            shouldPlay
+            isLooping
+            isMuted
+            onPlaybackStatusUpdate={handlePlaybackStatusUpdate}
+          />
+        )}
 
-          {/* Web Video */}
-          {Platform.OS === 'web' && (
-            <WebVideoIntro onLoop={handleVideoLoop} />
-          )}
-        </View>
+        {/* Web Video */}
+        {Platform.OS === 'web' && (
+          <WebVideoIntro onLoop={handleVideoLoop} />
+        )}
+      </View>
 
+      {/* Zone tactile principale - couvre tout l'écran */}
+      <TouchableOpacity 
+        style={styles.touchableArea} 
+        onPress={handleScreenTap}
+        activeOpacity={1}
+      >
         {/* Logo animé */}
         <AnimatedIntroLogo />
 
@@ -338,8 +355,8 @@ export default function IntroAnimationScreen() {
         <Animated.View style={[styles.buttonContainer, buttonAnimatedStyle, { paddingBottom: insets.bottom + 30 }]}>
           <TouchableOpacity
             style={styles.skipButton}
-            onPress={navigateToDashboard}
-            activeOpacity={0.8}
+            onPress={handleButtonPress}
+            activeOpacity={0.7}
           >
             <Text style={styles.skipButtonText}>Passer l'intro</Text>
             <View style={styles.skipButtonIcon}>
@@ -352,8 +369,8 @@ export default function IntroAnimationScreen() {
             Touchez n'importe où pour continuer
           </Text>
         </Animated.View>
-      </View>
-    </TouchableWithoutFeedback>
+      </TouchableOpacity>
+    </View>
   );
 }
 
