@@ -55,15 +55,16 @@ interface Profile {
   id: string;
   name: string;
   type: 'equipe' | 'club' | 'ligue';
+  logo: any; // require() pour l'image du logo
 }
 
-// Profils disponibles
+// Profils disponibles avec leurs logos
 const PROFILES: Profile[] = [
-  { id: 'seniors1', name: 'AS Strasbourg - Séniors 1', type: 'equipe' },
-  { id: 'club', name: 'AS Strasbourg (Club)', type: 'club' },
-  { id: 'lgef', name: 'Ligue LGEF', type: 'ligue' },
-  { id: 'normandie', name: 'Ligue Normandie', type: 'ligue' },
-  { id: 'alsace', name: 'Ligue Alsace', type: 'ligue' },
+  { id: 'seniors1', name: 'AS Strasbourg - Séniors 1', type: 'equipe', logo: require('../../assets/images/logo AS Strasbourg.png') },
+  { id: 'club', name: 'AS Strasbourg (Club)', type: 'club', logo: require('../../assets/images/logo AS Strasbourg.png') },
+  { id: 'lgef', name: 'Ligue LGEF', type: 'ligue', logo: require('../../assets/images/logo LGEF ligue grand est.png') },
+  { id: 'normandie', name: 'Ligue Normandie', type: 'ligue', logo: require('../../assets/images/logo ligue normandie.png') },
+  { id: 'alsace', name: 'Ligue Alsace', type: 'ligue', logo: require('../../assets/images/logo district alsace.png') },
 ];
 
 // Couleurs de fond pour les mockups (fallback)
