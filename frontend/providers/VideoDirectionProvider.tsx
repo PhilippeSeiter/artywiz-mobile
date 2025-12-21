@@ -45,11 +45,18 @@ export function VideoDirectionProvider({ children }: VideoDirectionProviderProps
     if (!videoRef.current || isAnimatingRef.current) return;
     
     const video = videoRef.current;
+    
+    // Vérifier que la vidéo est prête et a une durée valide
+    if (!video.duration || !isFinite(video.duration) || video.duration <= 0) {
+      console.warn('Video not ready for backward animation');
+      return;
+    }
+    
     isAnimatingRef.current = true;
     video.pause();
     
     const animate = () => {
-      if (!videoRef.current) {
+      if (!videoRef.current || !isAnimatingRef.current) {
         isAnimatingRef.current = false;
         return;
       }
@@ -58,7 +65,7 @@ export function VideoDirectionProvider({ children }: VideoDirectionProviderProps
       video.currentTime -= 0.033;
       
       // Si on arrive au début, revenir à la fin pour boucler
-      if (video.currentTime <= 0) {
+      if (video.currentTime <= 0.1) {
         video.currentTime = video.duration - 0.1;
       }
       
