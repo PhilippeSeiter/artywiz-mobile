@@ -23,6 +23,7 @@ import { ASStrasbourgDataService, ASDocument } from '../../services/asStrasbourg
 import { ASStrasbourgClubDataService, ASClubDocument } from '../../services/asStrasbourgClubDataService';
 import { LGEFDataService, LGEFDocument } from '../../services/lgefDataService';
 import { NormandieDataService, NormandieDocument } from '../../services/normandieDataService';
+import { AlsaceDataService, AlsaceDocument } from '../../services/alsaceDataService';
 import { useDocumentStore } from '../../stores/documentStore';
 import Animated, { 
   useSharedValue, 
@@ -30,11 +31,17 @@ import Animated, {
   withRepeat, 
   withTiming,
   withSpring,
+  withDelay,
+  withSequence,
   Easing,
   interpolate,
+  FadeIn,
+  FadeInDown,
+  SlideInDown,
+  Layout,
 } from 'react-native-reanimated';
 
-const { width: SCREEN_WIDTH } = Dimensions.get('window');
+const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 const CARD_HEIGHT = 120;
 const MOCKUP_WIDTH_PERCENT = 0.5; // 50% de la largeur de la carte
 
@@ -42,7 +49,7 @@ const MOCKUP_WIDTH_PERCENT = 0.5; // 50% de la largeur de la carte
 type DocumentStatus = 'brouillon' | 'en-cours' | 'pret' | 'publie';
 
 // Type unifié pour les documents (équipe, club ou ligue)
-type UnifiedDocument = ASDocument | ASClubDocument | LGEFDocument | NormandieDocument;
+type UnifiedDocument = ASDocument | ASClubDocument | LGEFDocument | NormandieDocument | AlsaceDocument;
 
 interface Profile {
   id: string;
@@ -56,6 +63,7 @@ const PROFILES: Profile[] = [
   { id: 'club', name: 'AS Strasbourg (Club)', type: 'club' },
   { id: 'lgef', name: 'Ligue LGEF', type: 'ligue' },
   { id: 'normandie', name: 'Ligue Normandie', type: 'ligue' },
+  { id: 'alsace', name: 'Ligue Alsace', type: 'ligue' },
 ];
 
 // Couleurs de fond pour les mockups (fallback)
