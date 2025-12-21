@@ -749,6 +749,13 @@ const styles = StyleSheet.create({
   popupTitle: { fontSize: 20, fontWeight: '700', color: Colors.textPrimary, textAlign: 'center' },
   popupSubtitle: { fontSize: 14, color: Colors.textSecondary, textAlign: 'center', paddingHorizontal: Spacing.lg, marginBottom: Spacing.md },
   popupContent: { paddingHorizontal: Spacing.lg, paddingBottom: Spacing.lg },
+  // Sports list
+  sportsList: { gap: Spacing.sm },
+  sportItem: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#F8FAFC', borderRadius: 16, padding: Spacing.md },
+  sportIcon: { width: 56, height: 56, borderRadius: 14, justifyContent: 'center', alignItems: 'center', marginRight: Spacing.md },
+  sportLabel: { flex: 1, fontSize: 16, fontWeight: '600', color: Colors.textPrimary },
+  sportDisabled: { opacity: 0.5 },
+  // Types list
   typesList: { gap: Spacing.sm },
   typeItem: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#F8FAFC', borderRadius: 16, padding: Spacing.md, borderLeftWidth: 4 },
   typeIcon: { width: 48, height: 48, borderRadius: 12, justifyContent: 'center', alignItems: 'center', marginRight: Spacing.md },
