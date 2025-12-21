@@ -63,9 +63,6 @@ const MOCKUP_COLORS = [
   ['#8B5CF6', '#6D28D9'],
 ];
 
-// Fonction pour obtenir le mockup d'un document
-const getDocMockup = (docId: string) => MockDataService.getDocMockup(docId);
-
 // Composant Spinner animé
 const Spinner = ({ size = 20, color = '#F59E0B' }: { size?: number; color?: string }) => {
   const rotation = useSharedValue(0);
