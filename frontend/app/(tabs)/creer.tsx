@@ -285,16 +285,8 @@ export default function CreerScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   
-  // Store
-  const { 
-    documentStates, 
-    getDocumentStatus, 
-    isDocumentGenerating,
-    completeGeneration,
-  } = useDocumentStore();
-  
   // États
-  const [documents, setDocuments] = useState<EnrichedDocument[]>([]);
+  const [documents, setDocuments] = useState<ASDocument[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [selectedClub, setSelectedClub] = useState<Club>(CLUBS[0]);
@@ -306,58 +298,15 @@ export default function CreerScreen() {
   const [filterStatus, setFilterStatus] = useState<DocumentStatus | 'all'>('all');
   const [filterSponsored, setFilterSponsored] = useState<boolean | null>(null);
 
-  // Ref pour le timer des likes
-  const likesIntervalRef = useRef<NodeJS.Timeout | null>(null);
-
-  // Charger les documents et synchroniser avec le store
+  // Charger les documents AS Strasbourg
   const loadDocuments = useCallback(() => {
-    const allDocs = MockDataService.getAllDocuments();
-    
-    // Enrichir les documents avec des statuts du store
-    const enrichedDocs: EnrichedDocument[] = allDocs.slice(0, 10).map((doc, index) => {
-      // Quelques documents sponsorisés
-      const isSponsored = index % 4 === 0;
-      const sponsorAmount = isSponsored ? [50, 75, 100, 150][index % 4] : undefined;
-      
-      // Récupérer le statut depuis le store
-      const storeStatus = getDocumentStatus(doc.id);
-      let displayStatus: DocumentStatus = 'to_generate';
-      
-      if (storeStatus === 'en_cours') displayStatus = 'generating';
-      else if (storeStatus === 'pret') displayStatus = 'ready';
-      else if (storeStatus === 'publie') displayStatus = 'published';
-      
-      // Récupérer le state complet pour generationStartTime
-      const docState = documentStates[doc.id];
-      
-      return {
-        ...doc,
-        displayStatus,
-        isSponsored,
-        sponsorAmount,
-        generationStartTime: docState?.generationStartedAt,
-        publishStats: displayStatus === 'published' ? {
-          views: Math.floor(Math.random() * 100) + 20,
-          likes: Math.floor(Math.random() * 50) + 10,
-          shares: Math.floor(Math.random() * 20) + 5,
-          platforms: getRandomPlatforms(),
-        } : undefined,
-      };
-    });
-
-    setDocuments(enrichedDocs);
+    const allDocs = ASStrasbourgDataService.getAllDocuments();
+    setDocuments(allDocs);
     setIsLoading(false);
-  }, [documentStates, getDocumentStatus]);
+  }, []);
 
   useEffect(() => {
     loadDocuments();
-    
-    // Cleanup
-    return () => {
-      if (likesIntervalRef.current) {
-        clearInterval(likesIntervalRef.current);
-      }
-    };
   }, [loadDocuments]);
 
   // Timer pour augmenter les likes des documents publiés
