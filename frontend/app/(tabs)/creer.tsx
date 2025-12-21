@@ -397,27 +397,43 @@ export default function CreerScreen() {
 
   // Filtrer les documents par recherche et filtres
   const filteredDocuments = documents.filter(doc => {
-    // Filtre recherche
+    // Filtre recherche (combiné header + modal)
+    const activeSearchQuery = filterSearchQuery || searchQuery;
     const searchText = `${doc.ligne1} ${doc.ligne2} ${doc.ligne3} ${doc.ligne4}`.toLowerCase();
-    if (searchQuery && !searchText.includes(searchQuery.toLowerCase())) {
+    if (activeSearchQuery && !searchText.includes(activeSearchQuery.toLowerCase())) {
       return false;
     }
-    // Filtre statut
-    if (filterStatus !== 'all' && doc.status !== filterStatus) {
+    // Filtre tri (statut)
+    if (sortOption === 'brouillons' && doc.status !== 'brouillon') {
+      return false;
+    }
+    if (sortOption === 'prets' && doc.status !== 'pret') {
+      return false;
+    }
+    if (sortOption === 'publies' && doc.status !== 'publie') {
       return false;
     }
     // Filtre sponsorisé
-    if (filterSponsored !== null && doc.isSponsored !== filterSponsored) {
+    if (sponsorFilter === 'sponsored' && !doc.isSponsored) {
+      return false;
+    }
+    if (sponsorFilter === 'not_sponsored' && doc.isSponsored) {
       return false;
     }
     return true;
   });
   
-  // Réinitialiser les filtres
+  // Réinitialiser tous les filtres
   const resetFilters = () => {
-    setFilterStatus('all');
-    setFilterSponsored(null);
-    setShowFilterModal(false);
+    setFilterSearchQuery('');
+    setDisplaySize('medium');
+    setSortOption(null);
+    setSponsorFilter(null);
+  };
+  
+  // Appliquer la recherche du modal et fermer
+  const applyFilterSearch = () => {
+    setSearchQuery(filterSearchQuery);
   };
 
   // Render document item avec animation Tetris
