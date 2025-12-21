@@ -114,7 +114,7 @@ export default function IntroAnimationScreen() {
     ];
     
     setSelectedThemes(defaultThemes);
-    setHasCompletedOnboarding(true);
+    completeOnboarding();
     
     // Navigate to main app
     router.replace('/(tabs)');
