@@ -937,6 +937,11 @@ const styles = StyleSheet.create({
     lineHeight: 16,
     marginRight: 6,
   },
+  rightIndicators: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
   docTypeRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -952,25 +957,18 @@ const styles = StyleSheet.create({
     color: '#9CA3AF',
     marginTop: 1,
   },
-  // Status Badge - Même largeur que le mockup, texte petit
-  statusBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  // Indicateur d'état (cercle)
+  statusCircle: {
+    width: 14,
+    height: 14,
+    borderRadius: 7,
+  },
+  statusReady: {
+    backgroundColor: '#22C55E',
+  },
+  statusIconContainer: {
     justifyContent: 'center',
-    width: '100%',
-    paddingVertical: 6,
-    marginTop: 4,
-    gap: 4,
-  },
-  publishedBadge: {
-    gap: 6,
-    paddingHorizontal: 8,
-  },
-  statusText: {
-    fontSize: 9,
-    fontWeight: '700',
-    textTransform: 'uppercase',
-    letterSpacing: 0.3,
+    alignItems: 'center',
   },
   // Sponsor Badge
   sponsorBadge: {
