@@ -662,31 +662,39 @@ export default function DocumentDetailScreen() {
           </Animated.View>
         )}
 
-        {/* Document info - SANS le titre (déjà en header) */}
-        <View style={styles.infoSectionCompact}>
-          <View style={styles.metaRow}>
-            <View style={styles.metaItem}>
-              <Ionicons name="calendar-outline" size={16} color={Colors.textSecondary} />
-              <Text style={styles.metaText}>{document.ligne1}</Text>
-            </View>
-            {document.ligne4 && (
-              <View style={styles.metaItem}>
-                <Ionicons name="people-outline" size={16} color={Colors.textSecondary} />
-                <Text style={styles.metaText}>{document.ligne4}</Text>
-              </View>
-            )}
-          </View>
-        </View>
-
-        {/* Status + AutoSponsoring Badges Row */}
-        <View style={styles.badgesRow}>
-          {renderStatusBadge()}
-          {isAutoSponsoringEnabled && (
-            <View style={styles.autoSponsoringBadge}>
-              <RotatingStar size={14} color={Colors.white} />
-              <Text style={styles.autoSponsoringBadgeText}>{sponsoringPrice}€</Text>
-            </View>
-          )}
+        {/* Supports selection - just after mockup */}
+        <View style={styles.supportsSection}>
+          <Text style={styles.supportsSectionTitle}>Choisissez vos supports</Text>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.supportsRow}>
+            {SUPPORTS.map((support) => (
+              <TouchableOpacity
+                key={support.id}
+                style={[
+                  styles.supportChip,
+                  selectedSupports.includes(support.id) && styles.supportChipSelected
+                ]}
+                onPress={() => {
+                  setSelectedSupports(prev => 
+                    prev.includes(support.id) 
+                      ? prev.filter(s => s !== support.id)
+                      : [...prev, support.id]
+                  );
+                }}
+              >
+                <Ionicons 
+                  name={support.icon as any} 
+                  size={18} 
+                  color={selectedSupports.includes(support.id) ? Colors.white : Colors.textSecondary} 
+                />
+                <Text style={[
+                  styles.supportChipText,
+                  selectedSupports.includes(support.id) && styles.supportChipTextSelected
+                ]}>
+                  {support.label}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
         </View>
 
         {/* === SECTION AUTOSPONSORING (Accordéon) === */}
