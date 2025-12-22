@@ -385,6 +385,18 @@ export default function CreerScreen() {
   const [displaySize, setDisplaySize] = useState<DisplaySize>('medium'); // Défaut = 4 docs
   const [sortOption, setSortOption] = useState<SortOption>(null);
   const [sponsorFilter, setSponsorFilter] = useState<SponsorFilter>(null);
+  const [selectedThematique, setSelectedThematique] = useState<string | null>(null);
+  const [showThematiquesDropdown, setShowThematiquesDropdown] = useState(false);
+  
+  // Liste des thématiques disponibles
+  const THEMATIQUES = [
+    { id: 'match', label: 'Match', icon: 'football-outline' },
+    { id: 'entrainement', label: 'Entraînement', icon: 'fitness-outline' },
+    { id: 'evenement', label: 'Événement', icon: 'calendar-outline' },
+    { id: 'resultat', label: 'Résultat', icon: 'trophy-outline' },
+    { id: 'recrutement', label: 'Recrutement', icon: 'people-outline' },
+    { id: 'communication', label: 'Communication', icon: 'megaphone-outline' },
+  ];
 
   // Charger les documents selon le profil sélectionné
   const loadDocuments = useCallback(() => {
