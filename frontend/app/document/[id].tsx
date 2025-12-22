@@ -91,6 +91,14 @@ const SUPPORTS = [
   { id: 'banniere', label: 'Bannière', icon: 'browsers-outline', canPublish: false },
 ];
 
+// Métriques mockées pour les documents publiés
+const MOCK_METRICS = {
+  views: 1247,
+  clicks: 89,
+  comments: 23,
+  shares: 45,
+};
+
 // Mapping pour les icônes de diffusion
 const CHANNEL_ICONS: Record<string, { icon: string; color: string }> = {
   facebook: { icon: 'logo-facebook', color: '#1877F2' },
