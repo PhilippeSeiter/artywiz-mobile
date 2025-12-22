@@ -109,17 +109,24 @@ const logoStyles = StyleSheet.create({
 });
 
 // ============================================
-// MOCK DATA
+// MOCK DATA avec logos
 // ============================================
+const PROFILE_LOGOS: { [key: string]: any } = {
+  'ligue_1': require('../assets/images/logo_ligue_grandest.png'),
+  'ligue_2': require('../assets/images/logo_ligue_normandie.png'),
+  'district_1': require('../assets/images/logo_district_alsace.png'),
+  'club_1': require('../assets/images/logo_club_strasbourg.png'),
+};
+
 const MOCK_DATA = {
   ligue: [
-    { id: 'ligue_1', name: 'Ligue Grand Est de Football', numero: 'LGEF' },
-    { id: 'ligue_2', name: 'Ligue de Normandie de Football', numero: 'LNF' },
+    { id: 'ligue_1', name: 'Ligue Grand Est de Football', numero: 'LGEF', logo: 'ligue_1' },
+    { id: 'ligue_2', name: 'Ligue de Normandie de Football', numero: 'LNF', logo: 'ligue_2' },
     { id: 'ligue_3', name: "Ligue d'Île-de-France de Football", numero: 'LIDF' },
     { id: 'ligue_4', name: 'Ligue Auvergne-Rhône-Alpes de Football', numero: 'LAURAF' },
   ],
   district: [
-    { id: 'district_1', name: "District d'Alsace", numero: '67' },
+    { id: 'district_1', name: "District d'Alsace", numero: '67', logo: 'district_1' },
     { id: 'district_2', name: 'District des Ardennes', numero: '08' },
     { id: 'district_3', name: "District de l'Aube", numero: '10' },
     { id: 'district_4', name: 'District de la Marne', numero: '51' },
@@ -127,7 +134,7 @@ const MOCK_DATA = {
     { id: 'district_6', name: 'District de Moselle', numero: '57' },
   ],
   club: [
-    { id: 'club_1', name: 'AS Strasbourg', numero: '500001' },
+    { id: 'club_1', name: 'AS Strasbourg', numero: '500001', logo: 'club_1' },
     { id: 'club_2', name: 'ASL Robertsau', numero: '500002' },
     { id: 'club_3', name: 'Club sportif Orne Amnéville', numero: '570001' },
     { id: 'club_4', name: 'ASPTT Metz', numero: '570002' },
