@@ -268,22 +268,14 @@ const UnifiedPopup = ({ visible, onClose, onAccountCreated }: UnifiedPopupProps)
   const contentStyle = useAnimatedStyle(() => ({ transform: [{ scale: contentScale.value }] }));
   const slideStyle = useAnimatedStyle(() => ({ transform: [{ translateX: slideX.value }] }));
 
-  // Slide transition
+  // Slide transition - simplified without runOnJS
   const slideToNext = (nextStep: PopupStep) => {
-    slideX.value = withTiming(-POPUP_WIDTH, { duration: SLIDE_DURATION, easing: Easing.inOut(Easing.ease) }, () => {
-      runOnJS(setStep)(nextStep);
-      slideX.value = POPUP_WIDTH;
-      slideX.value = withTiming(0, { duration: SLIDE_DURATION, easing: Easing.inOut(Easing.ease) });
-    });
+    setStep(nextStep);
     setSearchQuery('');
   };
 
   const slideBack = (prevStep: PopupStep) => {
-    slideX.value = withTiming(POPUP_WIDTH, { duration: SLIDE_DURATION, easing: Easing.inOut(Easing.ease) }, () => {
-      runOnJS(setStep)(prevStep);
-      slideX.value = -POPUP_WIDTH;
-      slideX.value = withTiming(0, { duration: SLIDE_DURATION, easing: Easing.inOut(Easing.ease) });
-    });
+    setStep(prevStep);
     setSearchQuery('');
   };
 
