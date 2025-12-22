@@ -518,12 +518,12 @@ const styles = StyleSheet.create({
     width: 220,
     height: 130,
   },
-  // Baseline - centré verticalement entre logo et carte (remonté de 10px)
+  // Baseline - centré verticalement entre logo et carte (remonté de 30px)
   baselineSection: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: -10,
+    marginTop: -30,
   },
   baselineContainer: {
     alignItems: 'center',
