@@ -435,7 +435,7 @@ const UnifiedPopup = ({ visible, onClose, onAccountCreated }) => {
                   {filteredItems.length === 0 ? (
                     <Text style={styles.noResults}>Aucun résultat</Text>
                   ) : (
-                    filteredItems.map((item: any) => (
+                    filteredItems.map((item) => (
                       <TouchableOpacity
                         key={item.id}
                         style={styles.searchResultItem}
