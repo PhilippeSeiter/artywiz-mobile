@@ -7,16 +7,8 @@ import {
   ViewToken,
   ImageStyle,
   ViewStyle,
+  Animated,
 } from 'react-native';
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withSpring,
-  withTiming,
-  interpolate,
-  Extrapolation,
-  useAnimatedScrollHandler,
-} from 'react-native-reanimated';
 import { Image } from 'expo-image';
 import { Colors, Spacing } from '../constants';
 
@@ -33,8 +25,6 @@ interface AnimatedCarouselProps {
   imageStyle?: ImageStyle;
 }
 
-const AnimatedFlatList = Animated.createAnimatedComponent(FlatList<string>);
-
 export function AnimatedCarousel({
   images,
   itemWidth = SCREEN_WIDTH * 0.75,
@@ -45,14 +35,8 @@ export function AnimatedCarousel({
   containerStyle,
   imageStyle,
 }: AnimatedCarouselProps) {
-  const scrollX = useSharedValue(0);
+  const scrollX = useRef(new Animated.Value(0)).current;
   const [activeIndex, setActiveIndex] = useState(0);
-
-  const scrollHandler = useAnimatedScrollHandler({
-    onScroll: (event) => {
-      scrollX.value = event.contentOffset.x;
-    },
-  });
 
   const onViewableItemsChanged = useRef(
     ({ viewableItems }: { viewableItems: ViewToken[] }) => {
@@ -67,17 +51,51 @@ export function AnimatedCarousel({
   }).current;
 
   const renderItem = ({ item, index }: { item: string; index: number }) => {
+    const inputRange = [
+      (index - 1) * (itemWidth + gap),
+      index * (itemWidth + gap),
+      (index + 1) * (itemWidth + gap),
+    ];
+
+    const scale = scrollX.interpolate({
+      inputRange,
+      outputRange: [0.85, 1, 0.85],
+      extrapolate: 'clamp',
+    });
+
+    const opacity = scrollX.interpolate({
+      inputRange,
+      outputRange: [0.5, 1, 0.5],
+      extrapolate: 'clamp',
+    });
+
     return (
-      <AnimatedCarouselItem
-        image={item}
-        index={index}
-        scrollX={scrollX}
-        itemWidth={itemWidth}
-        itemHeight={itemHeight}
-        gap={gap}
-        borderRadius={borderRadius}
-        imageStyle={imageStyle}
-      />
+      <Animated.View
+        style={[
+          {
+            width: itemWidth,
+            height: itemHeight,
+            borderRadius,
+            overflow: 'hidden',
+            transform: [{ scale }],
+            opacity,
+          },
+        ]}
+      >
+        <Image
+          source={{ uri: item }}
+          style={[
+            {
+              width: '100%',
+              height: '100%',
+              borderRadius,
+            },
+            imageStyle,
+          ]}
+          contentFit="cover"
+          transition={300}
+        />
+      </Animated.View>
     );
   };
 
@@ -85,7 +103,7 @@ export function AnimatedCarousel({
 
   return (
     <View style={[styles.container, containerStyle]}>
-      <AnimatedFlatList
+      <Animated.FlatList
         data={images}
         renderItem={renderItem}
         keyExtractor={(_, index) => index.toString()}
@@ -97,7 +115,10 @@ export function AnimatedCarousel({
           paddingHorizontal: (SCREEN_WIDTH - itemWidth) / 2,
           gap: gap,
         }}
-        onScroll={scrollHandler}
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+          { useNativeDriver: true }
+        )}
         scrollEventThrottle={16}
         onViewableItemsChanged={onViewableItemsChanged}
         viewabilityConfig={viewabilityConfig}
@@ -105,164 +126,41 @@ export function AnimatedCarousel({
       
       {showPagination && images.length > 1 && (
         <View style={styles.pagination}>
-          {images.map((_, index) => (
-            <PaginationDot
-              key={index}
-              index={index}
-              scrollX={scrollX}
-              itemWidth={itemWidth}
-              gap={gap}
-            />
-          ))}
+          {images.map((_, index) => {
+            const inputRange = [
+              (index - 1) * (itemWidth + gap),
+              index * (itemWidth + gap),
+              (index + 1) * (itemWidth + gap),
+            ];
+
+            const dotWidth = scrollX.interpolate({
+              inputRange,
+              outputRange: [8, 24, 8],
+              extrapolate: 'clamp',
+            });
+
+            const dotOpacity = scrollX.interpolate({
+              inputRange,
+              outputRange: [0.4, 1, 0.4],
+              extrapolate: 'clamp',
+            });
+
+            return (
+              <Animated.View
+                key={index}
+                style={[
+                  styles.dot,
+                  {
+                    width: dotWidth,
+                    opacity: dotOpacity,
+                  },
+                ]}
+              />
+            );
+          })}
         </View>
       )}
     </View>
-  );
-}
-
-// Animated individual carousel item
-interface AnimatedCarouselItemProps {
-  image: string;
-  index: number;
-  scrollX: Animated.SharedValue<number>;
-  itemWidth: number;
-  itemHeight: number;
-  gap: number;
-  borderRadius: number;
-  imageStyle?: ImageStyle;
-}
-
-function AnimatedCarouselItem({
-  image,
-  index,
-  scrollX,
-  itemWidth,
-  itemHeight,
-  gap,
-  borderRadius,
-  imageStyle,
-}: AnimatedCarouselItemProps) {
-  const inputRange = [
-    (index - 1) * (itemWidth + gap),
-    index * (itemWidth + gap),
-    (index + 1) * (itemWidth + gap),
-  ];
-
-  const animatedStyle = useAnimatedStyle(() => {
-    // Scale effect - center item is larger
-    const scale = interpolate(
-      scrollX.value,
-      inputRange,
-      [0.85, 1, 0.85],
-      Extrapolation.CLAMP
-    );
-
-    // Opacity effect - items fade as they go away
-    const opacity = interpolate(
-      scrollX.value,
-      inputRange,
-      [0.5, 1, 0.5],
-      Extrapolation.CLAMP
-    );
-
-    // Rotation effect - subtle 3D rotation
-    const rotateY = interpolate(
-      scrollX.value,
-      inputRange,
-      [15, 0, -15],
-      Extrapolation.CLAMP
-    );
-
-    // Vertical translation - items move down slightly when not centered
-    const translateY = interpolate(
-      scrollX.value,
-      inputRange,
-      [15, 0, 15],
-      Extrapolation.CLAMP
-    );
-
-    return {
-      transform: [
-        { scale },
-        { rotateY: `${rotateY}deg` },
-        { translateY },
-      ],
-      opacity,
-    };
-  });
-
-  return (
-    <Animated.View
-      style={[
-        {
-          width: itemWidth,
-          height: itemHeight,
-          borderRadius,
-          overflow: 'hidden',
-        },
-        animatedStyle,
-      ]}
-    >
-      <Image
-        source={{ uri: image }}
-        style={[
-          {
-            width: '100%',
-            height: '100%',
-            borderRadius,
-          },
-          imageStyle,
-        ]}
-        contentFit="cover"
-        transition={300}
-      />
-    </Animated.View>
-  );
-}
-
-// Animated pagination dot
-interface PaginationDotProps {
-  index: number;
-  scrollX: Animated.SharedValue<number>;
-  itemWidth: number;
-  gap: number;
-}
-
-function PaginationDot({ index, scrollX, itemWidth, gap }: PaginationDotProps) {
-  const inputRange = [
-    (index - 1) * (itemWidth + gap),
-    index * (itemWidth + gap),
-    (index + 1) * (itemWidth + gap),
-  ];
-
-  const animatedStyle = useAnimatedStyle(() => {
-    const width = interpolate(
-      scrollX.value,
-      inputRange,
-      [8, 24, 8],
-      Extrapolation.CLAMP
-    );
-
-    const opacity = interpolate(
-      scrollX.value,
-      inputRange,
-      [0.4, 1, 0.4],
-      Extrapolation.CLAMP
-    );
-
-    return {
-      width,
-      opacity,
-    };
-  });
-
-  return (
-    <Animated.View
-      style={[
-        styles.dot,
-        animatedStyle,
-      ]}
-    />
   );
 }
 

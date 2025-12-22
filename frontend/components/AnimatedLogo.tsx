@@ -6,15 +6,7 @@
  * - showFootball: boolean - Affiche ou non le texte "Football" sous le logo
  */
 import React, { useEffect, useCallback, useRef } from 'react';
-import { View, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withTiming,
-  withSequence,
-  withRepeat,
-  Easing,
-} from 'react-native-reanimated';
+import { View, Image, TouchableOpacity, StyleSheet, Animated, Easing } from 'react-native';
 
 interface AnimatedLogoProps {
   showFootball?: boolean;
@@ -22,91 +14,68 @@ interface AnimatedLogoProps {
 }
 
 export const AnimatedLogo = ({ showFootball = false, size = 'normal' }: AnimatedLogoProps) => {
-  const opacityW = useSharedValue(0);
-  const opacityArtywiz = useSharedValue(0);
-  const opacityFootball = useSharedValue(0);
-  const scaleW = useSharedValue(1);
-  const scaleArtywiz = useSharedValue(1);
-  const scaleFootball = useSharedValue(1);
+  const opacityW = useRef(new Animated.Value(0)).current;
+  const opacityArtywiz = useRef(new Animated.Value(0)).current;
+  const opacityFootball = useRef(new Animated.Value(0)).current;
+  const scaleW = useRef(new Animated.Value(1)).current;
+  const scaleArtywiz = useRef(new Animated.Value(1)).current;
+  const scaleFootball = useRef(new Animated.Value(1)).current;
   const isAnimatingRef = useRef(false);
 
   const startAnimation = useCallback(() => {
     if (isAnimatingRef.current) return;
     isAnimatingRef.current = true;
 
-    // Animation subtile ±5%
     const halfCycleDuration = 1200;
-    const easeConfig = { duration: halfCycleDuration, easing: Easing.inOut(Easing.ease) };
 
     // W: GRANDIT d'abord
-    scaleW.value = withRepeat(
-      withSequence(
-        withTiming(1.05, easeConfig),
-        withTiming(0.95, easeConfig)
-      ),
-      -1,
-      true
-    );
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(scaleW, { toValue: 1.05, duration: halfCycleDuration, easing: Easing.inOut(Easing.ease), useNativeDriver: true }),
+        Animated.timing(scaleW, { toValue: 0.95, duration: halfCycleDuration, easing: Easing.inOut(Easing.ease), useNativeDriver: true }),
+      ])
+    ).start();
 
     // Artywiz: décalage 500ms, RÉDUIT d'abord
     setTimeout(() => {
-      scaleArtywiz.value = withRepeat(
-        withSequence(
-          withTiming(0.95, easeConfig),
-          withTiming(1.05, easeConfig)
-        ),
-        -1,
-        true
-      );
+      Animated.loop(
+        Animated.sequence([
+          Animated.timing(scaleArtywiz, { toValue: 0.95, duration: halfCycleDuration, easing: Easing.inOut(Easing.ease), useNativeDriver: true }),
+          Animated.timing(scaleArtywiz, { toValue: 1.05, duration: halfCycleDuration, easing: Easing.inOut(Easing.ease), useNativeDriver: true }),
+        ])
+      ).start();
     }, 500);
 
     // Football: décalage 1000ms, GRANDIT d'abord
     if (showFootball) {
       setTimeout(() => {
-        scaleFootball.value = withRepeat(
-          withSequence(
-            withTiming(1.05, easeConfig),
-            withTiming(0.95, easeConfig)
-          ),
-          -1,
-          true
-        );
+        Animated.loop(
+          Animated.sequence([
+            Animated.timing(scaleFootball, { toValue: 1.05, duration: halfCycleDuration, easing: Easing.inOut(Easing.ease), useNativeDriver: true }),
+            Animated.timing(scaleFootball, { toValue: 0.95, duration: halfCycleDuration, easing: Easing.inOut(Easing.ease), useNativeDriver: true }),
+          ])
+        ).start();
       }, 1000);
     }
   }, [showFootball]);
 
   useEffect(() => {
     // Fondu décalé au chargement
-    opacityW.value = withTiming(1, { duration: 400, easing: Easing.out(Easing.ease) });
+    Animated.timing(opacityW, { toValue: 1, duration: 400, easing: Easing.out(Easing.ease), useNativeDriver: true }).start();
     
     setTimeout(() => {
-      opacityArtywiz.value = withTiming(1, { duration: 400, easing: Easing.out(Easing.ease) });
+      Animated.timing(opacityArtywiz, { toValue: 1, duration: 400, easing: Easing.out(Easing.ease), useNativeDriver: true }).start();
     }, 300);
     
     if (showFootball) {
       setTimeout(() => {
-        opacityFootball.value = withTiming(1, { duration: 400, easing: Easing.out(Easing.ease) });
+        Animated.timing(opacityFootball, { toValue: 1, duration: 400, easing: Easing.out(Easing.ease), useNativeDriver: true }).start();
       }, 600);
     }
     
     const timer = setTimeout(() => startAnimation(), 1000);
     return () => clearTimeout(timer);
   }, [startAnimation, showFootball]);
-
-  const animatedStyleW = useAnimatedStyle(() => ({
-    opacity: opacityW.value,
-    transform: [{ scale: scaleW.value }],
-  }));
-
-  const animatedStyleArtywiz = useAnimatedStyle(() => ({
-    opacity: opacityArtywiz.value,
-    transform: [{ scale: scaleArtywiz.value }],
-  }));
-
-  const animatedStyleFootball = useAnimatedStyle(() => ({
-    opacity: opacityFootball.value,
-    transform: [{ scale: scaleFootball.value }],
-  }));
 
   const scale = size === 'small' ? 0.7 : 1;
 
@@ -118,7 +87,7 @@ export const AnimatedLogo = ({ showFootball = false, size = 'normal' }: Animated
     >
       <View style={[styles.wrapper, { transform: [{ scale }] }]}>
         {/* W - en haut */}
-        <Animated.View style={[styles.part, styles.partW, animatedStyleW]}>
+        <Animated.View style={[styles.part, styles.partW, { opacity: opacityW, transform: [{ scale: scaleW }] }]}>
           <Image
             source={require('../assets/images/logo_W.png')}
             style={styles.imageW}
@@ -127,7 +96,7 @@ export const AnimatedLogo = ({ showFootball = false, size = 'normal' }: Animated
         </Animated.View>
         
         {/* Artywiz - au milieu */}
-        <Animated.View style={[styles.part, styles.partArtywiz, animatedStyleArtywiz]}>
+        <Animated.View style={[styles.part, styles.partArtywiz, { opacity: opacityArtywiz, transform: [{ scale: scaleArtywiz }] }]}>
           <Image
             source={require('../assets/images/logo_artywiz.png')}
             style={styles.imageArtywiz}
@@ -137,7 +106,7 @@ export const AnimatedLogo = ({ showFootball = false, size = 'normal' }: Animated
         
         {/* Football - en bas (uniquement si showFootball) */}
         {showFootball && (
-          <Animated.View style={[styles.part, styles.partFootball, animatedStyleFootball]}>
+          <Animated.View style={[styles.part, styles.partFootball, { opacity: opacityFootball, transform: [{ scale: scaleFootball }] }]}>
             <Image
               source={require('../assets/images/logo_football.png')}
               style={styles.imageFootball}
