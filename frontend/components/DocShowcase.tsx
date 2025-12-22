@@ -7,21 +7,10 @@ import {
   Dimensions,
   ActivityIndicator,
   Text,
-} from 'react-native';
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withTiming,
-  withSpring,
-  withSequence,
-  withDelay,
-  withRepeat,
+  Animated,
+  PanResponder,
   Easing,
-  runOnJS,
-  interpolate,
-  Extrapolation,
-} from 'react-native-reanimated';
-import { Gesture, GestureDetector, GestureHandlerRootView } from 'react-native-gesture-handler';
+} from 'react-native';
 import { Colors, Spacing } from '../constants';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
@@ -29,20 +18,18 @@ const EFFECTIVE_WIDTH = Math.min(SCREEN_WIDTH, 500);
 const IMAGE_HEIGHT = EFFECTIVE_WIDTH * 0.85;
 
 const SWIPE_THRESHOLD = EFFECTIVE_WIDTH * 0.25;
-const VELOCITY_THRESHOLD = 500;
 
 // ============================================
 // TIMING CONSTANTS (en ms)
 // ============================================
-const SLIDE_DURATION = 450;        // Durée du glissement
-const ZOOM_DURATION = 4000;        // Zoom continu pendant 4 secondes
-const ZOOM_AMOUNT = 1.10;          // Zoom 10% exactement
-const TEXT_APPEAR_DELAY = 1500;    // 1.5 secondes de zoom avant le texte
-const TEXT_APPEAR_DURATION = 500;  // Durée animation texte (glisse du bas)
-const BADGE_APPEAR_DELAY = 200;    // Badge juste après le texte
-const TEXT_VISIBLE_DURATION = 1500; // Texte reste 1.5 secondes
-const TEXT_HIDE_DURATION = 400;    // Durée disparition texte
-const DISPLAY_DURATION = 4000;     // 4 secondes d'affichage (le temps du zoom)
+const SLIDE_DURATION = 450;
+const ZOOM_DURATION = 4000;
+const ZOOM_AMOUNT = 1.10;
+const TEXT_APPEAR_DELAY = 1500;
+const TEXT_APPEAR_DURATION = 500;
+const BADGE_APPEAR_DELAY = 200;
+const TEXT_HIDE_DURATION = 400;
+const DISPLAY_DURATION = 4000;
 
 interface Document {
   id: string;
@@ -67,22 +54,26 @@ interface DocShowcaseProps {
 
 // Étoile qui tourne
 const RotatingStarContinuous = ({ size, color }: { size: number; color: string }) => {
-  const rotation = useSharedValue(0);
+  const rotation = useRef(new Animated.Value(0)).current;
   
   useEffect(() => {
-    rotation.value = withRepeat(
-      withTiming(360, { duration: 2000, easing: Easing.linear }),
-      -1,
-      false
-    );
+    Animated.loop(
+      Animated.timing(rotation, {
+        toValue: 1,
+        duration: 2000,
+        easing: Easing.linear,
+        useNativeDriver: true,
+      })
+    ).start();
   }, []);
   
-  const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ rotate: `${rotation.value}deg` }],
-  }));
+  const spin = rotation.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '360deg'],
+  });
   
   return (
-    <Animated.View style={animatedStyle}>
+    <Animated.View style={{ transform: [{ rotate: spin }] }}>
       <Text style={{ fontSize: size, color }}>★</Text>
     </Animated.View>
   );
@@ -103,29 +94,29 @@ export const DocShowcase: React.FC<DocShowcaseProps> = ({
   const [exitingIndex, setExitingIndex] = useState(0);
   
   // Animation values pour le slide actif
-  const currentTranslateX = useSharedValue(EFFECTIVE_WIDTH);
-  const currentOpacity = useSharedValue(1);
-  const currentScale = useSharedValue(1);
+  const currentTranslateX = useRef(new Animated.Value(EFFECTIVE_WIDTH)).current;
+  const currentOpacity = useRef(new Animated.Value(1)).current;
+  const currentScale = useRef(new Animated.Value(1)).current;
   
   // Animation values pour le slide sortant
-  const exitingTranslateX = useSharedValue(-EFFECTIVE_WIDTH);
-  const exitingOpacity = useSharedValue(0);
+  const exitingTranslateX = useRef(new Animated.Value(-EFFECTIVE_WIDTH)).current;
+  const exitingOpacity = useRef(new Animated.Value(0)).current;
   
   // Overlay et texte
-  const overlayOpacity = useSharedValue(0);
-  const textTranslateY = useSharedValue(30);
+  const overlayOpacity = useRef(new Animated.Value(0)).current;
+  const textTranslateY = useRef(new Animated.Value(30)).current;
+  const textOpacity = useRef(new Animated.Value(0)).current;
   
   // Badge sponsoring
-  const badgeScale = useSharedValue(0);
-  const badgeOpacity = useSharedValue(0);
+  const badgeScale = useRef(new Animated.Value(0)).current;
+  const badgeOpacity = useRef(new Animated.Value(0)).current;
   
   // Loading
-  const loadingOpacity = useSharedValue(1);
+  const loadingOpacity = useRef(new Animated.Value(1)).current;
   
   // State
   const isAnimating = useRef(false);
   const autoPlayTimer = useRef<NodeJS.Timeout | null>(null);
-  const isGestureActive = useRef(false);
   const animationTimers = useRef<NodeJS.Timeout[]>([]);
 
   // Cleanup timers
@@ -139,50 +130,52 @@ export const DocShowcase: React.FC<DocShowcaseProps> = ({
   }, []);
 
   // ============================================
-  // ANIMATION: Image entre avec rebond, puis zoom CONTINU de 10%
+  // ANIMATION: Image entre avec rebond, puis zoom CONTINU
   // ============================================
   const animateNewSlideIn = useCallback(() => {
     // Reset
-    currentTranslateX.value = EFFECTIVE_WIDTH;
-    currentOpacity.value = 1;
-    currentScale.value = 1;
-    overlayOpacity.value = 0;
-    textTranslateY.value = 30;
-    badgeScale.value = 0;
-    badgeOpacity.value = 0;
+    currentTranslateX.setValue(EFFECTIVE_WIDTH);
+    currentOpacity.setValue(1);
+    currentScale.setValue(1);
+    overlayOpacity.setValue(0);
+    textTranslateY.setValue(30);
+    textOpacity.setValue(0);
+    badgeScale.setValue(0);
+    badgeOpacity.setValue(0);
     
-    // 1. Slide in avec UN rebond léger
-    currentTranslateX.value = withSpring(0, {
+    // 1. Slide in avec rebond
+    Animated.spring(currentTranslateX, {
+      toValue: 0,
       damping: 16,
       stiffness: 100,
       mass: 0.8,
-    });
+      useNativeDriver: true,
+    }).start();
     
-    // 2. Zoom CONTINU de 10% qui démarre une fois l'image en place
-    // Le zoom dure toute la durée d'affichage (4 secondes)
+    // 2. Zoom CONTINU de 10%
     setTimeout(() => {
-      currentScale.value = withTiming(ZOOM_AMOUNT, {
+      Animated.timing(currentScale, {
+        toValue: ZOOM_AMOUNT,
         duration: ZOOM_DURATION,
-        easing: Easing.linear, // Zoom linéaire constant
-      });
-    }, 400); // Commence après le rebond d'entrée
+        easing: Easing.linear,
+        useNativeDriver: true,
+      }).start();
+    }, 400);
     
-    // 3. Après 1.5 seconde: overlay + texte glissent du bas vers le haut
+    // 3. Après 1.5 seconde: overlay + texte
     const textTimer = setTimeout(() => {
-      overlayOpacity.value = withTiming(0.45, { duration: TEXT_APPEAR_DURATION });
-      textTranslateY.value = withTiming(0, { 
-        duration: TEXT_APPEAR_DURATION,
-        easing: Easing.out(Easing.cubic),
-      });
+      Animated.parallel([
+        Animated.timing(overlayOpacity, { toValue: 0.45, duration: TEXT_APPEAR_DURATION, useNativeDriver: true }),
+        Animated.timing(textTranslateY, { toValue: 0, duration: TEXT_APPEAR_DURATION, easing: Easing.out(Easing.cubic), useNativeDriver: true }),
+        Animated.timing(textOpacity, { toValue: 1, duration: TEXT_APPEAR_DURATION, useNativeDriver: true }),
+      ]).start();
       
-      // 4. Badge sponsoring avec UN SEUL rebond
+      // 4. Badge sponsoring
       const badgeTimer = setTimeout(() => {
-        badgeOpacity.value = withTiming(1, { duration: 150 });
-        badgeScale.value = withSpring(1, {
-          damping: 10,
-          stiffness: 200,
-          mass: 0.5,
-        });
+        Animated.parallel([
+          Animated.timing(badgeOpacity, { toValue: 1, duration: 150, useNativeDriver: true }),
+          Animated.spring(badgeScale, { toValue: 1, damping: 10, stiffness: 200, mass: 0.5, useNativeDriver: true }),
+        ]).start();
       }, BADGE_APPEAR_DELAY);
       animationTimers.current.push(badgeTimer);
       
@@ -192,23 +185,16 @@ export const DocShowcase: React.FC<DocShowcaseProps> = ({
   }, []);
 
   // ============================================
-  // ANIMATION: Cache le texte (glisse vers le bas) + badge bounce off
+  // ANIMATION: Cache le texte
   // ============================================
   const hideTextAnimation = useCallback(() => {
-    // Texte et overlay disparaissent vers le bas
-    textTranslateY.value = withTiming(30, { 
-      duration: TEXT_HIDE_DURATION,
-      easing: Easing.in(Easing.cubic),
-    });
-    overlayOpacity.value = withTiming(0, { duration: TEXT_HIDE_DURATION });
-    
-    // Badge bounce off (rebondit en sortant)
-    badgeScale.value = withSpring(0, {
-      damping: 8,
-      stiffness: 300,
-      mass: 0.4,
-    });
-    badgeOpacity.value = withTiming(0, { duration: 200 });
+    Animated.parallel([
+      Animated.timing(textTranslateY, { toValue: 30, duration: TEXT_HIDE_DURATION, easing: Easing.in(Easing.cubic), useNativeDriver: true }),
+      Animated.timing(textOpacity, { toValue: 0, duration: TEXT_HIDE_DURATION, useNativeDriver: true }),
+      Animated.timing(overlayOpacity, { toValue: 0, duration: TEXT_HIDE_DURATION, useNativeDriver: true }),
+      Animated.spring(badgeScale, { toValue: 0, damping: 8, stiffness: 300, mass: 0.4, useNativeDriver: true }),
+      Animated.timing(badgeOpacity, { toValue: 0, duration: 200, useNativeDriver: true }),
+    ]).start();
   }, []);
 
   // ============================================
@@ -219,72 +205,45 @@ export const DocShowcase: React.FC<DocShowcaseProps> = ({
     isAnimating.current = true;
     
     clearAllTimers();
-    
-    // Mémoriser l'ancien index pour le slide sortant
     setExitingIndex(activeIndex);
-    
-    // D'abord, cache le texte (300ms)
     hideTextAnimation();
     
-    // Après que le texte soit caché, lance la transition
     const transitionTimer = setTimeout(() => {
-      // Prépare le slide sortant
-      exitingTranslateX.value = 0;
-      exitingOpacity.value = 1;
+      exitingTranslateX.setValue(0);
+      exitingOpacity.setValue(1);
+      currentTranslateX.setValue(EFFECTIVE_WIDTH);
+      currentOpacity.setValue(1);
+      currentScale.setValue(1);
       
-      // Prépare le nouveau slide (hors écran à droite)
-      currentTranslateX.value = EFFECTIVE_WIDTH;
-      currentOpacity.value = 1;
-      currentScale.value = 1;
+      // Ancien slide sort vers la gauche
+      Animated.parallel([
+        Animated.timing(exitingTranslateX, { toValue: -EFFECTIVE_WIDTH * 0.4, duration: SLIDE_DURATION, easing: Easing.bezier(0.4, 0, 0.2, 1), useNativeDriver: true }),
+        Animated.timing(exitingOpacity, { toValue: 0, duration: SLIDE_DURATION, easing: Easing.bezier(0.3, 0, 0.7, 1), useNativeDriver: true }),
+      ]).start();
       
-      // Animation simultanée:
-      // - Ancien slide sort vers la gauche avec fade out progressif
-      exitingTranslateX.value = withTiming(-EFFECTIVE_WIDTH * 0.4, {
-        duration: SLIDE_DURATION,
-        easing: Easing.bezier(0.4, 0, 0.2, 1),
-      });
-      exitingOpacity.value = withTiming(0, {
-        duration: SLIDE_DURATION,
-        easing: Easing.bezier(0.3, 0, 0.7, 1),
-      });
+      // Nouveau slide entre avec rebond
+      Animated.spring(currentTranslateX, { toValue: 0, damping: 16, stiffness: 100, mass: 0.8, useNativeDriver: true }).start();
       
-      // - Nouveau slide entre avec UN rebond
-      currentTranslateX.value = withSpring(0, {
-        damping: 16,
-        stiffness: 100,
-        mass: 0.8,
-      });
-      
-      // Met à jour l'index après le début de l'animation
       setActiveIndex(nextIdx);
       
-      // Après le rebond (~500ms), démarre le zoom et texte
       const postSlideTimer = setTimeout(() => {
-        exitingOpacity.value = 0;
+        exitingOpacity.setValue(0);
         isAnimating.current = false;
         
-        // Zoom lent
-        currentScale.value = withTiming(1.06, {
-          duration: ZOOM_DURATION,
-          easing: Easing.linear,
-        });
+        Animated.timing(currentScale, { toValue: 1.06, duration: ZOOM_DURATION, easing: Easing.linear, useNativeDriver: true }).start();
         
-        // Après 1 seconde: texte apparaît
         const textTimer = setTimeout(() => {
-          overlayOpacity.value = withTiming(0.45, { duration: TEXT_APPEAR_DURATION });
-          textTranslateY.value = withTiming(0, { 
-            duration: TEXT_APPEAR_DURATION,
-            easing: Easing.out(Easing.cubic),
-          });
+          Animated.parallel([
+            Animated.timing(overlayOpacity, { toValue: 0.45, duration: TEXT_APPEAR_DURATION, useNativeDriver: true }),
+            Animated.timing(textTranslateY, { toValue: 0, duration: TEXT_APPEAR_DURATION, easing: Easing.out(Easing.cubic), useNativeDriver: true }),
+            Animated.timing(textOpacity, { toValue: 1, duration: TEXT_APPEAR_DURATION, useNativeDriver: true }),
+          ]).start();
           
-          // Badge après le texte
           const badgeTimer = setTimeout(() => {
-            badgeOpacity.value = withTiming(1, { duration: 200 });
-            badgeScale.value = withSpring(1, {
-              damping: 14,
-              stiffness: 200,
-              mass: 0.6,
-            });
+            Animated.parallel([
+              Animated.timing(badgeOpacity, { toValue: 1, duration: 200, useNativeDriver: true }),
+              Animated.spring(badgeScale, { toValue: 1, damping: 14, stiffness: 200, mass: 0.6, useNativeDriver: true }),
+            ]).start();
           }, BADGE_APPEAR_DELAY);
           animationTimers.current.push(badgeTimer);
         }, TEXT_APPEAR_DELAY);
@@ -298,83 +257,47 @@ export const DocShowcase: React.FC<DocShowcaseProps> = ({
   }, [activeIndex, hideTextAnimation, clearAllTimers]);
 
   // ============================================
-  // TRANSITION: Vers le slide précédent
+  // PAN RESPONDER for gestures
   // ============================================
-  const transitionToPrev = useCallback((prevIdx: number) => {
-    if (isAnimating.current) return;
-    isAnimating.current = true;
-    
-    clearAllTimers();
-    setExitingIndex(activeIndex);
-    hideTextAnimation();
-    
-    const transitionTimer = setTimeout(() => {
-      exitingTranslateX.value = 0;
-      exitingOpacity.value = 1;
-      
-      currentTranslateX.value = -EFFECTIVE_WIDTH;
-      currentOpacity.value = 1;
-      currentScale.value = 1;
-      
-      // Ancien sort vers la droite avec fade
-      exitingTranslateX.value = withTiming(EFFECTIVE_WIDTH * 0.4, {
-        duration: SLIDE_DURATION,
-        easing: Easing.bezier(0.4, 0, 0.2, 1),
-      });
-      exitingOpacity.value = withTiming(0, {
-        duration: SLIDE_DURATION,
-        easing: Easing.bezier(0.3, 0, 0.7, 1),
-      });
-      
-      // Nouveau entre de la gauche avec rebond
-      currentTranslateX.value = withSpring(0, {
-        damping: 16,
-        stiffness: 100,
-        mass: 0.8,
-      });
-      
-      setActiveIndex(prevIdx);
-      
-      const postSlideTimer = setTimeout(() => {
-        exitingOpacity.value = 0;
-        isAnimating.current = false;
+  const panResponder = useRef(
+    PanResponder.create({
+      onStartShouldSetPanResponder: () => true,
+      onMoveShouldSetPanResponder: (_, gestureState) => Math.abs(gestureState.dx) > 10,
+      onPanResponderGrant: () => {
+        if (autoPlayTimer.current) {
+          clearTimeout(autoPlayTimer.current);
+        }
+      },
+      onPanResponderMove: (_, gestureState) => {
+        if (!isAnimating.current) {
+          currentTranslateX.setValue(gestureState.dx);
+        }
+      },
+      onPanResponderRelease: (_, gestureState) => {
+        if (isAnimating.current) return;
         
-        currentScale.value = withTiming(1.06, {
-          duration: ZOOM_DURATION,
-          easing: Easing.linear,
-        });
+        const shouldSwipeLeft = gestureState.dx < -SWIPE_THRESHOLD;
+        const shouldSwipeRight = gestureState.dx > SWIPE_THRESHOLD;
         
-        const textTimer = setTimeout(() => {
-          overlayOpacity.value = withTiming(0.45, { duration: TEXT_APPEAR_DURATION });
-          textTranslateY.value = withTiming(0, { 
-            duration: TEXT_APPEAR_DURATION,
-            easing: Easing.out(Easing.cubic),
-          });
-          
-          const badgeTimer = setTimeout(() => {
-            badgeOpacity.value = withTiming(1, { duration: 200 });
-            badgeScale.value = withSpring(1, {
-              damping: 14,
-              stiffness: 200,
-              mass: 0.6,
-            });
-          }, BADGE_APPEAR_DELAY);
-          animationTimers.current.push(badgeTimer);
-        }, TEXT_APPEAR_DELAY);
-        animationTimers.current.push(textTimer);
-      }, 500);
-      animationTimers.current.push(postSlideTimer);
-      
-    }, TEXT_HIDE_DURATION);
-    animationTimers.current.push(transitionTimer);
-  }, [activeIndex, hideTextAnimation, clearAllTimers]);
+        if (shouldSwipeLeft && documents.length > 1) {
+          const nextIdx = (activeIndex + 1) % documents.length;
+          transitionToNext(nextIdx);
+        } else if (shouldSwipeRight && documents.length > 1) {
+          const prevIdx = (activeIndex - 1 + documents.length) % documents.length;
+          transitionToNext(prevIdx);
+        } else {
+          Animated.spring(currentTranslateX, { toValue: 0, damping: 15, stiffness: 150, useNativeDriver: true }).start();
+        }
+      },
+    })
+  ).current;
 
   // ============================================
   // INITIALIZATION
   // ============================================
   useEffect(() => {
     const timer = setTimeout(() => {
-      loadingOpacity.value = withTiming(0, { duration: 500 });
+      Animated.timing(loadingOpacity, { toValue: 0, duration: 500, useNativeDriver: true }).start();
       setTimeout(() => {
         setIsLoading(false);
         animateNewSlideIn();
@@ -391,9 +314,9 @@ export const DocShowcase: React.FC<DocShowcaseProps> = ({
   // AUTO-PLAY
   // ============================================
   useEffect(() => {
-    if (!isLoading && documents.length > 1 && !isGestureActive.current) {
+    if (!isLoading && documents.length > 1) {
       autoPlayTimer.current = setTimeout(() => {
-        if (!isGestureActive.current && !isAnimating.current) {
+        if (!isAnimating.current) {
           const nextIdx = (activeIndex + 1) % documents.length;
           transitionToNext(nextIdx);
         }
@@ -406,75 +329,6 @@ export const DocShowcase: React.FC<DocShowcaseProps> = ({
       }
     };
   }, [isLoading, documents.length, activeIndex, transitionToNext]);
-
-  // ============================================
-  // GESTURE HANDLING
-  // ============================================
-  const panGesture = Gesture.Pan()
-    .onStart(() => {
-      isGestureActive.current = true;
-      if (autoPlayTimer.current) {
-        clearTimeout(autoPlayTimer.current);
-      }
-    })
-    .onUpdate((event) => {
-      if (!isAnimating.current) {
-        currentTranslateX.value = event.translationX;
-      }
-    })
-    .onEnd((event) => {
-      isGestureActive.current = false;
-      
-      if (isAnimating.current) return;
-      
-      const shouldSwipeLeft = event.translationX < -SWIPE_THRESHOLD || event.velocityX < -VELOCITY_THRESHOLD;
-      const shouldSwipeRight = event.translationX > SWIPE_THRESHOLD || event.velocityX > VELOCITY_THRESHOLD;
-      
-      if (shouldSwipeLeft && documents.length > 1) {
-        const nextIdx = (activeIndex + 1) % documents.length;
-        transitionToNext(nextIdx);
-      } else if (shouldSwipeRight && documents.length > 1) {
-        const prevIdx = (activeIndex - 1 + documents.length) % documents.length;
-        transitionToPrev(prevIdx);
-      } else {
-        // Retour avec rebond
-        currentTranslateX.value = withSpring(0, { damping: 15, stiffness: 150 });
-      }
-    });
-
-  // ============================================
-  // ANIMATED STYLES
-  // ============================================
-  const currentSlideStyle = useAnimatedStyle(() => ({
-    transform: [
-      { translateX: currentTranslateX.value },
-      { scale: currentScale.value },
-    ],
-    opacity: currentOpacity.value,
-    zIndex: 2,
-  }));
-
-  const exitingSlideStyle = useAnimatedStyle(() => ({
-    transform: [{ translateX: exitingTranslateX.value }],
-    opacity: exitingOpacity.value,
-    zIndex: 1,
-  }));
-
-  const overlayAnimatedStyle = useAnimatedStyle(() => ({
-    opacity: overlayOpacity.value,
-  }));
-
-  const textAnimatedStyle = useAnimatedStyle(() => ({
-    opacity: interpolate(textTranslateY.value, [30, 0], [0, 1], Extrapolation.CLAMP),
-    transform: [{ translateY: textTranslateY.value }],
-  }));
-
-  const badgeAnimatedStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: badgeScale.value }],
-    opacity: badgeOpacity.value,
-  }));
-  
-  const loadingStyle = useAnimatedStyle(() => ({ opacity: loadingOpacity.value }));
 
   // ============================================
   // RENDER
@@ -493,7 +347,7 @@ export const DocShowcase: React.FC<DocShowcaseProps> = ({
   return (
     <View style={styles.container}>
       {isLoading && (
-        <Animated.View style={[styles.loadingContainer, loadingStyle]}>
+        <Animated.View style={[styles.loadingContainer, { opacity: loadingOpacity }]}>
           <ActivityIndicator size="large" color="#FFFFFF" />
           <Text style={styles.loadingText}>Chargement des documents...</Text>
         </Animated.View>
@@ -503,7 +357,7 @@ export const DocShowcase: React.FC<DocShowcaseProps> = ({
         <>
           {/* Badge sponsoring flottant */}
           {currentDoc.isSponsored && isAutoSponsoringEnabled && (
-            <Animated.View style={[styles.sponsorBadgeFloating, badgeAnimatedStyle]}>
+            <Animated.View style={[styles.sponsorBadgeFloating, { transform: [{ scale: badgeScale }], opacity: badgeOpacity }]}>
               <Text style={styles.sponsorBadgeTitle}>Sponsoring</Text>
               <View style={styles.sponsorBadgeRow}>
                 <RotatingStarContinuous size={16} color={Colors.white} />
@@ -514,56 +368,54 @@ export const DocShowcase: React.FC<DocShowcaseProps> = ({
             </Animated.View>
           )}
 
-          <GestureHandlerRootView style={styles.gestureContainer}>
-            <GestureDetector gesture={panGesture}>
-              <Animated.View style={styles.slidesWrapper}>
-                {/* Slide sortant (ancien) */}
-                <Animated.View style={[styles.slideContainer, styles.slideAbsolute, exitingSlideStyle]}>
-                  <View style={styles.slide}>
-                    <Image source={getMockup(exitingDoc.id)} style={styles.image} resizeMode="cover" />
-                  </View>
-                </Animated.View>
-
-                {/* Slide courant */}
-                <Animated.View style={[styles.slideContainer, styles.slideAbsolute, currentSlideStyle]}>
-                  <TouchableOpacity 
-                    style={styles.slide} 
-                    onPress={() => onDocPress(currentDoc.id)}
-                    activeOpacity={0.95}
-                  >
-                    <Image source={getMockup(currentDoc.id)} style={styles.image} resizeMode="cover" />
-                    
-                    {/* Overlay */}
-                    <Animated.View style={[styles.overlay, overlayAnimatedStyle]} />
-                    
-                    {/* Texte qui glisse du bas */}
-                    <Animated.View style={[styles.titleContainer, textAnimatedStyle]}>
-                      <Text style={styles.docType}>
-                        {currentDoc.ligne2 || currentDoc.typeLabel || currentDoc.title}
-                      </Text>
-                      {(currentDoc.ligne3 || currentDoc.competitionLabel) && (
-                        <Text style={styles.docCompetition} numberOfLines={2}>
-                          {currentDoc.ligne3 || currentDoc.competitionLabel}
-                        </Text>
-                      )}
-                      {(currentDoc.ligne4 || currentDoc.teamLabel) && (
-                        <Text style={styles.docTeam}>
-                          {currentDoc.ligne4 || currentDoc.teamLabel}
-                        </Text>
-                      )}
-                      {currentDoc.date && (
-                        <Text style={styles.docDate}>
-                          {new Date(currentDoc.date).toLocaleDateString('fr-FR', {
-                            day: 'numeric', month: 'short', year: 'numeric',
-                          })}
-                        </Text>
-                      )}
-                    </Animated.View>
-                  </TouchableOpacity>
-                </Animated.View>
+          <View style={styles.gestureContainer} {...panResponder.panHandlers}>
+            <View style={styles.slidesWrapper}>
+              {/* Slide sortant (ancien) */}
+              <Animated.View style={[styles.slideContainer, styles.slideAbsolute, { transform: [{ translateX: exitingTranslateX }], opacity: exitingOpacity }]}>
+                <View style={styles.slide}>
+                  <Image source={getMockup(exitingDoc.id)} style={styles.image} resizeMode="cover" />
+                </View>
               </Animated.View>
-            </GestureDetector>
-          </GestureHandlerRootView>
+
+              {/* Slide courant */}
+              <Animated.View style={[styles.slideContainer, styles.slideAbsolute, { transform: [{ translateX: currentTranslateX }, { scale: currentScale }], opacity: currentOpacity, zIndex: 2 }]}>
+                <TouchableOpacity 
+                  style={styles.slide} 
+                  onPress={() => onDocPress(currentDoc.id)}
+                  activeOpacity={0.95}
+                >
+                  <Image source={getMockup(currentDoc.id)} style={styles.image} resizeMode="cover" />
+                  
+                  {/* Overlay */}
+                  <Animated.View style={[styles.overlay, { opacity: overlayOpacity }]} />
+                  
+                  {/* Texte qui glisse du bas */}
+                  <Animated.View style={[styles.titleContainer, { transform: [{ translateY: textTranslateY }], opacity: textOpacity }]}>
+                    <Text style={styles.docType}>
+                      {currentDoc.ligne2 || currentDoc.typeLabel || currentDoc.title}
+                    </Text>
+                    {(currentDoc.ligne3 || currentDoc.competitionLabel) && (
+                      <Text style={styles.docCompetition} numberOfLines={2}>
+                        {currentDoc.ligne3 || currentDoc.competitionLabel}
+                      </Text>
+                    )}
+                    {(currentDoc.ligne4 || currentDoc.teamLabel) && (
+                      <Text style={styles.docTeam}>
+                        {currentDoc.ligne4 || currentDoc.teamLabel}
+                      </Text>
+                    )}
+                    {currentDoc.date && (
+                      <Text style={styles.docDate}>
+                        {new Date(currentDoc.date).toLocaleDateString('fr-FR', {
+                          day: 'numeric', month: 'short', year: 'numeric',
+                        })}
+                      </Text>
+                    )}
+                  </Animated.View>
+                </TouchableOpacity>
+              </Animated.View>
+            </View>
+          </View>
         </>
       )}
     </View>
