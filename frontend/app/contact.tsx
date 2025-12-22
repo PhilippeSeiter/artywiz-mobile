@@ -317,10 +317,10 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     paddingHorizontal: Spacing.lg,
   },
-  // Carte principale - 95% opacité, agrandie jusqu'en bas
+  // Carte principale - 80% opacité pour transparence visible
   card: {
     flex: 1,
-    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+    backgroundColor: 'rgba(255, 255, 255, 0.80)',
     borderRadius: 24,
     padding: Spacing.xl,
     shadowColor: '#000',
