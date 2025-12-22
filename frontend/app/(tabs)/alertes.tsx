@@ -684,9 +684,9 @@ export default function AlertesScreen() {
             </TouchableOpacity>
           )}
         </View>
-      </ReAnimated.View>
+      </Animated.View>
 
-      {/* Liste des notifications avec animations d'entrée */}
+      {/* Liste des notifications */}
       <ScrollView 
         style={styles.listContainer}
         contentContainerStyle={styles.listContent}
