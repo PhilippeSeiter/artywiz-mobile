@@ -125,7 +125,7 @@ const BG_TRANSLATE_AMPLITUDE = width * 0.01;
 export default function SignupScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const { register } = useAuth();
+  const { register, isRegistering } = useAuth();
   const resetPreferences = useUserPreferencesStore((state) => state.resetPreferences);
   const { logout } = useAuthStore();
 
