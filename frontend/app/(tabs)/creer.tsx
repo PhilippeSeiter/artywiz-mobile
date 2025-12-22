@@ -758,7 +758,7 @@ export default function CreerScreen() {
                 style={styles.filterResetButton} 
                 onPress={resetFilters}
               >
-                <Ionicons name="refresh" size={18} color="#FFFFFF" />
+                <Ionicons name="refresh" size={18} color="#6B7280" />
                 <Text style={styles.filterResetButtonText}>Réinitialiser</Text>
               </TouchableOpacity>
             </Pressable>
