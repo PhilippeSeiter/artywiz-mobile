@@ -57,6 +57,9 @@ function RootLayoutContent() {
         <Stack.Screen name="edit-profile" />
         <Stack.Screen name="manage-profiles" />
         <Stack.Screen name="onboarding-themes" />
+        <Stack.Screen name="boulangerie" />
+        <Stack.Screen name="coiffure" />
+        <Stack.Screen name="restaurants" />
         <Stack.Screen name="(tabs)" />
         <Stack.Screen name="document/[id]" />
         <Stack.Screen name="generated-doc/[id]" />
