@@ -287,7 +287,7 @@ const UnifiedPopup = ({ visible, onClose, onAccountCreated }) => {
   };
 
   const handleSelectTeam = (team: any) => {
-    const newAccount: UserProfile = {
+    const newAccount = {
       id: `equipe_${Date.now()}`,
       type: 'equipe',
       name: `${team.name} - ${selectedClub?.name}`,
@@ -298,7 +298,7 @@ const UnifiedPopup = ({ visible, onClose, onAccountCreated }) => {
   };
 
   const handleSelectSingle = (item: any) => {
-    const newAccount: UserProfile = {
+    const newAccount = {
       id: `${selectedType}_${Date.now()}`,
       type: selectedType as UserProfile['type'],
       name: item.name,
