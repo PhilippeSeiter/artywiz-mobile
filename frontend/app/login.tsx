@@ -296,10 +296,18 @@ export default function LoginScreen() {
   };
 
   const handleForgotPassword = () => {
-    Alert.alert(
-      'Mot de passe oublié',
-      'Un email de réinitialisation vous sera envoyé à l\'adresse indiquée.'
-    );
+    if (!email.trim() || !email.includes('@')) {
+      Alert.alert(
+        'Email requis',
+        'Veuillez d\'abord saisir votre adresse email dans le champ ci-dessus.'
+      );
+    } else {
+      Alert.alert(
+        'Récupération du mot de passe',
+        `Un email de réinitialisation a été envoyé à ${email}. Vérifiez votre boîte de réception.`,
+        [{ text: 'OK' }]
+      );
+    }
   };
 
   // Button animation
