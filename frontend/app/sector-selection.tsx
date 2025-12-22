@@ -441,16 +441,16 @@ const styles = StyleSheet.create({
     backgroundColor: '#F9FAFB',
     opacity: 0.6,
   },
-  iconContainer: {
+  avatarContainer: {
     width: 64,
     height: 64,
     borderRadius: 32,
-    justifyContent: 'center',
-    alignItems: 'center',
+    overflow: 'hidden',
     marginBottom: Spacing.xs,
   },
-  emojiIcon: {
-    fontSize: 36,
+  avatarImage: {
+    width: '100%',
+    height: '100%',
   },
   sectorName: {
     fontSize: 14,
