@@ -825,7 +825,7 @@ export default function DocumentDetailScreen() {
         <View style={styles.actions}>
           {docStatus === 'a_peaufiner' ? (
             <CustomButton
-              title={isPreparingDoc ? "Préparation..." : "FINALISER CE DOCUMENT"}
+              title={isPreparingDoc ? "Préparation..." : "PRÉPARER LE DOCUMENT"}
               onPress={handlePrepareDocument}
               icon="sparkles"
               loading={isPreparingDoc}
