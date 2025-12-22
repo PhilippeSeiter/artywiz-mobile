@@ -124,8 +124,10 @@ const BG_TRANSLATE_AMPLITUDE = width * 0.01;
 
 export default function SignupScreen() {
   const router = useRouter();
-  const { register, isRegistering } = useAuth();
   const insets = useSafeAreaInsets();
+  const { register } = useAuth();
+  const resetPreferences = useUserPreferencesStore((state) => state.resetPreferences);
+  const { logout } = useAuthStore();
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -135,6 +137,17 @@ export default function SignupScreen() {
     email?: string; 
     password?: string;
   }>({});
+
+  // Reset all user data when entering signup (fresh start)
+  useEffect(() => {
+    const clearUserData = async () => {
+      console.log('[Signup] Clearing user data for fresh start...');
+      await resetPreferences();
+      await logout();
+      console.log('[Signup] Data cleared');
+    };
+    clearUserData();
+  }, []);
 
   // Animation du fond
   const bgScale = useSharedValue(BG_SCALE_BASE);
