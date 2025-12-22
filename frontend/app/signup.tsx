@@ -293,7 +293,7 @@ export default function SignupScreen() {
           <View style={styles.headerRow}>
             <TouchableOpacity 
               style={styles.backButton}
-              onPress={() => router.back()}
+              onPress={() => router.replace('/')}
             >
               <Ionicons name="arrow-back" size={20} color="#FF6B6B" />
             </TouchableOpacity>
