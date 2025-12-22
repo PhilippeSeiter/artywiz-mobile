@@ -326,7 +326,7 @@ export default function SectorSelectionScreen() {
                   key={sector.id}
                   sector={sector}
                   index={index}
-                  onPress={() => handleSectorPress(sector.id)}
+                  onPress={() => handleSectorPress(sector)}
                 />
               ))}
             </View>
@@ -336,18 +336,10 @@ export default function SectorSelectionScreen() {
                   key={sector.id}
                   sector={sector}
                   index={index + 2}
-                  onPress={() => handleSectorPress(sector.id)}
+                  onPress={() => handleSectorPress(sector)}
                 />
               ))}
             </View>
-          </View>
-
-          {/* Note d'information */}
-          <View style={styles.infoNote}>
-            <Ionicons name="information-circle-outline" size={14} color={Colors.textSecondary} />
-            <Text style={styles.infoNoteText}>
-              D'autres secteurs bientôt disponibles
-            </Text>
           </View>
         </Animated.View>
       </ScrollView>
