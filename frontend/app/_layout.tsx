@@ -1,10 +1,12 @@
 import React, { useEffect, useRef } from 'react';
+import { View, StyleSheet } from 'react-native';
 import { Stack, useRouter, useSegments } from 'expo-router';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { QueryProvider } from '../providers/QueryProvider';
 import { VideoDirectionProvider } from '../providers/VideoDirectionProvider';
+import { VideoBackground } from '../components/VideoBackground';
 import { useCurrentUser } from '../hooks/useAuth';
 import { useNotificationStore } from '../stores/notificationStore';
 import { useUserPreferencesStore } from '../stores/userPreferencesStore';
