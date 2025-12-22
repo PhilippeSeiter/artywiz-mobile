@@ -58,7 +58,10 @@ function RootLayoutContent() {
         screenOptions={{ 
           headerShown: false,
           contentStyle: { backgroundColor: 'transparent' },
-          animation: 'fade',
+          animation: 'slide_from_right',
+          animationDuration: 500,
+          gestureEnabled: true,
+          customAnimationOnGesture: true,
         }}
       >
         <Stack.Screen name="index" />
