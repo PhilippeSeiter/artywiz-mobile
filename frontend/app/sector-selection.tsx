@@ -209,9 +209,7 @@ const SectorCard = ({ sector, index, onPress }: SectorCardProps) => {
   }));
 
   const handlePressIn = () => {
-    if (sector.active) {
-      pressScale.value = withSpring(0.95);
-    }
+    pressScale.value = withSpring(0.95);
   };
 
   const handlePressOut = () => {
@@ -223,52 +221,24 @@ const SectorCard = ({ sector, index, onPress }: SectorCardProps) => {
       <TouchableOpacity
         style={[
           styles.sectorCard,
-          !sector.active && styles.sectorCardInactive,
-          sector.active && { borderColor: sector.color, borderWidth: 2 },
+          { borderColor: sector.color, borderWidth: 2 },
         ]}
         onPress={onPress}
         onPressIn={handlePressIn}
         onPressOut={handlePressOut}
-        disabled={!sector.active}
         activeOpacity={0.9}
       >
-        {/* Icône ou Emoji */}
-        <View style={[
-          styles.iconContainer,
-          { backgroundColor: sector.active ? sector.color : '#E5E7EB' }
-        ]}>
-          {sector.emoji ? (
-            <Text style={styles.emojiIcon}>{sector.emoji}</Text>
-          ) : (
-            <Ionicons 
-              name={sector.icon as any} 
-              size={36} 
-              color={sector.active ? '#FFFFFF' : '#9CA3AF'} 
-            />
-          )}
+        {/* Avatar */}
+        <View style={styles.avatarContainer}>
+          <Image 
+            source={sector.avatar} 
+            style={styles.avatarImage}
+            resizeMode="cover"
+          />
         </View>
 
         {/* Nom du secteur */}
-        <Text style={[
-          styles.sectorName,
-          !sector.active && styles.sectorNameInactive
-        ]}>
-          {sector.name}
-        </Text>
-
-        {/* Badge "Bientôt" SOUS l'icône pour les inactifs */}
-        {!sector.active && (
-          <View style={styles.badgeBientot}>
-            <Text style={styles.badgeBientotText}>Bientôt</Text>
-          </View>
-        )}
-
-        {/* Indicateur de sélection pour le secteur actif */}
-        {sector.active && (
-          <View style={styles.selectIndicator}>
-            <Ionicons name="chevron-forward" size={18} color={sector.color} />
-          </View>
-        )}
+        <Text style={styles.sectorName}>{sector.name}</Text>
       </TouchableOpacity>
     </Animated.View>
   );
