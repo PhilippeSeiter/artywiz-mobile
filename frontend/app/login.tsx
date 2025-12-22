@@ -620,29 +620,20 @@ const styles = StyleSheet.create({
     borderRadius: 26,
     justifyContent: 'center',
     alignItems: 'center',
-    overflow: 'hidden',
     backgroundColor: '#FFFFFF',
-    borderWidth: 1,
-    borderColor: '#E0E0E0',
+    borderWidth: 1.5,
+    borderColor: '#E8E8E8',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 4,
+    elevation: 2,
   },
   facebookButton: {
     backgroundColor: '#FFFFFF',
   },
   googleButton: {
     backgroundColor: '#FFFFFF',
-  },
-  socialLogo: {
-    width: 52,
-    height: 52,
-    borderRadius: 26,
-  },
-  socialLogoFacebook: {
-    width: 36,
-    height: 36,
-  },
-  socialLogoGoogle: {
-    width: 32,
-    height: 32,
   },
   // Forgot password
   forgotPasswordLink: {
