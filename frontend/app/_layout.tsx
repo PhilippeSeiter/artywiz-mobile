@@ -7,6 +7,8 @@ import { QueryProvider } from '../providers/QueryProvider';
 import { VideoDirectionProvider } from '../providers/VideoDirectionProvider';
 import { useCurrentUser } from '../hooks/useAuth';
 import { useNotificationStore } from '../stores/notificationStore';
+import { useUserPreferencesStore } from '../stores/userPreferencesStore';
+import { useAuthStore } from '../stores/authStore';
 
 // Auth listener component - handles all auth-based navigation
 function AuthNavigationHandler() {
