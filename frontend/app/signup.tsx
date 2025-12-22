@@ -559,16 +559,19 @@ const styles = StyleSheet.create({
   socialButtons: {
     flexDirection: 'row',
     justifyContent: 'center',
+    alignItems: 'center',
     gap: Spacing.xl,
   },
   socialButton: {
-    width: 54,
-    height: 44,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  socialLogo: {
-    width: 54,
+  socialLogoFb: {
+    width: 44,
+    height: 44,
+  },
+  socialLogoGoogle: {
+    width: 44,
     height: 44,
   },
   footer: {
