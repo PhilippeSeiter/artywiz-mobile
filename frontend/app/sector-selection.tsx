@@ -284,8 +284,7 @@ export default function SectorSelectionScreen() {
 
   return (
     <View style={styles.container}>
-      {/* Fond vidéo */}
-      <VideoBackground />
+      {/* Fond global géré par _layout.tsx */}
 
       {/* Logo animé (sans Football) - en arrière plan */}
       <AnimatedSectorLogo />
