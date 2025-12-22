@@ -540,6 +540,42 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  socialSection: {
+    marginTop: Spacing.lg,
+  },
+  dividerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: Spacing.md,
+  },
+  divider: {
+    flex: 1,
+    height: 1,
+    backgroundColor: '#E5E7EB',
+  },
+  dividerText: {
+    fontSize: 13,
+    color: Colors.textSecondary,
+    paddingHorizontal: Spacing.md,
+  },
+  socialButtons: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: Spacing.lg,
+  },
+  socialButton: {
+    width: 52,
+    height: 52,
+    borderRadius: 26,
+    overflow: 'hidden',
+    backgroundColor: '#F8F9FA',
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
+  },
+  socialLogoFull: {
+    width: '100%',
+    height: '100%',
+  },
   footer: {
     flexDirection: 'row',
     justifyContent: 'center',
