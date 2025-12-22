@@ -528,7 +528,7 @@ export default function ProfileSelectionScreen() {
     setSelectedProfiles([...baseProfiles, ...newAccounts]);
   };
 
-  const handleDeleteAccount = (accountId: string) => {
+  const handleDeleteAccount = (accountId) => {
     Alert.alert('Supprimer le compte', 'Êtes-vous sûr de vouloir supprimer ce compte ?', [
       { text: 'Annuler', style: 'cancel' },
       {
