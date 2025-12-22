@@ -297,7 +297,7 @@ const UnifiedPopup = ({ visible, onClose, onAccountCreated }) => {
     onClose();
   };
 
-  const handleSelectSingle = (item: any) => {
+  const handleSelectSingle = (item) => {
     const newAccount = {
       id: `${selectedType}_${Date.now()}`,
       type: selectedType,
