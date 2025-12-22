@@ -165,7 +165,7 @@ const ACCOUNT_TYPES = [
 ];
 
 // ============================================
-// ACCOUNT CARD
+// ACCOUNT CARD avec logo
 // ============================================
 const AccountCard = ({ account, index, isActive, onPress, onDelete, canDelete }: {
   account: UserProfile; index: number; isActive: boolean; onPress: () => void; onDelete: () => void; canDelete: boolean;
@@ -181,13 +181,22 @@ const AccountCard = ({ account, index, isActive, onPress, onDelete, canDelete }:
   const handlePressOut = () => { scale.value = withSpring(1, { damping: 12, stiffness: 200 }); };
   const animatedStyle = useAnimatedStyle(() => ({ transform: [{ scale: scale.value }] }));
   const typeColor = getTypeColor(account.type);
+  
+  // Chercher le logo dans PROFILE_LOGOS
+  const logoKey = account.logoKey || account.clubId || account.districtId || account.ligueId;
+  const hasLogo = logoKey && PROFILE_LOGOS[logoKey];
 
   return (
     <Animated.View layout={Layout.springify().damping(15)} style={animatedStyle}>
       <TouchableOpacity style={[styles.accountCard, isActive && styles.accountCardActive, isActive && { borderColor: typeColor }]} onPress={onPress} onPressIn={handlePressIn} onPressOut={handlePressOut} activeOpacity={1}>
-        <View style={[styles.accountLogo, { backgroundColor: typeColor + '20' }]}>
-          <Ionicons name={getTypeIcon(account.type) as any} size={24} color={typeColor} />
-        </View>
+        {/* Logo ou icône */}
+        {hasLogo ? (
+          <Image source={PROFILE_LOGOS[logoKey]} style={styles.accountLogoImage} resizeMode="contain" />
+        ) : (
+          <View style={[styles.accountLogo, { backgroundColor: typeColor + '20' }]}>
+            <Ionicons name={getTypeIcon(account.type) as any} size={24} color={typeColor} />
+          </View>
+        )}
         <View style={styles.accountInfo}>
           <Text style={styles.accountName} numberOfLines={1}>{account.name}</Text>
           <Text style={styles.accountType}>{account.type === 'equipe' ? 'Équipe' : account.type === 'club' ? 'Club' : account.type === 'district' ? 'District' : 'Ligue'}</Text>
