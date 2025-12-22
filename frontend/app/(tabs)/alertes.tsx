@@ -17,22 +17,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Colors, Spacing } from '../../constants';
 import { Notification, NotificationType } from '../../types';
-import ReAnimated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withSpring,
-  withTiming,
-  withSequence,
-  withDelay,
-  FadeInDown,
-  FadeInUp,
-  SlideInRight,
-  SlideOutLeft,
-  FadeOut,
-  Layout,
-  ZoomOut,
-  combineTransition,
-} from 'react-native-reanimated';
+// Native Animated API used instead of reanimated for Expo Go compatibility
 
 // Configuration animations gaming
 const SPRING_CONFIG = {
