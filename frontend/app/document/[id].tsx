@@ -637,6 +637,15 @@ export default function DocumentDetailScreen() {
         ligne4={document.ligne4}
         showBack
         onBackPress={() => router.back()}
+        rightElement={
+          <TouchableOpacity 
+            style={styles.editButton} 
+            disabled={true}
+            activeOpacity={0.5}
+          >
+            <Text style={styles.editButtonText}>Éditer</Text>
+          </TouchableOpacity>
+        }
       />
       
       <ScrollView style={styles.scrollView} contentContainerStyle={styles.contentNoPadding} showsVerticalScrollIndicator={false}>
