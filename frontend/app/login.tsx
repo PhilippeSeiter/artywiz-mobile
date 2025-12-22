@@ -327,8 +327,8 @@ export default function LoginScreen() {
       {/* Fond vidéo en boucle */}
       <VideoBackground />
 
-      {/* Logo Artywiz - COUCHE 2 (3 parties animées) */}
-      <AnimatedLoginLogo />
+      {/* Logo Artywiz - COUCHE 2 (3 parties animées) - cliquable pour retour accueil */}
+      <AnimatedLoginLogo onPress={() => router.replace('/')} />
 
       <ScrollView 
         style={styles.scrollView}
