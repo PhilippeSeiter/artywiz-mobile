@@ -628,17 +628,18 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   facebookButton: {
-    backgroundColor: '#1877F2',
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1,
+    borderColor: '#E0E0E0',
   },
   googleButton: {
     backgroundColor: '#FFFFFF',
     borderWidth: 1,
     borderColor: '#E0E0E0',
   },
-  googleLogo: {
-    fontSize: 22,
-    fontWeight: '700',
-    color: '#4285F4',
+  socialLogo: {
+    width: 28,
+    height: 28,
   },
   // Forgot password
   forgotPasswordLink: {
