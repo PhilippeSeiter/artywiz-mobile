@@ -384,6 +384,10 @@ export default function LoginScreen() {
               error={errors.password}
               icon="lock-closed"
             />
+            {/* Mot de passe oublié - sous le champ */}
+            <TouchableOpacity onPress={handleForgotPassword} style={styles.forgotPasswordLink}>
+              <Text style={styles.forgotPasswordText}>Mot de passe oublié?</Text>
+            </TouchableOpacity>
           </View>
 
           {/* Bouton de connexion */}
@@ -419,11 +423,6 @@ export default function LoginScreen() {
             <SocialButton type="facebook" onPress={() => handleSocialLogin('facebook')} />
             <SocialButton type="google" onPress={() => handleSocialLogin('google')} />
           </View>
-
-          {/* Mot de passe oublié */}
-          <TouchableOpacity onPress={handleForgotPassword} style={styles.forgotPasswordLink}>
-            <Text style={styles.forgotPasswordText}>Mot de passe oublié?</Text>
-          </TouchableOpacity>
 
           {/* Pas encore inscrit - 2 lignes */}
           <View style={styles.signupLinkContainer}>
