@@ -545,7 +545,7 @@ export default function ProfileSelectionScreen() {
     ]);
   };
 
-  const handleActivateAccount = (accountId: string) => {
+  const handleActivateAccount = (accountId) => {
     setActiveAccountId(accountId);
     const index = accounts.findIndex(a => a.id === accountId);
     if (index !== -1) setActiveProfile(index);
