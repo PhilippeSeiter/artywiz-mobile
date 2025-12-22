@@ -193,6 +193,11 @@ export const useDocumentStore = create<DocumentStore>()(
         const state = get().documentStates[docId];
         return state?.status === 'publie';
       },
+      
+      // Set callback for generation completion
+      setOnGenerationComplete: (callback) => {
+        set({ onGenerationCompleteCallback: callback });
+      },
 
       // Legacy: Add to generation
       addToGeneration: (docId) => {
