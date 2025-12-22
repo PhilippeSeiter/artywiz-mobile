@@ -1,15 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { View, TextInput, Text, StyleSheet, TextInputProps, TouchableOpacity } from 'react-native';
+import React, { useState, useRef, useEffect } from 'react';
+import { View, TextInput, Text, StyleSheet, TextInputProps, TouchableOpacity, Animated } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Colors, Spacing } from '../constants';
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withTiming,
-  withSequence,
-  withSpring,
-  interpolateColor,
-} from 'react-native-reanimated';
 
 interface CustomInputProps extends TextInputProps {
   label?: string;
@@ -28,57 +20,71 @@ export const CustomInput: React.FC<CustomInputProps> = ({
   const [showPassword, setShowPassword] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   
-  // Animation values
-  const focusProgress = useSharedValue(0);
-  const errorShake = useSharedValue(0);
-  const iconScale = useSharedValue(1);
+  // Animation values using React Native's Animated
+  const focusAnim = useRef(new Animated.Value(0)).current;
+  const shakeAnim = useRef(new Animated.Value(0)).current;
+  const iconScale = useRef(new Animated.Value(1)).current;
 
   // Handle focus animation
   useEffect(() => {
-    focusProgress.value = withTiming(isFocused ? 1 : 0, { duration: 200 });
+    Animated.timing(focusAnim, {
+      toValue: isFocused ? 1 : 0,
+      duration: 200,
+      useNativeDriver: false,
+    }).start();
+    
     if (isFocused) {
-      iconScale.value = withSequence(
-        withSpring(1.15, { damping: 8 }),
-        withSpring(1, { damping: 12 })
-      );
+      Animated.sequence([
+        Animated.spring(iconScale, { toValue: 1.15, useNativeDriver: true }),
+        Animated.spring(iconScale, { toValue: 1, useNativeDriver: true }),
+      ]).start();
     }
   }, [isFocused]);
 
   // Handle error shake animation
   useEffect(() => {
     if (error) {
-      errorShake.value = withSequence(
-        withTiming(-8, { duration: 50 }),
-        withTiming(8, { duration: 50 }),
-        withTiming(-6, { duration: 50 }),
-        withTiming(6, { duration: 50 }),
-        withTiming(-3, { duration: 50 }),
-        withTiming(3, { duration: 50 }),
-        withTiming(0, { duration: 50 })
-      );
+      Animated.sequence([
+        Animated.timing(shakeAnim, { toValue: -8, duration: 50, useNativeDriver: true }),
+        Animated.timing(shakeAnim, { toValue: 8, duration: 50, useNativeDriver: true }),
+        Animated.timing(shakeAnim, { toValue: -6, duration: 50, useNativeDriver: true }),
+        Animated.timing(shakeAnim, { toValue: 6, duration: 50, useNativeDriver: true }),
+        Animated.timing(shakeAnim, { toValue: -3, duration: 50, useNativeDriver: true }),
+        Animated.timing(shakeAnim, { toValue: 3, duration: 50, useNativeDriver: true }),
+        Animated.timing(shakeAnim, { toValue: 0, duration: 50, useNativeDriver: true }),
+      ]).start();
     }
   }, [error]);
 
-  const containerAnimatedStyle = useAnimatedStyle(() => ({
-    transform: [{ translateX: errorShake.value }],
-    borderColor: error 
-      ? '#FF6B6B' 
-      : interpolateColor(focusProgress.value, [0, 1], ['#E5E7EB', '#007BFF']),
-    borderWidth: error ? 2 : interpolateColor(focusProgress.value, [0, 1], [1, 2]) as unknown as number,
-    shadowOpacity: focusProgress.value * 0.15,
-  }));
+  const borderColor = error 
+    ? '#FF6B6B' 
+    : focusAnim.interpolate({
+        inputRange: [0, 1],
+        outputRange: ['#E5E7EB', '#007BFF'],
+      });
 
-  const iconAnimatedStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: iconScale.value }],
-    opacity: interpolateColor(focusProgress.value, [0, 1], [0.5, 1]) as unknown as number,
-  }));
+  const borderWidth = error 
+    ? 2 
+    : focusAnim.interpolate({
+        inputRange: [0, 1],
+        outputRange: [1, 2],
+      });
 
   return (
     <View style={styles.container}>
       {label && <Text style={styles.label}>{label}</Text>}
-      <Animated.View style={[styles.inputContainer, containerAnimatedStyle]}>
+      <Animated.View 
+        style={[
+          styles.inputContainer, 
+          { 
+            transform: [{ translateX: shakeAnim }],
+            borderColor,
+            borderWidth,
+          }
+        ]}
+      >
         {icon && (
-          <Animated.View style={iconAnimatedStyle}>
+          <Animated.View style={{ transform: [{ scale: iconScale }] }}>
             <Ionicons 
               name={icon} 
               size={20} 
@@ -116,7 +122,7 @@ export const CustomInput: React.FC<CustomInputProps> = ({
         )}
       </Animated.View>
       {error && (
-        <Animated.Text style={styles.errorText}>{error}</Animated.Text>
+        <Text style={styles.errorText}>{error}</Text>
       )}
     </View>
   );
@@ -143,6 +149,7 @@ const styles = StyleSheet.create({
     shadowColor: '#007BFF',
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 8,
+    shadowOpacity: 0.1,
     elevation: 2,
   },
   icon: {
