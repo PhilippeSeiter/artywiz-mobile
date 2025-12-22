@@ -7,7 +7,7 @@ import { Colors, Spacing } from '../constants';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 
-// Logo animé Artywiz + Coiffure (comme le modèle Football)
+// Logo animé Artywiz + Coiffure
 const AnimatedLogo = () => {
   const opacityW = useSharedValue(0);
   const opacityArtywiz = useSharedValue(0);
@@ -24,7 +24,6 @@ const AnimatedLogo = () => {
     const halfCycleDuration = 1200;
     const easeConfig = { duration: halfCycleDuration, easing: Easing.inOut(Easing.ease) };
 
-    // W: ±5%, GRANDIT d'abord
     scaleW.value = withRepeat(
       withSequence(
         withTiming(1.05, easeConfig),
@@ -34,7 +33,6 @@ const AnimatedLogo = () => {
       true
     );
 
-    // Artywiz: décalage 500ms, ±5%, RÉDUIT d'abord
     setTimeout(() => {
       scaleArtywiz.value = withRepeat(
         withSequence(
@@ -46,7 +44,6 @@ const AnimatedLogo = () => {
       );
     }, 500);
 
-    // Category: décalage 1000ms, ±5%, GRANDIT d'abord
     setTimeout(() => {
       scaleCategory.value = withRepeat(
         withSequence(
@@ -103,13 +100,19 @@ const AnimatedLogo = () => {
 };
 
 const logoStyles = StyleSheet.create({
-  container: { alignItems: 'center', justifyContent: 'center', height: 120, marginBottom: Spacing.md },
+  container: { alignItems: 'center', justifyContent: 'center', height: 110, marginBottom: Spacing.md },
   partW: { alignItems: 'center' },
   imageW: { width: 55, height: 39 },
   partArtywiz: { alignItems: 'center', marginTop: 2 },
   imageArtywiz: { width: 154, height: 33 },
   partCategory: { alignItems: 'center', marginTop: 4 },
-  categoryText: { fontSize: 18, fontWeight: '600', color: '#FFFFFF', letterSpacing: 2, textTransform: 'uppercase' },
+  categoryText: { 
+    fontSize: 13, 
+    fontWeight: '300', 
+    color: '#FFFFFF', 
+    letterSpacing: 3, 
+    textTransform: 'uppercase',
+  },
 });
 
 export default function CoiffureScreen() {
@@ -142,8 +145,6 @@ export default function CoiffureScreen() {
 
   return (
     <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
-      {/* Fond global géré par _layout.tsx */}
-      
       <ScrollView 
         contentContainerStyle={[styles.scrollContent, { paddingTop: insets.top + Spacing.lg }]}
         keyboardShouldPersistTaps="handled"
@@ -176,32 +177,31 @@ export default function CoiffureScreen() {
             Gratuit et potentiellement rémunérateur : laissez votre mail pour être averti(e) du lancement.
           </Text>
 
-          <View style={styles.inputContainer}>
-            <Ionicons name="mail-outline" size={20} color={Colors.textSecondary} style={styles.inputIcon} />
-            <TextInput
-              style={styles.input}
-              placeholder="Votre email"
-              placeholderTextColor="#9CA3AF"
-              value={email}
-              onChangeText={setEmail}
-              keyboardType="email-address"
-              autoCapitalize="none"
-            />
+          {/* Email input + bouton envoyer sur une ligne */}
+          <View style={styles.emailRow}>
+            <View style={styles.inputContainer}>
+              <Ionicons name="mail-outline" size={18} color={Colors.textSecondary} style={styles.inputIcon} />
+              <TextInput
+                style={styles.input}
+                placeholder="Votre email"
+                placeholderTextColor="#9CA3AF"
+                value={email}
+                onChangeText={setEmail}
+                keyboardType="email-address"
+                autoCapitalize="none"
+              />
+            </View>
+            <TouchableOpacity onPress={handleSubmit} activeOpacity={0.8} style={styles.sendButton}>
+              <LinearGradient
+                colors={['#FF6B9D', '#FF5B8D']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={styles.sendButtonGradient}
+              >
+                <Ionicons name="send" size={18} color="#FFFFFF" />
+              </LinearGradient>
+            </TouchableOpacity>
           </View>
-
-          <TouchableOpacity onPress={handleSubmit} activeOpacity={0.9} style={styles.submitButton}>
-            <LinearGradient
-              colors={['#FF6B9D', '#FF5B8D', '#FF4B7D']}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={styles.submitButtonGradient}
-            >
-              <Text style={styles.submitButtonText}>ENVOYER</Text>
-              <View style={styles.iconCircle}>
-                <Ionicons name="send" size={14} color="#FFFFFF" />
-              </View>
-            </LinearGradient>
-          </TouchableOpacity>
         </Animated.View>
       </ScrollView>
     </KeyboardAvoidingView>
@@ -233,9 +233,9 @@ const styles = StyleSheet.create({
     marginRight: Spacing.md,
   },
   avatarContainer: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
+    width: 96,
+    height: 96,
+    borderRadius: 48,
     overflow: 'hidden',
     borderWidth: 3,
     borderColor: '#FF6B9D',
@@ -246,23 +246,34 @@ const styles = StyleSheet.create({
   },
   description: { fontSize: 14, color: Colors.textSecondary, marginBottom: Spacing.sm, lineHeight: 20 },
   descriptionHighlight: { fontSize: 14, color: Colors.textPrimary, fontWeight: '500', marginBottom: Spacing.lg, lineHeight: 20 },
+  emailRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.sm,
+  },
   inputContainer: {
-    flexDirection: 'row', alignItems: 'center',
-    backgroundColor: '#F8F9FA', borderRadius: 16,
-    borderWidth: 1, borderColor: '#E5E7EB', paddingHorizontal: Spacing.md,
-    marginBottom: Spacing.lg,
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#F8F9FA',
+    borderRadius: 25,
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
+    paddingHorizontal: Spacing.md,
+    height: 50,
   },
   inputIcon: { marginRight: Spacing.sm },
-  input: { flex: 1, fontSize: 16, color: Colors.textPrimary, paddingVertical: 14 },
-  submitButton: { borderRadius: 50, overflow: 'hidden' },
-  submitButtonGradient: {
-    flexDirection: 'row', alignItems: 'center', justifyContent: 'center',
-    paddingVertical: 16, paddingHorizontal: 24, borderRadius: 50,
+  input: { flex: 1, fontSize: 15, color: Colors.textPrimary },
+  sendButton: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    overflow: 'hidden',
   },
-  submitButtonText: { fontSize: 14, fontWeight: '600', color: '#FFFFFF', letterSpacing: 0.5, flex: 1, textAlign: 'center' },
-  iconCircle: {
-    width: 28, height: 28, borderRadius: 14,
-    backgroundColor: 'rgba(255,255,255,0.25)',
-    justifyContent: 'center', alignItems: 'center', position: 'absolute', right: 16,
+  sendButtonGradient: {
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
