@@ -71,6 +71,7 @@ export const useDocumentStore = create<DocumentStore>()(
       generatingDocs: [],
       readyDocsCount: 8, // Initial count from generated previews
       viewedDocs: [],
+      onGenerationCompleteCallback: null,
 
       // Start document generation
       startGeneration: (docId, selectedSupports, profileId) => {
