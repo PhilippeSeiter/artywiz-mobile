@@ -192,7 +192,7 @@ const AccountCard = ({ account, index, isActive, onPress, onDelete, canDelete })
           <Image source={PROFILE_LOGOS[logoKey]} style={styles.accountLogoImage} resizeMode="contain" />
         ) : (
           <View style={[styles.accountLogo, { backgroundColor: typeColor + '20' }]}>
-            <Ionicons name={getTypeIcon(account.type) as any} size={24} color={typeColor} />
+            <Ionicons name={getTypeIcon(account.type)} size={24} color={typeColor} />
           </View>
         )}
         <View style={styles.accountInfo}>
