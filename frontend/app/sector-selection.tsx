@@ -362,7 +362,7 @@ const styles = StyleSheet.create({
     paddingTop: 160, // Espace pour le logo
   },
   card: {
-    backgroundColor: Colors.white,
+    backgroundColor: 'rgba(255, 255, 255, 0.90)',
     borderRadius: 24,
     padding: Spacing.lg,
     shadowColor: '#000',
@@ -374,14 +374,14 @@ const styles = StyleSheet.create({
   },
   headerRow: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     marginBottom: Spacing.md,
   },
   backButton: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    backgroundColor: '#FFF0F0',
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: 'rgba(255, 107, 107, 0.1)',
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: Spacing.md,
@@ -390,15 +390,16 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   titleLine1: {
-    fontSize: 14,
-    color: Colors.textSecondary,
-    fontWeight: '500',
+    fontSize: 24,
+    fontWeight: '300',
+    color: Colors.textPrimary,
+    lineHeight: 28,
   },
   titleLine2: {
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: '700',
-    color: Colors.text,
-    marginTop: -2,
+    color: Colors.textPrimary,
+    lineHeight: 28,
   },
   subtitle: {
     fontSize: 14,
