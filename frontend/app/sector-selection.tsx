@@ -28,39 +28,39 @@ import { VideoBackground } from '../components/VideoBackground';
 
 const { width, height } = Dimensions.get('window');
 
-// Secteurs disponibles
+// Secteurs disponibles avec avatars
 const SECTORS = [
   { 
     id: 'football', 
     name: 'Football', 
-    icon: 'football', 
-    emoji: null,
+    avatar: require('../assets/images/avatar_football.png'),
     active: true,
     color: '#34C759',
+    route: '/profile-selection',
   },
   { 
     id: 'boulangerie', 
     name: 'Boulangerie', 
-    icon: null,
-    emoji: '🥖',
-    active: false,
+    avatar: require('../assets/images/avatar_boulangerie.png'),
+    active: true,
     color: '#D4A574',
+    route: '/boulangerie',
   },
   { 
     id: 'coiffure', 
     name: 'Coiffure', 
-    icon: 'cut',
-    emoji: null,
-    active: false,
+    avatar: require('../assets/images/avatar_coiffure.png'),
+    active: true,
     color: '#FF6B9D',
+    route: '/coiffure',
   },
   { 
     id: 'restauration', 
-    name: 'Restauration', 
-    icon: 'restaurant',
-    emoji: null,
-    active: false,
+    name: 'Restaurants', 
+    avatar: require('../assets/images/avatar_restaurants.png'),
+    active: true,
     color: '#FF9500',
+    route: '/restaurants',
   },
 ];
 
