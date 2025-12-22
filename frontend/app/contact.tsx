@@ -335,7 +335,7 @@ const styles = StyleSheet.create({
   // Header avec flèche et titre
   headerRow: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     marginBottom: Spacing.md,
   },
   backButton: {
@@ -347,10 +347,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginRight: Spacing.md,
   },
-  title: {
-    fontSize: 22,
+  titleContainer: {
+    flex: 1,
+  },
+  titleLine1: {
+    fontSize: 24,
     fontWeight: '700',
     color: Colors.textPrimary,
+    lineHeight: 28,
+  },
+  titleLine2: {
+    fontSize: 24,
+    fontWeight: '700',
+    color: Colors.textPrimary,
+    lineHeight: 28,
   },
   description: {
     fontSize: 14,
