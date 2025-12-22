@@ -886,6 +886,29 @@ const styles = StyleSheet.create({
   fullWidthMockup: { width: '100%', height: '100%' },
   incomingMockup: { position: 'absolute', top: 0, left: 0 },
   
+  // Metrics row (for published docs) - discret
+  metricsRow: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 10,
+    paddingHorizontal: Spacing.lg,
+    gap: 20,
+    backgroundColor: '#F9FAFB',
+    borderBottomWidth: 1,
+    borderBottomColor: '#E5E7EB',
+  },
+  metricItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  metricValue: {
+    fontSize: 12,
+    color: '#9CA3AF',
+    fontWeight: '500',
+  },
+  
   // Legacy card styles (pour compatibilité)
   cardContainer: { height: width * 1.1, marginHorizontal: Spacing.md, marginVertical: Spacing.sm, position: 'relative' },
   card: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: Colors.white, borderRadius: 20, shadowColor: Colors.shadow, shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.15, shadowRadius: 16, elevation: 8, overflow: 'hidden' },
