@@ -374,10 +374,18 @@ export default function SignupScreen() {
             </View>
             <View style={styles.socialButtons}>
               <TouchableOpacity style={styles.socialButton} activeOpacity={0.8}>
-                <Ionicons name="logo-facebook" size={52} color="#1877F2" />
+                <Image 
+                  source={require('../assets/images/logo_facebook.png')}
+                  style={styles.socialLogo}
+                  resizeMode="contain"
+                />
               </TouchableOpacity>
               <TouchableOpacity style={styles.socialButton} activeOpacity={0.8}>
-                <Ionicons name="logo-google" size={48} color="#EA4335" />
+                <Image 
+                  source={require('../assets/images/logo_google.png')}
+                  style={styles.socialLogo}
+                  resizeMode="contain"
+                />
               </TouchableOpacity>
             </View>
           </View>
