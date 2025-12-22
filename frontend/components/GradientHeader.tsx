@@ -80,7 +80,7 @@ export const GradientHeader: React.FC<GradientHeaderProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    paddingBottom: Spacing.md,
+    paddingBottom: Spacing.lg,
   },
   content: {
     flexDirection: 'row',
@@ -112,28 +112,29 @@ const styles = StyleSheet.create({
   rightElement: {
     marginLeft: Spacing.md,
   },
-  // 4-line document header styles
+  // 4-line document header styles - LARGER
   fourLinesContainer: {
-    gap: 2,
+    gap: 4,
   },
   ligne1: {
-    fontSize: 11,
+    fontSize: 13,
     color: Colors.white,
-    opacity: 0.7,
+    opacity: 0.75,
   },
   ligne2: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: '700',
     color: Colors.white,
   },
   ligne3: {
-    fontSize: 13,
+    fontSize: 14,
     color: Colors.white,
     opacity: 0.9,
   },
   ligne4: {
-    fontSize: 12,
+    fontSize: 14,
+    fontWeight: '600',
     color: Colors.white,
-    opacity: 0.8,
+    opacity: 0.85,
   },
 });
