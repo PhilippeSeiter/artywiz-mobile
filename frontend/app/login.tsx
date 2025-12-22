@@ -524,12 +524,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: Spacing.lg,
     paddingBottom: Spacing.xxl,
   },
-  // Carte de connexion
+  // Carte de connexion - 95% opacité pour transparence subtile
   loginCard: {
-    backgroundColor: Colors.white,
+    backgroundColor: 'rgba(255, 255, 255, 0.95)',
     borderRadius: 24,
     padding: Spacing.xl,
-    marginTop: 115, // Réduit de 140 à 115 pour rapprocher du logo
+    marginTop: 115,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 10 },
     shadowOpacity: 0.15,
