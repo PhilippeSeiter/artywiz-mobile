@@ -197,9 +197,11 @@ const SectorCard = ({ sector, index, onPress }: SectorCardProps) => {
   const pressScale = useSharedValue(1);
 
   useEffect(() => {
-    const delay = 300 + index * 100;
-    scale.value = withDelay(delay, withSpring(1, { damping: 12, stiffness: 100 }));
-    opacity.value = withDelay(delay, withTiming(1, { duration: 300 }));
+    // Délai de 0.5 sec entre chaque avatar (500ms)
+    const delay = index * 500;
+    // Animation de mise en place plus rapide (moitié de durée)
+    scale.value = withDelay(delay, withSpring(1, { damping: 18, stiffness: 200 }));
+    opacity.value = withDelay(delay, withTiming(1, { duration: 150 }));
   }, []);
 
   const animatedStyle = useAnimatedStyle(() => ({
@@ -208,7 +210,8 @@ const SectorCard = ({ sector, index, onPress }: SectorCardProps) => {
   }));
 
   const handlePressIn = () => {
-    pressScale.value = withSpring(0.95);
+    // Amplitude réduite de moitié (2.5% au lieu de 5%)
+    pressScale.value = withSpring(0.975);
   };
 
   const handlePressOut = () => {
