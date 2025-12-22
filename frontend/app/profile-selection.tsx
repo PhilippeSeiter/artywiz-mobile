@@ -644,7 +644,7 @@ const styles = StyleSheet.create({
   bgImage: { position: 'absolute', width: width, height: height, top: 0, left: 0 },
   scrollView: { flex: 1, zIndex: 10 },
   scrollContent: { flexGrow: 1, paddingHorizontal: Spacing.lg, paddingBottom: 10 },
-  card: { backgroundColor: 'rgba(255, 255, 255, 0.80)', borderRadius: 24, padding: Spacing.xl, marginTop: 100, shadowColor: '#000', shadowOffset: { width: 0, height: 10 }, shadowOpacity: 0.15, shadowRadius: 20, elevation: 100, zIndex: 200 },
+  card: { backgroundColor: 'rgba(255, 255, 255, 0.90)', borderRadius: 24, padding: Spacing.xl, marginTop: 100, shadowColor: '#000', shadowOffset: { width: 0, height: 10 }, shadowOpacity: 0.15, shadowRadius: 20, elevation: 100, zIndex: 200 },
   cardHeader: { flexDirection: 'row', alignItems: 'flex-start', marginBottom: Spacing.lg },
   backButtonCircle: { width: 44, height: 44, borderRadius: 22, backgroundColor: '#FFF0F0', justifyContent: 'center', alignItems: 'center' },
   titleContainer: { marginLeft: Spacing.md, marginTop: 2 },
