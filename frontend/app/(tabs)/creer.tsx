@@ -469,12 +469,15 @@ export default function CreerScreen() {
   };
 
   // Render document item avec animation Tetris
+  const { isDocumentGenerating } = useDocumentStore();
+  
   const renderDocument = ({ item, index }: { item: UnifiedDocument; index: number }) => (
     <DocumentCard 
       doc={item as ASDocument} 
       onPress={() => handleDocumentPress(item)}
       index={index}
       displaySize={displaySize}
+      isGenerating={isDocumentGenerating(item.id)}
     />
   );
 
