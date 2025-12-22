@@ -475,44 +475,45 @@ export default function AlertesScreen() {
   const tabsY = useRef(new Animated.Value(30)).current;
   const tabsOpacity = useRef(new Animated.Value(0)).current;
 
-  // Animation d'entrée séquentielle gaming
+  // Animation d'entrée séquentielle 
   useEffect(() => {
     const baseDelay = 80;
     
     // Header slide down
     setTimeout(() => {
-      headerY.value = withSpring(0, SPRING_CONFIG);
-      headerOpacity.value = withTiming(1, { duration: 300 });
+      Animated.parallel([
+        Animated.spring(headerY, { toValue: 0, useNativeDriver: true }),
+        Animated.timing(headerOpacity, { toValue: 1, duration: 300, useNativeDriver: true }),
+      ]).start();
     }, baseDelay);
     
     // Search bar
     setTimeout(() => {
-      searchY.value = withSpring(0, SPRING_BOUNCE);
-      searchOpacity.value = withTiming(1, { duration: 300 });
+      Animated.parallel([
+        Animated.spring(searchY, { toValue: 0, useNativeDriver: true }),
+        Animated.timing(searchOpacity, { toValue: 1, duration: 300, useNativeDriver: true }),
+      ]).start();
     }, baseDelay * 2);
     
     // Tabs
     setTimeout(() => {
-      tabsY.value = withSpring(0, SPRING_BOUNCE);
-      tabsOpacity.value = withTiming(1, { duration: 300 });
+      Animated.parallel([
+        Animated.spring(tabsY, { toValue: 0, useNativeDriver: true }),
+        Animated.timing(tabsOpacity, { toValue: 1, duration: 300, useNativeDriver: true }),
+      ]).start();
     }, baseDelay * 3);
   }, []);
 
-  // Styles animés
-  const headerAnimStyle = useAnimatedStyle(() => ({
-    transform: [{ translateY: headerY.value }],
-    opacity: headerOpacity.value,
-  }));
+  // Styles animés natifs
+  const headerAnimStyle = {
+    transform: [{ translateY: headerY }],
+    opacity: headerOpacity,
+  };
   
-  const searchAnimStyle = useAnimatedStyle(() => ({
-    transform: [{ translateY: searchY.value }],
-    opacity: searchOpacity.value,
-  }));
-  
-  const tabsAnimStyle = useAnimatedStyle(() => ({
-    transform: [{ translateY: tabsY.value }],
-    opacity: tabsOpacity.value,
-  }));
+  const searchAnimStyle = {
+    transform: [{ translateY: searchY }],
+    opacity: searchOpacity,
+  };
 
   // Compteur de notifications non traitées (pour le badge)
   const unreadCount = notifications.filter((n) => n.state === 'unread' && !n.actionTaken).length;
