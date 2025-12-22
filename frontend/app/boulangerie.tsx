@@ -6,7 +6,6 @@ import Animated, { useSharedValue, useAnimatedStyle, withTiming, withSpring, wit
 import { Colors, Spacing } from '../constants';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { VideoBackground } from '../components/VideoBackground';
 
 // Logo animé Artywiz
 const AnimatedLogo = () => {
