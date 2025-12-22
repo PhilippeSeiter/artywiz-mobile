@@ -126,7 +126,7 @@ const AnimatedLoginLogo = ({ onPress }: { onPress?: () => void }) => {
           />
         </Animated.View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
