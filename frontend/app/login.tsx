@@ -638,14 +638,13 @@ const styles = StyleSheet.create({
   },
   // Forgot password
   forgotPasswordLink: {
-    alignItems: 'center',
-    marginTop: Spacing.md,
-    paddingVertical: Spacing.sm,
+    alignSelf: 'flex-end',
+    marginTop: Spacing.xs,
+    marginBottom: Spacing.sm,
   },
   forgotPasswordText: {
-    fontSize: 14,
-    color: Colors.primary,
-    fontWeight: '500',
+    fontSize: 13,
+    color: Colors.textSecondary,
   },
   signupLinkContainer: {
     alignItems: 'center',
