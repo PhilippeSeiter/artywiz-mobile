@@ -2,24 +2,75 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, KeyboardAvoidingView, Platform, ScrollView, Image } from 'react-native';
 import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
-import Animated, { useSharedValue, useAnimatedStyle, withTiming, withSpring, withDelay, Easing } from 'react-native-reanimated';
+import Animated, { useSharedValue, useAnimatedStyle, withTiming, withSpring, withDelay, withRepeat, withSequence, Easing } from 'react-native-reanimated';
 import { Colors, Spacing } from '../constants';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 
-// Logo animé Artywiz
+// Logo animé Artywiz + Boulangerie (comme le modèle Football)
 const AnimatedLogo = () => {
   const opacityW = useSharedValue(0);
   const opacityArtywiz = useSharedValue(0);
+  const opacityCategory = useSharedValue(0);
   const scaleW = useSharedValue(1);
   const scaleArtywiz = useSharedValue(1);
+  const scaleCategory = useSharedValue(1);
+  const isAnimatingRef = useRef(false);
+
+  const startAnimation = useCallback(() => {
+    if (isAnimatingRef.current) return;
+    isAnimatingRef.current = true;
+
+    const halfCycleDuration = 1200;
+    const easeConfig = { duration: halfCycleDuration, easing: Easing.inOut(Easing.ease) };
+
+    // W: ±5%, GRANDIT d'abord
+    scaleW.value = withRepeat(
+      withSequence(
+        withTiming(1.05, easeConfig),
+        withTiming(0.95, easeConfig)
+      ),
+      -1,
+      true
+    );
+
+    // Artywiz: décalage 500ms, ±5%, RÉDUIT d'abord
+    setTimeout(() => {
+      scaleArtywiz.value = withRepeat(
+        withSequence(
+          withTiming(0.95, easeConfig),
+          withTiming(1.05, easeConfig)
+        ),
+        -1,
+        true
+      );
+    }, 500);
+
+    // Category: décalage 1000ms, ±5%, GRANDIT d'abord
+    setTimeout(() => {
+      scaleCategory.value = withRepeat(
+        withSequence(
+          withTiming(1.05, easeConfig),
+          withTiming(0.95, easeConfig)
+        ),
+        -1,
+        true
+      );
+    }, 1000);
+  }, []);
 
   useEffect(() => {
     opacityW.value = withTiming(1, { duration: 400 });
     setTimeout(() => {
       opacityArtywiz.value = withTiming(1, { duration: 400 });
     }, 300);
-  }, []);
+    setTimeout(() => {
+      opacityCategory.value = withTiming(1, { duration: 400 });
+    }, 600);
+    
+    const timer = setTimeout(() => startAnimation(), 900);
+    return () => clearTimeout(timer);
+  }, [startAnimation]);
 
   const animatedStyleW = useAnimatedStyle(() => ({
     opacity: opacityW.value,
@@ -31,6 +82,11 @@ const AnimatedLogo = () => {
     transform: [{ scale: scaleArtywiz.value }],
   }));
 
+  const animatedStyleCategory = useAnimatedStyle(() => ({
+    opacity: opacityCategory.value,
+    transform: [{ scale: scaleCategory.value }],
+  }));
+
   return (
     <View style={logoStyles.container}>
       <Animated.View style={[logoStyles.partW, animatedStyleW]}>
@@ -39,16 +95,21 @@ const AnimatedLogo = () => {
       <Animated.View style={[logoStyles.partArtywiz, animatedStyleArtywiz]}>
         <Image source={require('../assets/images/logo_artywiz.png')} style={logoStyles.imageArtywiz} resizeMode="contain" />
       </Animated.View>
+      <Animated.View style={[logoStyles.partCategory, animatedStyleCategory]}>
+        <Text style={logoStyles.categoryText}>boulangerie</Text>
+      </Animated.View>
     </View>
   );
 };
 
 const logoStyles = StyleSheet.create({
-  container: { alignItems: 'center', justifyContent: 'center', height: 100, marginBottom: Spacing.lg },
+  container: { alignItems: 'center', justifyContent: 'center', height: 120, marginBottom: Spacing.md },
   partW: { alignItems: 'center' },
-  imageW: { width: 80, height: 50 },
-  partArtywiz: { alignItems: 'center', marginTop: -5 },
-  imageArtywiz: { width: 160, height: 36 },
+  imageW: { width: 55, height: 39 },
+  partArtywiz: { alignItems: 'center', marginTop: 2 },
+  imageArtywiz: { width: 154, height: 33 },
+  partCategory: { alignItems: 'center', marginTop: 4 },
+  categoryText: { fontSize: 18, fontWeight: '600', color: '#FFFFFF', letterSpacing: 2, textTransform: 'uppercase' },
 });
 
 export default function BoulangerieScreen() {
@@ -75,7 +136,7 @@ export default function BoulangerieScreen() {
       return;
     }
     Alert.alert('Merci !', 'Vous serez averti(e) du lancement d\'Artywiz Boulangerie.', [
-      { text: 'OK', onPress: () => router.back() }
+      { text: 'OK', onPress: () => router.replace('/sector-selection') }
     ]);
   };
 
@@ -91,13 +152,17 @@ export default function BoulangerieScreen() {
         <AnimatedLogo />
 
         <Animated.View style={[styles.card, cardAnimatedStyle, { marginBottom: insets.bottom + Spacing.lg }]}>
+          {/* Header avec flèche + avatar */}
           <TouchableOpacity style={styles.headerRow} onPress={() => router.replace('/sector-selection')} activeOpacity={0.7}>
             <View style={styles.backButton}>
               <Ionicons name="arrow-back" size={20} color="#FF6B6B" />
             </View>
-            <View style={styles.titleContainer}>
-              <Text style={styles.titleLine1}>Artywiz</Text>
-              <Text style={styles.titleLine2}>boulangerie</Text>
+            <View style={styles.avatarContainer}>
+              <Image 
+                source={require('../assets/images/avatar_boulangerie.png')} 
+                style={styles.avatarImage}
+                resizeMode="cover"
+              />
             </View>
           </TouchableOpacity>
 
@@ -126,7 +191,7 @@ export default function BoulangerieScreen() {
 
           <TouchableOpacity onPress={handleSubmit} activeOpacity={0.9} style={styles.submitButton}>
             <LinearGradient
-              colors={['#0077FF', '#0066FF', '#0055EE']}
+              colors={['#D4A574', '#C49464', '#B48454']}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
               style={styles.submitButtonGradient}
@@ -147,7 +212,6 @@ const styles = StyleSheet.create({
   container: { flex: 1 },
   scrollContent: { flexGrow: 1, paddingHorizontal: Spacing.lg },
   card: {
-    flex: 1,
     backgroundColor: 'rgba(255, 255, 255, 0.90)',
     borderRadius: 24,
     padding: Spacing.xl,
@@ -157,15 +221,29 @@ const styles = StyleSheet.create({
     shadowRadius: 12,
     elevation: 8,
   },
-  headerRow: { flexDirection: 'row', alignItems: 'flex-start', marginBottom: Spacing.md },
-  backButton: {
-    width: 36, height: 36, borderRadius: 18,
-    backgroundColor: 'rgba(255, 107, 107, 0.1)',
-    justifyContent: 'center', alignItems: 'center', marginRight: Spacing.md,
+  headerRow: { 
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    marginBottom: Spacing.lg,
   },
-  titleContainer: { flex: 1 },
-  titleLine1: { fontSize: 24, fontWeight: '300', color: Colors.textPrimary, lineHeight: 28 },
-  titleLine2: { fontSize: 24, fontWeight: '700', color: Colors.textPrimary, lineHeight: 28 },
+  backButton: {
+    width: 44, height: 44, borderRadius: 22,
+    backgroundColor: 'rgba(255, 107, 107, 0.1)',
+    justifyContent: 'center', alignItems: 'center', 
+    marginRight: Spacing.md,
+  },
+  avatarContainer: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    overflow: 'hidden',
+    borderWidth: 3,
+    borderColor: '#D4A574',
+  },
+  avatarImage: {
+    width: '100%',
+    height: '100%',
+  },
   description: { fontSize: 14, color: Colors.textSecondary, marginBottom: Spacing.sm, lineHeight: 20 },
   descriptionHighlight: { fontSize: 14, color: Colors.textPrimary, fontWeight: '500', marginBottom: Spacing.lg, lineHeight: 20 },
   inputContainer: {
