@@ -494,10 +494,10 @@ export default function ProfileSelectionScreen() {
       setHasCheckedRedirect(true);
       const realAccounts = getRealAccounts(existingProfiles);
       
-      // If user has completed onboarding AND has accounts, go directly to dashboard
+      // If user has completed onboarding AND has accounts, go directly to promo video then dashboard
       if (hasCompletedOnboarding && realAccounts.length > 0) {
-        console.log('[ProfileSelection] User has accounts and completed onboarding, redirecting to dashboard');
-        router.replace('/(tabs)');
+        console.log('[ProfileSelection] User has accounts and completed onboarding, redirecting to promo video');
+        router.replace('/promo-video');
         return;
       }
     }
