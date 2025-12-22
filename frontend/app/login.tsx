@@ -605,32 +605,21 @@ const styles = StyleSheet.create({
     marginTop: Spacing.lg,
     marginBottom: Spacing.md,
   },
-  // Social buttons
+  // Social buttons - sans cercle
   socialButtonsContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    gap: Spacing.md,
+    gap: Spacing.xl,
   },
   socialButton: {
-    width: 52,
-    height: 52,
-    borderRadius: 26,
+    width: 54,
+    height: 44,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#FFFFFF',
-    borderWidth: 1.5,
-    borderColor: '#E8E8E8',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.08,
-    shadowRadius: 4,
-    elevation: 2,
   },
-  facebookButton: {
-    backgroundColor: '#FFFFFF',
-  },
-  googleButton: {
-    backgroundColor: '#FFFFFF',
+  socialLogo: {
+    width: 54,
+    height: 44,
   },
   // Forgot password
   forgotPasswordLink: {
