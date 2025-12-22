@@ -69,7 +69,7 @@ export default function RestaurantsScreen() {
 
   return (
     <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
-      <VideoBackground />
+      {/* Fond global géré par _layout.tsx */}
       
       <ScrollView 
         contentContainerStyle={[styles.scrollContent, { paddingTop: insets.top + Spacing.lg }]}
