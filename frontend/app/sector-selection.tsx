@@ -440,7 +440,7 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   sectorName: {
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: '600',
     color: Colors.text,
     textAlign: 'center',
