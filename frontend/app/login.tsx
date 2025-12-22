@@ -349,7 +349,7 @@ export default function LoginScreen() {
             </View>
             <View style={styles.titleContainer}>
               <Text style={styles.titleLine1}>Déjà</Text>
-              <Text style={styles.titleLine2}>Inscrit.e?</Text>
+              <Text style={styles.titleLine2}>inscrit.e?</Text>
             </View>
           </TouchableOpacity>
 
