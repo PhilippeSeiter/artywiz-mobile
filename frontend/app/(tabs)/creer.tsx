@@ -230,15 +230,18 @@ const DocumentCard = ({
   onPress,
   index,
   displaySize = 'medium',
+  isGenerating = false,
 }: { 
   doc: ASDocument; 
   onPress: () => void;
   index: number; // Index pour l'animation Tetris
   displaySize?: DisplaySize;
+  isGenerating?: boolean; // True si le doc est en cours de préparation
 }) => {
   const scale = useSharedValue(1);
   const translateY = useSharedValue(SCREEN_HEIGHT); // Commence hors de l'écran (en bas)
   const opacity = useSharedValue(0);
+  const borderColorAnim = useSharedValue(0);
   
   const cardHeight = CARD_CONFIGS[displaySize].height;
 
@@ -264,6 +267,19 @@ const DocumentCard = ({
     );
   }, [index]);
 
+  // Animation de clignotement rouge/vert pour les docs en préparation
+  useEffect(() => {
+    if (isGenerating) {
+      borderColorAnim.value = withRepeat(
+        withTiming(1, { duration: 600, easing: Easing.inOut(Easing.ease) }),
+        -1,
+        true
+      );
+    } else {
+      borderColorAnim.value = 0;
+    }
+  }, [isGenerating]);
+
   const handlePressIn = () => {
     scale.value = withSpring(0.96, { damping: 15, stiffness: 300 });
   };
@@ -272,13 +288,22 @@ const DocumentCard = ({
     scale.value = withSpring(1, { damping: 15, stiffness: 200 });
   };
 
-  const animatedStyle = useAnimatedStyle(() => ({
-    transform: [
-      { translateY: translateY.value },
-      { scale: scale.value }
-    ],
-    opacity: opacity.value,
-  }));
+  const animatedStyle = useAnimatedStyle(() => {
+    // Interpoler entre vert (#22C55E) et rouge (#EF4444)
+    const borderColor = isGenerating 
+      ? (borderColorAnim.value < 0.5 ? '#22C55E' : '#EF4444')
+      : 'transparent';
+    
+    return {
+      transform: [
+        { translateY: translateY.value },
+        { scale: scale.value }
+      ],
+      opacity: opacity.value,
+      borderWidth: isGenerating ? 3 : 0,
+      borderColor: borderColor,
+    };
+  });
 
   return (
     <Pressable
@@ -317,7 +342,13 @@ const DocumentCard = ({
             {doc.isSponsored && doc.sponsorPrice && (
               <SponsorBadge amount={doc.sponsorPrice} />
             )}
-            <StatusIndicator status={doc.status} />
+            {isGenerating ? (
+              <View style={styles.generatingIndicator}>
+                <Spinner size={14} color="#F59E0B" />
+              </View>
+            ) : (
+              <StatusIndicator status={doc.status} />
+            )}
           </View>
         </View>
       </Animated.View>
