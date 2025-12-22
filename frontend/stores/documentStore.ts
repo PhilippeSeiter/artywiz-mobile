@@ -85,10 +85,10 @@ export const useDocumentStore = create<DocumentStore>()(
           generatingDocs: [...state.generatingDocs, docId],
         }));
         
-        // Simulate generation completion after 5 seconds
+        // Simulate generation completion after 30 seconds
         setTimeout(() => {
           get().completeGeneration(docId);
-        }, 5000);
+        }, 30000);
       },
 
       // Complete generation
