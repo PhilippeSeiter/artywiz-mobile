@@ -700,18 +700,6 @@ export default function AlertesScreen() {
         </View>
       </ReAnimated.View>
 
-      {/* Section titre avec animation */}
-      <ReAnimated.View style={[styles.sectionHeader, tabsAnimStyle]}>
-        <Text style={styles.sectionTitle}>
-          {showHistory ? 'Historique' : 'Mises à jour'}
-        </Text>
-        {!showHistory && unreadCount > 0 && (
-          <View style={styles.badge}>
-            <Text style={styles.badgeText}>{unreadCount}</Text>
-          </View>
-        )}
-      </ReAnimated.View>
-
       {/* Liste des notifications avec animations d'entrée */}
       <ScrollView 
         style={styles.listContainer}
