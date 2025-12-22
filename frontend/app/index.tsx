@@ -390,8 +390,7 @@ export default function WelcomeScreen() {
   if (isCheckingAuth) {
     return (
       <View style={styles.container}>
-        {/* Fond vidéo même pendant le chargement */}
-        <VideoBackground />
+        {/* Fond global géré par _layout.tsx */}
         <View style={styles.loadingContainer}>
           <Image
             source={require('../assets/images/logo_artywiz_blanc.png')}
@@ -406,8 +405,7 @@ export default function WelcomeScreen() {
 
   return (
     <View style={styles.container}>
-      {/* Fond vidéo en boucle */}
-      <VideoBackground />
+      {/* Fond global géré par _layout.tsx - ne pas ajouter VideoBackground ici */}
       
       <View style={[styles.content, { paddingTop: insets.top + Spacing.lg }]}>
         {/* Logo Section - 3 parties animées */}
