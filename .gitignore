@@ -95,3 +95,7 @@ temp_artywiz/.git/objects/pack/pack-432e9b15d8efd3dfb6f36770a8e0de99a8b4dc6c.pac
 # Environment files
 *.env
 *.env.*
+-e 
+# Environment files
+*.env
+*.env.*
