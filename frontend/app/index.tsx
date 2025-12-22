@@ -428,7 +428,7 @@ export default function WelcomeScreen() {
               Zéro effort
             </Animated.Text>
             <Animated.Text style={[styles.baselineLine3, baseline3Style]}>
-              100% bénéfices
+              100% bénéfice
             </Animated.Text>
           </View>
         </View>
