@@ -437,10 +437,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     position: 'relative',
   },
-  sectorCardInactive: {
-    backgroundColor: '#F9FAFB',
-    opacity: 0.6,
-  },
   avatarContainer: {
     width: 64,
     height: 64,
