@@ -243,15 +243,8 @@ const AddAccountButton = ({ onPress }) => {
 // ============================================
 // UNIFIED POPUP WITH HORIZONTAL SLIDE
 // ============================================
-type PopupStep = 'types' | 'search_club' | 'search_team' | 'search_single';
 
-interface UnifiedPopupProps {
-  visible: boolean;
-  onClose: () => void;
-  onAccountCreated: (account: UserProfile) => void;
-}
-
-const UnifiedPopup = ({ visible, onClose, onAccountCreated }: UnifiedPopupProps) => {
+const UnifiedPopup = ({ visible, onClose, onAccountCreated }) => {
   const [step, setStep] = useState<PopupStep>('types');
   const [selectedType, setSelectedType] = useState<string>('');
   const [selectedClub, setSelectedClub] = useState<any>(null);
