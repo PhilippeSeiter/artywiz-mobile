@@ -341,7 +341,7 @@ export default function LoginScreen() {
           {/* Bouton retour avec titre - zone cliquable */}
           <TouchableOpacity 
             style={styles.headerRow}
-            onPress={() => router.back()}
+            onPress={() => router.replace('/')}
             activeOpacity={0.7}
           >
             <View style={styles.backButton}>
