@@ -572,8 +572,8 @@ export default function ProfileSelectionScreen() {
     if (isEditing) {
       router.back();
     } else {
-      // Go directly to dashboard
-      router.replace('/(tabs)');
+      // Go to promo video first, then dashboard
+      router.replace('/promo-video');
     }
   };
 
