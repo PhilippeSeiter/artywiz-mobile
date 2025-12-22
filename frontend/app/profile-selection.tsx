@@ -401,7 +401,7 @@ const UnifiedPopup = ({ visible, onClose, onAccountCreated }) => {
                     activeOpacity={0.7}
                   >
                     <View style={[styles.typeIcon, { backgroundColor: type.color + '15' }]}>
-                      <Ionicons name={type.icon as any} size={24} color={type.color} />
+                      <Ionicons name={type.icon} size={24} color={type.color} />
                     </View>
                     <Text style={styles.typeLabel}>{type.label}</Text>
                     <Ionicons name="chevron-forward" size={20} color={Colors.textLight} />
