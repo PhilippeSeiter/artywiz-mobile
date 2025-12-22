@@ -137,7 +137,7 @@ const BG_SCALE_AMPLITUDE = 0.02;  // Très léger zoom (2%)
 // Amplitude du déplacement - très subtil pour ne pas montrer les bords
 const BG_TRANSLATE_AMPLITUDE = width * 0.01;  // 1% de déplacement max
 
-// Bouton social
+// Bouton social avec nouveaux logos
 const SocialButton = ({ 
   type, 
   onPress 
@@ -159,20 +159,9 @@ const SocialButton = ({
     transform: [{ scale: scale.value }],
   }));
 
-  if (type === 'facebook') {
-    return (
-      <TouchableOpacity
-        onPress={onPress}
-        onPressIn={handlePressIn}
-        onPressOut={handlePressOut}
-        activeOpacity={1}
-      >
-        <Animated.View style={[styles.socialButton, styles.facebookButton, animatedStyle]}>
-          <Ionicons name="logo-facebook" size={24} color="#FFFFFF" />
-        </Animated.View>
-      </TouchableOpacity>
-    );
-  }
+  // Nouveaux logos Facebook et Google
+  const FACEBOOK_LOGO = 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Facebook_Logo_%282019%29.png/1024px-Facebook_Logo_%282019%29.png';
+  const GOOGLE_LOGO = 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/1024px-Google_%22G%22_logo.svg.png';
 
   return (
     <TouchableOpacity
@@ -181,8 +170,12 @@ const SocialButton = ({
       onPressOut={handlePressOut}
       activeOpacity={1}
     >
-      <Animated.View style={[styles.socialButton, styles.googleButton, animatedStyle]}>
-        <Text style={styles.googleLogo}>G</Text>
+      <Animated.View style={[styles.socialButton, type === 'facebook' ? styles.facebookButton : styles.googleButton, animatedStyle]}>
+        <Image 
+          source={{ uri: type === 'facebook' ? FACEBOOK_LOGO : GOOGLE_LOGO }}
+          style={styles.socialLogo}
+          resizeMode="contain"
+        />
       </Animated.View>
     </TouchableOpacity>
   );
