@@ -339,12 +339,12 @@ const UnifiedPopup = ({ visible, onClose, onAccountCreated }) => {
   const getItems = () => {
     if (step === 'search_club') return MOCK_DATA.club;
     if (step === 'search_team') return MOCK_DATA.equipe;
-    if (step === 'search_single') return MOCK_DATA[selectedType as keyof typeof MOCK_DATA] || [];
+    if (step === 'search_single') return MOCK_DATA[selectedType] || [];
     return [];
   };
 
   const items = getItems();
-  const filteredItems = items.filter((item: any) =>
+  const filteredItems = items.filter((item) =>
     item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     (item.numero && item.numero.toLowerCase().includes(searchQuery.toLowerCase()))
   );
