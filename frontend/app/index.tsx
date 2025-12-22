@@ -525,24 +525,24 @@ const styles = StyleSheet.create({
   baselineContainer: {
     alignItems: 'center',
   },
-  // Ligne 1: "Votre communication" (normal, +1pt = 15pt)
+  // Ligne 1: "Votre communication" (+10% = 16.5 → 17pt)
   baselineLine1: {
-    fontSize: 15,
+    fontSize: 17,
     fontWeight: '400',
     color: '#FFFFFF',
     textAlign: 'center',
   },
-  // Ligne 2: "Zéro effort" (bold, +2pt = 16pt)
+  // Ligne 2: "Zéro effort" (+10% = 17.6 → 18pt)
   baselineLine2: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: '700',
     color: '#FFFFFF',
     textAlign: 'center',
     marginTop: 4,
   },
-  // Ligne 3: "100% bénéfices" (bold, +3pt = 17pt)
+  // Ligne 3: "100% bénéfices" (+10% = 18.7 → 19pt)
   baselineLine3: {
-    fontSize: 17,
+    fontSize: 19,
     fontWeight: '700',
     color: '#FFFFFF',
     textAlign: 'center',
