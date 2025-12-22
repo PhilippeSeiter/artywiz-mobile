@@ -80,7 +80,7 @@ export default function CoiffureScreen() {
         <AnimatedLogo />
 
         <Animated.View style={[styles.card, cardAnimatedStyle, { marginBottom: insets.bottom + Spacing.lg }]}>
-          <TouchableOpacity style={styles.headerRow} onPress={() => router.back()} activeOpacity={0.7}>
+          <TouchableOpacity style={styles.headerRow} onPress={() => router.replace('/sector-selection')} activeOpacity={0.7}>
             <View style={styles.backButton}>
               <Ionicons name="arrow-back" size={20} color="#FF6B6B" />
             </View>
