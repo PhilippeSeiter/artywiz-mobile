@@ -272,7 +272,7 @@ const UnifiedPopup = ({ visible, onClose, onAccountCreated }) => {
   };
 
   // Handlers
-  const handleSelectType = (type: string) => {
+  const handleSelectType = (type) => {
     setSelectedType(type);
     if (type === 'equipe') {
       slideToNext('search_club');
