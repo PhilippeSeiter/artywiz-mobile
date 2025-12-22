@@ -12,7 +12,6 @@ import {
   Dimensions,
   Pressable,
 } from 'react-native';
-import { VideoBackground } from '../components/VideoBackground';
 import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import Animated, {
