@@ -18,8 +18,8 @@ const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 const IMAGE_WIDTH = SCREEN_WIDTH * 1.4; // 40% wider than screen
 const MAX_OFFSET = (IMAGE_WIDTH - SCREEN_WIDTH) / 2;
 
-// Sensitivity for gyroscope movement
-const GYRO_SENSITIVITY = 25;
+// Sensitivity for gyroscope movement (higher = more responsive)
+const GYRO_SENSITIVITY = 80;
 
 // Auto-pan animation duration (fallback)
 const AUTO_PAN_DURATION = 8000; // 8 seconds per direction
