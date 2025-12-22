@@ -347,10 +347,10 @@ const UnifiedPopup = ({ visible, onClose, onAccountCreated }: UnifiedPopupProps)
   if (!visible) return null;
 
   return (
-    <Modal transparent visible={visible} onRequestClose={onClose}>
-      <Animated.View style={[styles.popupOverlay, overlayStyle]}>
+    <Modal transparent visible={visible} onRequestClose={onClose} animationType="fade">
+      <View style={styles.popupOverlay}>
         <TouchableOpacity style={StyleSheet.absoluteFill} onPress={onClose} activeOpacity={1} />
-        <Animated.View style={[styles.popupContainer, contentStyle]}>
+        <View style={styles.popupContainer}>
           {/* Header - Always visible, never slides */}
           <View style={styles.popupHeader}>
             {showBackButton ? (
