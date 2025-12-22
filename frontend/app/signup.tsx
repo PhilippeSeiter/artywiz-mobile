@@ -29,6 +29,8 @@ import { CustomInput } from '../components';
 import { Colors, Spacing } from '../constants';
 import { useAuth } from '../hooks/useAuth';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useUserPreferencesStore } from '../stores/userPreferencesStore';
+import { useAuthStore } from '../stores/authStore';
 
 const { width, height } = Dimensions.get('window');
 
