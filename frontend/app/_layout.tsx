@@ -51,6 +51,12 @@ function RootLayoutContent() {
         <Stack.Screen name="index" />
         <Stack.Screen name="login" />
         <Stack.Screen name="signup" />
+        <Stack.Screen name="profile-selection" />
+        <Stack.Screen name="sector-selection" />
+        <Stack.Screen name="contact" />
+        <Stack.Screen name="edit-profile" />
+        <Stack.Screen name="manage-profiles" />
+        <Stack.Screen name="onboarding-themes" />
         <Stack.Screen name="(tabs)" />
         <Stack.Screen name="document/[id]" />
         <Stack.Screen name="generated-doc/[id]" />
