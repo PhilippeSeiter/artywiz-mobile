@@ -300,7 +300,7 @@ const UnifiedPopup = ({ visible, onClose, onAccountCreated }) => {
   const handleSelectSingle = (item: any) => {
     const newAccount = {
       id: `${selectedType}_${Date.now()}`,
-      type: selectedType as UserProfile['type'],
+      type: selectedType,
       name: item.name,
     };
     onAccountCreated(newAccount);
