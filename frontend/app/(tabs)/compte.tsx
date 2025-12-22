@@ -49,10 +49,10 @@ const SPRING_BOUNCE = {
 
 // Mapping des logos pour les profils
 const PROFILE_LOGOS: { [key: string]: any } = {
-  'club_1': require('../../assets/images/logo AS Strasbourg.png'),
-  'ligue_1': require('../../assets/images/logo LGEF ligue grand est.png'),
-  'ligue_2': require('../../assets/images/logo ligue normandie.png'),
-  'district_1': require('../../assets/images/logo district alsace.png'),
+  'club_1': require('../../assets/images/logo_club_strasbourg.png'),
+  'ligue_1': require('../../assets/images/logo_ligue_grandest.png'),
+  'ligue_2': require('../../assets/images/logo_ligue_normandie.png'),
+  'district_1': require('../../assets/images/logo_district_alsace.png'),
 };
 
 // Types de profils pour le modal
