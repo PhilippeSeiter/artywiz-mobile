@@ -303,7 +303,10 @@ export default function CompteScreen() {
           onPress: async () => {
             try {
               const success = await logout();
-              if (!success) {
+              if (success) {
+                // Force navigation to welcome screen
+                router.replace('/');
+              } else {
                 Alert.alert('Erreur', 'Impossible de se déconnecter. Veuillez réessayer.');
               }
             } catch (error) {
