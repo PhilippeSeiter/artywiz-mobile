@@ -520,7 +520,7 @@ export default function ProfileSelectionScreen() {
   const isEditing = hasCompletedOnboarding;
   const hasAccounts = accounts.length > 0;
 
-  const handleAccountCreated = (account: UserProfile) => {
+  const handleAccountCreated = (account) => {
     const newAccounts = [...accounts, account];
     setAccounts(newAccounts);
     setActiveAccountId(account.id);
