@@ -459,26 +459,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: Spacing.xs,
   },
-  sectorNameInactive: {
-    color: '#9CA3AF',
-  },
-  badgeBientot: {
-    backgroundColor: '#6B7280',
-    paddingHorizontal: 10,
-    paddingVertical: 3,
-    borderRadius: 10,
-    marginTop: Spacing.xs,
-  },
-  badgeBientotText: {
-    fontSize: 10,
-    fontWeight: '600',
-    color: '#FFFFFF',
-  },
-  selectIndicator: {
-    position: 'absolute',
-    top: 10,
-    right: 10,
-  },
   infoNote: {
     flexDirection: 'row',
     alignItems: 'center',
