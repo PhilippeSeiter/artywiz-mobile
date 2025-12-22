@@ -49,7 +49,18 @@ function RootLayoutContent() {
     <SafeAreaProvider>
       <StatusBar style="light" />
       <AuthNavigationHandler />
-      <Stack screenOptions={{ headerShown: false }}>
+      {/* FOND GLOBAL - Ne bouge pas pendant les transitions */}
+      <View style={styles.globalBackground}>
+        <VideoBackground />
+      </View>
+      {/* CONTENU - Les écrans s'animent par-dessus le fond fixe */}
+      <Stack 
+        screenOptions={{ 
+          headerShown: false,
+          contentStyle: { backgroundColor: 'transparent' },
+          animation: 'fade',
+        }}
+      >
         <Stack.Screen name="index" />
         <Stack.Screen name="login" />
         <Stack.Screen name="signup" />
@@ -76,6 +87,17 @@ function RootLayoutContent() {
     </SafeAreaProvider>
   );
 }
+
+const styles = StyleSheet.create({
+  globalBackground: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: 0,
+  },
+});
 
 export default function RootLayout() {
   return (
