@@ -900,8 +900,44 @@ export default function EditProfileScreen() {
           </GamingAccordion>
         </Animated.View>
 
+        {/* BLOC 5: Partenaire - Sponsor (légèrement séparé) */}
+        <Animated.View style={[accordion5Style, { marginTop: Spacing.lg }]}>
+          <GamingAccordion
+            title="Partenaire - Sponsor"
+            countLabel=""
+            icon="diamond-outline"
+            iconColor="#FFB800"
+            iconBgColor="#FFB80015"
+            isOpen={openAccordion === 'sponsor'}
+            onToggle={() => toggleAccordion('sponsor')}
+            index={4}
+          >
+            <View style={styles.sponsorContent}>
+              <Text style={styles.sponsorDescription}>
+                Vous souhaitez devenir partenaire ou sponsor Artywiz ?{'\n'}
+                Contactez-nous pour découvrir nos offres.
+              </Text>
+              <TouchableOpacity 
+                style={styles.sponsorButton}
+                onPress={() => router.push('/contact')}
+                activeOpacity={0.8}
+              >
+                <LinearGradient
+                  colors={['#FFB800', '#FF9500']}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 0 }}
+                  style={styles.sponsorButtonGradient}
+                >
+                  <Ionicons name="mail-outline" size={18} color="#FFFFFF" />
+                  <Text style={styles.sponsorButtonText}>Nous contacter</Text>
+                </LinearGradient>
+              </TouchableOpacity>
+            </View>
+          </GamingAccordion>
+        </Animated.View>
+
         {/* Bouton Enregistrer */}
-        <Animated.View style={accordion5Style}>
+        <Animated.View style={[accordion5Style, { marginTop: Spacing.md }]}>
           <TouchableOpacity style={styles.saveButton} onPress={handleSave} activeOpacity={0.9}>
             <LinearGradient
               colors={[Colors.gradientStart, Colors.gradientEnd]}
