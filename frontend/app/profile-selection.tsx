@@ -675,6 +675,7 @@ const styles = StyleSheet.create({
   accountCard: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#F8FAFC', borderRadius: 16, padding: Spacing.md, marginBottom: Spacing.sm, borderWidth: 2, borderColor: 'transparent' },
   accountCardActive: { backgroundColor: '#EFF6FF', borderWidth: 2 },
   accountLogo: { width: 48, height: 48, borderRadius: 12, justifyContent: 'center', alignItems: 'center', marginRight: Spacing.md },
+  accountLogoImage: { width: 48, height: 48, borderRadius: 12, marginRight: Spacing.md },
   accountInfo: { flex: 1 },
   accountName: { fontSize: 15, fontWeight: '600', color: Colors.textPrimary, marginBottom: 2 },
   accountType: { fontSize: 13, color: Colors.textSecondary },
