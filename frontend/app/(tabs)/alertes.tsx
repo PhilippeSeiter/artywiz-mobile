@@ -647,8 +647,8 @@ export default function AlertesScreen() {
 
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
-      {/* Header avec animation gaming */}
-      <ReAnimated.View style={headerAnimStyle}>
+      {/* Header avec animation */}
+      <Animated.View style={headerAnimStyle}>
         <LinearGradient
           colors={[Colors.gradientStart, Colors.gradientEnd]}
           start={{ x: 0, y: 0 }}
