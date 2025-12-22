@@ -8,7 +8,7 @@ import { View, StyleSheet, Platform, Image } from 'react-native';
 import { Video, ResizeMode, AVPlaybackStatus } from 'expo-av';
 import { useVideoDirection } from '../providers/VideoDirectionProvider';
 
-const VIDEO_URL = 'https://customer-assets.emergentagent.com/job_artywiz-transfer/artifacts/8qc6s5v8_bg-login%20%282%29.mp4';
+const VIDEO_URL = 'https://customer-assets.emergentagent.com/job_document-editor-5/artifacts/xmcc7jpq_fond%20anime%CC%81%20Artyplanet%20app.webm';
 
 // Fallback image for when video fails to load
 const FALLBACK_IMAGE = require('../assets/images/fond_blocs.png');
