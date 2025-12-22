@@ -280,7 +280,7 @@ export default function SectorSelectionScreen() {
   };
 
   const handleBack = () => {
-    router.back();
+    router.replace('/');
   };
 
   return (
