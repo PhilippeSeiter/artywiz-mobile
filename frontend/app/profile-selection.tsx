@@ -216,7 +216,7 @@ const AccountCard = ({ account, index, isActive, onPress, onDelete, canDelete })
 // ============================================
 // ADD BUTTON
 // ============================================
-const AddAccountButton = ({ onPress }: { onPress: () => void }) => {
+const AddAccountButton = ({ onPress }) => {
   const scale = useSharedValue(1);
   const rotation = useSharedValue(0);
 
