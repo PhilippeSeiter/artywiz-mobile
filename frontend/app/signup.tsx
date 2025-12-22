@@ -376,14 +376,14 @@ export default function SignupScreen() {
               <TouchableOpacity style={styles.socialButton} activeOpacity={0.8}>
                 <Image 
                   source={require('../assets/images/logo_facebook.png')}
-                  style={styles.socialLogo}
+                  style={styles.socialLogoFb}
                   resizeMode="contain"
                 />
               </TouchableOpacity>
               <TouchableOpacity style={styles.socialButton} activeOpacity={0.8}>
                 <Image 
                   source={require('../assets/images/logo_google.png')}
-                  style={styles.socialLogo}
+                  style={styles.socialLogoGoogle}
                   resizeMode="contain"
                 />
               </TouchableOpacity>
