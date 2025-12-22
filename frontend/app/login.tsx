@@ -171,7 +171,7 @@ const SocialButton = ({
             ? require('../assets/images/logo_facebook.png')
             : require('../assets/images/logo_google.png')
           }
-          style={styles.socialLogo}
+          style={type === 'facebook' ? styles.socialLogoFb : styles.socialLogoGoogle}
           resizeMode="contain"
         />
       </Animated.View>
