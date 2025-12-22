@@ -111,7 +111,7 @@ const logoStyles = StyleSheet.create({
 // ============================================
 // MOCK DATA avec logos
 // ============================================
-const PROFILE_LOGOS: { [key: string]: any } = {
+const PROFILE_LOGOS = {
   'ligue_1': require('../assets/images/logo_ligue_grandest.png'),
   'ligue_2': require('../assets/images/logo_ligue_normandie.png'),
   'district_1': require('../assets/images/logo_district_alsace.png'),
