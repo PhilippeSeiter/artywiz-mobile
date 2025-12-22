@@ -636,6 +636,14 @@ const styles = StyleSheet.create({
     height: 52,
     borderRadius: 26,
   },
+  socialLogoFacebook: {
+    width: 36,
+    height: 36,
+  },
+  socialLogoGoogle: {
+    width: 32,
+    height: 32,
+  },
   // Forgot password
   forgotPasswordLink: {
     alignSelf: 'flex-end',
