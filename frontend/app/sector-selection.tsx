@@ -265,20 +265,18 @@ export default function SectorSelectionScreen() {
     transform: [{ translateY: cardTranslateY.value }],
   }));
 
-  const handleSectorPress = (sectorId: string) => {
-    if (sectorId === 'football') {
-      // Animation de sortie puis navigation
-      cardOpacity.value = withTiming(0, { duration: 200 });
-      cardTranslateY.value = withTiming(-20, { duration: 200 }, (finished) => {
-        if (finished) {
-          runOnJS(navigateToProfiles)();
-        }
-      });
-    }
+  const handleSectorPress = (sector: typeof SECTORS[0]) => {
+    // Animation de sortie puis navigation
+    cardOpacity.value = withTiming(0, { duration: 200 });
+    cardTranslateY.value = withTiming(-20, { duration: 200 }, (finished) => {
+      if (finished) {
+        runOnJS(navigateToRoute)(sector.route);
+      }
+    });
   };
 
-  const navigateToProfiles = () => {
-    router.push('/profile-selection');
+  const navigateToRoute = (route: string) => {
+    router.push(route as any);
   };
 
   const handleBack = () => {
