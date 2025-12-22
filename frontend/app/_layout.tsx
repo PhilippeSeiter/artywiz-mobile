@@ -76,6 +76,14 @@ function RootLayoutContent() {
         <Stack.Screen name="boulangerie" />
         <Stack.Screen name="coiffure" />
         <Stack.Screen name="restaurants" />
+        <Stack.Screen 
+          name="promo-video" 
+          options={{ 
+            animation: 'fade',
+            animationDuration: 300,
+            gestureEnabled: false,
+          }} 
+        />
         <Stack.Screen name="(tabs)" />
         <Stack.Screen name="document/[id]" />
         <Stack.Screen name="generated-doc/[id]" />
