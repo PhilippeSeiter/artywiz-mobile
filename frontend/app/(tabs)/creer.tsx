@@ -1032,6 +1032,16 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: '#D97706',
   },
+  // Generating indicator
+  generatingIndicator: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#FEF3C7',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 10,
+    gap: 4,
+  },
   // Stats (gardés pour compatibilité)
   statsRow: {
     flexDirection: 'row',
