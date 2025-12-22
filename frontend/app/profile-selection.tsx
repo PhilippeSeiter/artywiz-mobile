@@ -292,6 +292,7 @@ const UnifiedPopup = ({ visible, onClose, onAccountCreated }) => {
       type: 'equipe',
       name: `${team.name} - ${selectedClub?.name}`,
       clubId: selectedClub?.id,
+      logoKey: selectedClub?.logo, // Ajouter le logo du club
     };
     onAccountCreated(newAccount);
     onClose();
@@ -302,6 +303,7 @@ const UnifiedPopup = ({ visible, onClose, onAccountCreated }) => {
       id: `${selectedType}_${Date.now()}`,
       type: selectedType,
       name: item.name,
+      logoKey: item.logo, // Ajouter le logo si disponible
     };
     onAccountCreated(newAccount);
     onClose();
