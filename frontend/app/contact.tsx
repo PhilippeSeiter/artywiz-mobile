@@ -196,8 +196,7 @@ export default function ContactScreen() {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.container}
     >
-      {/* Fond avec gyroscope comme les autres pages */}
-      <VideoBackground />
+      {/* Fond global géré par _layout.tsx */}
       
       <ScrollView 
         contentContainerStyle={[styles.scrollContent, { paddingTop: insets.top + Spacing.lg }]}
