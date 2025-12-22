@@ -38,19 +38,8 @@ function AuthNavigationHandler() {
 
 function RootLayoutContent() {
   const initializeNotifications = useNotificationStore((state) => state.initialize);
-  const resetPreferences = useUserPreferencesStore((state) => state.resetPreferences);
-  const { logout } = useAuthStore();
 
   useEffect(() => {
-    // Reset all data on app startup for clean testing
-    const resetAllData = async () => {
-      console.log('[App] Resetting all user data for fresh start...');
-      await resetPreferences();
-      await logout();
-      console.log('[App] Data reset complete');
-    };
-    
-    resetAllData();
     initializeNotifications();
   }, []);
 
