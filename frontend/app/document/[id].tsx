@@ -39,12 +39,32 @@ import * as FileSystem from 'expo-file-system';
 import * as MediaLibrary from 'expo-media-library';
 import * as Sharing from 'expo-sharing';
 import { Asset } from 'expo-asset';
+import { DocumentDataService } from '../../services/documentDataService';
 
 const { width } = Dimensions.get('window');
 const BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL || '';
 
 // Helper pour trouver un document dans tous les services
 const findDocumentById = (id: string) => {
+  // D'abord chercher dans DocumentDataService (documents du dashboard)
+  const generatedDoc = DocumentDataService.getDocById(id);
+  if (generatedDoc) {
+    const legacyDoc = DocumentDataService.toLegacyDocument(generatedDoc);
+    // Ajouter les champs nécessaires pour l'éditeur
+    const enrichedDoc = {
+      ...legacyDoc,
+      ligne1: `${generatedDoc.teamName || generatedDoc.clubName} - ${new Date(generatedDoc.date).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: '2-digit' })}`,
+      mockupImage: require('../../assets/docs_mockups/match_poster_01.png'), // Default mockup
+      sponsorPrice: generatedDoc.sponsorPrice,
+    };
+    const allLegacyDocs = DocumentDataService.getAllLegacyDocuments().map(d => ({
+      ...d,
+      ligne1: `${d.teamLabel || d.title} - ${new Date(d.date).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: '2-digit' })}`,
+      mockupImage: require('../../assets/docs_mockups/match_poster_01.png'),
+    }));
+    return { doc: enrichedDoc, allDocs: allLegacyDocs };
+  }
+  
   // Chercher dans AS Strasbourg - Seniors 1
   let doc = ASStrasbourgDataService.getDocumentById(id);
   if (doc) return { doc, allDocs: ASStrasbourgDataService.getAllDocuments() };
