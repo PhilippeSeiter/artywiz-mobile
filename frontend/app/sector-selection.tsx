@@ -428,9 +428,9 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   avatarContainer: {
-    width: 80, // Agrandi de 64 à 80
-    height: 80, // Agrandi de 64 à 80
-    borderRadius: 40,
+    width: 96, // Agrandi +20% (80 → 96)
+    height: 96, // Agrandi +20% (80 → 96)
+    borderRadius: 48,
     overflow: 'hidden',
     marginBottom: Spacing.sm,
   },
@@ -439,8 +439,8 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   sectorName: {
-    fontSize: 14, // Légèrement plus grand
-    fontWeight: '600',
+    fontSize: 12, // Plus petit
+    fontWeight: '400', // Pas en gras
     color: Colors.text,
     textAlign: 'center',
     marginTop: Spacing.xs,
