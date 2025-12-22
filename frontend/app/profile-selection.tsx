@@ -167,9 +167,7 @@ const ACCOUNT_TYPES = [
 // ============================================
 // ACCOUNT CARD avec logo
 // ============================================
-const AccountCard = ({ account, index, isActive, onPress, onDelete, canDelete }: {
-  account: UserProfile; index: number; isActive: boolean; onPress: () => void; onDelete: () => void; canDelete: boolean;
-}) => {
+const AccountCard = ({ account, index, isActive, onPress, onDelete, canDelete }) => {
   const scale = useSharedValue(1);
   const getTypeIcon = (type: string) => {
     switch(type) { case 'equipe': return 'people'; case 'club': return 'shield'; case 'district': return 'map'; case 'ligue': return 'globe'; default: return 'person'; }
