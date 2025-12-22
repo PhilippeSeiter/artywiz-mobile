@@ -297,11 +297,9 @@ export default function DocumentDetailScreen() {
     }
     setIsPreparingDoc(true);
     startGeneration(document.id, selectedSupports);
-    Alert.alert(
-      'Document en préparation',
-      `Votre document est en cours de génération pour ${selectedSupports.length} support(s).`,
-      [{ text: 'OK', onPress: () => { setIsPreparingDoc(false); router.back(); }}]
-    );
+    
+    // Naviguer vers la liste des documents
+    router.replace('/(tabs)/creer');
   };
 
   // Ajouter un canal à la liste des canaux utilisés
