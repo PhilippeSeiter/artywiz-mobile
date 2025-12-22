@@ -281,12 +281,12 @@ const UnifiedPopup = ({ visible, onClose, onAccountCreated }) => {
     }
   };
 
-  const handleSelectClub = (club: any) => {
+  const handleSelectClub = (club) => {
     setSelectedClub(club);
     slideToNext('search_team');
   };
 
-  const handleSelectTeam = (team: any) => {
+  const handleSelectTeam = (team) => {
     const newAccount = {
       id: `equipe_${Date.now()}`,
       type: 'equipe',
