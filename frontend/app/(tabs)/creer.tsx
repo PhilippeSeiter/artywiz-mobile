@@ -344,7 +344,7 @@ const DocumentCard = ({
             )}
             {isGenerating ? (
               <View style={styles.generatingIndicator}>
-                <Spinner size={14} color="#F59E0B" />
+                <ActivityIndicator size="small" color="#F59E0B" />
               </View>
             ) : (
               <StatusIndicator status={doc.status} />
