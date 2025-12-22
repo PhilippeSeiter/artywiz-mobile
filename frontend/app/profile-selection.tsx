@@ -477,11 +477,11 @@ export default function ProfileSelectionScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { selectedProfiles: existingProfiles, setSelectedProfiles, activeProfileIndex, setActiveProfile, hasCompletedOnboarding } = useUserPreferencesStore();
-  const scrollViewRef = useRef<ScrollView>(null);
+  const scrollViewRef = useRef(null);
 
-  const getRealAccounts = (profiles: UserProfile[]) => profiles.filter(p => !p.id.startsWith('base_'));
+  const getRealAccounts = (profiles) => profiles.filter(p => !p.id.startsWith('base_'));
   const [accounts, setAccounts] = useState(getRealAccounts(existingProfiles));
-  const [activeAccountId, setActiveAccountId] = useState<string | null>(accounts.length > 0 ? accounts[activeProfileIndex]?.id || accounts[0]?.id : null);
+  const [activeAccountId, setActiveAccountId] = useState(accounts.length > 0 ? accounts[activeProfileIndex]?.id || accounts[0]?.id : null);
   const [showPopup, setShowPopup] = useState(false);
   const [hasCheckedRedirect, setHasCheckedRedirect] = useState(false);
 
