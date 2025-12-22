@@ -171,9 +171,9 @@ const SocialButton = ({
         animatedStyle
       ]}>
         {type === 'facebook' ? (
-          <Ionicons name="logo-facebook" size={38} color="#1877F2" />
+          <Ionicons name="logo-facebook" size={52} color="#1877F2" />
         ) : (
-          <Ionicons name="logo-google" size={34} color="#EA4335" />
+          <Ionicons name="logo-google" size={48} color="#EA4335" />
         )}
       </Animated.View>
     </TouchableOpacity>
