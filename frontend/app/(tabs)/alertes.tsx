@@ -675,11 +675,6 @@ export default function AlertesScreen() {
             resizeMode="contain"
           />
           <Text style={styles.headerTitle}>Alertes</Text>
-          {unreadCount > 0 && (
-            <View style={styles.headerBadge}>
-              <Text style={styles.headerBadgeText}>{unreadCount}</Text>
-            </View>
-          )}
           <TouchableOpacity onPress={openOptions} style={styles.optionsButton}>
             <Ionicons name="options-outline" size={24} color={Colors.white} />
           </TouchableOpacity>
