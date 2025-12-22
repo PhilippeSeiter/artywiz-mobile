@@ -172,7 +172,7 @@ const AccountCard = ({ account, index, isActive, onPress, onDelete, canDelete })
   const getTypeIcon = (type) => {
     switch(type) { case 'equipe': return 'people'; case 'club': return 'shield'; case 'district': return 'map'; case 'ligue': return 'globe'; default: return 'person'; }
   };
-  const getTypeColor = (type: string) => {
+  const getTypeColor = (type) => {
     switch(type) { case 'equipe': return '#6366F1'; case 'club': return '#0EA5E9'; case 'district': return '#10B981'; case 'ligue': return '#8B5CF6'; default: return Colors.primary; }
   };
   const handlePressIn = () => { scale.value = withSpring(0.97, { damping: 15, stiffness: 300 }); };
