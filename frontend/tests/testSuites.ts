@@ -37,7 +37,7 @@ await page.screenshot(path="/tmp/test_welcome.png", quality=20);
 const testProfileSelection = `
 await page.set_viewport_size({"width": 430, "height": 932});
 await page.evaluate("localStorage.clear()");
-await page.goto("https://document-editor-5.preview.emergentagent.com/profile-selection");
+await page.goto("https://expo-mobile-fix-1.preview.emergentagent.com/profile-selection");
 await page.wait_for_timeout(4000);
 
 // Vérifier le titre
@@ -69,7 +69,7 @@ await page.screenshot(path="/tmp/test_profile_selection.png", quality=20);
 const testAccountCreationPopup = `
 await page.set_viewport_size({"width": 430, "height": 932});
 await page.evaluate("localStorage.clear()");
-await page.goto("https://document-editor-5.preview.emergentagent.com/profile-selection");
+await page.goto("https://expo-mobile-fix-1.preview.emergentagent.com/profile-selection");
 await page.wait_for_timeout(4000);
 
 // Cliquer sur le bouton +
@@ -96,7 +96,7 @@ await page.screenshot(path="/tmp/test_popup.png", quality=20);
 // ============================================
 const testDocsScreen = `
 await page.set_viewport_size({"width": 430, "height": 932});
-await page.goto("https://document-editor-5.preview.emergentagent.com/(tabs)/creer");
+await page.goto("https://expo-mobile-fix-1.preview.emergentagent.com/(tabs)/creer");
 await page.wait_for_timeout(5000);
 
 // Vérifier le titre
@@ -127,10 +127,10 @@ export const TEST_SUITES = {
 };
 
 export const TEST_URLS = {
-  welcome: 'https://document-editor-5.preview.emergentagent.com',
-  profileSelection: 'https://document-editor-5.preview.emergentagent.com/profile-selection',
-  docs: 'https://document-editor-5.preview.emergentagent.com/(tabs)/creer',
-  dashboard: 'https://document-editor-5.preview.emergentagent.com/(tabs)',
+  welcome: 'https://expo-mobile-fix-1.preview.emergentagent.com',
+  profileSelection: 'https://expo-mobile-fix-1.preview.emergentagent.com/profile-selection',
+  docs: 'https://expo-mobile-fix-1.preview.emergentagent.com/(tabs)/creer',
+  dashboard: 'https://expo-mobile-fix-1.preview.emergentagent.com/(tabs)',
 };
 
 // Instructions pour exécuter les tests
