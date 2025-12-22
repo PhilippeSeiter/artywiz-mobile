@@ -1158,6 +1158,60 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     gap: 4,
   },
+  // Dropdown (Thématiques)
+  dropdownButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: '#F3F4F6',
+    borderRadius: 12,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
+  },
+  dropdownButtonContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
+  dropdownButtonText: {
+    fontSize: 14,
+    color: '#6B7280',
+  },
+  dropdownButtonTextSelected: {
+    fontSize: 14,
+    color: Colors.primary,
+    fontWeight: '600',
+  },
+  dropdownList: {
+    marginTop: 8,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
+    overflow: 'hidden',
+  },
+  dropdownItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    gap: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#F3F4F6',
+  },
+  dropdownItemSelected: {
+    backgroundColor: Colors.primary + '10',
+  },
+  dropdownItemText: {
+    fontSize: 14,
+    color: '#374151',
+  },
+  dropdownItemTextSelected: {
+    color: Colors.primary,
+    fontWeight: '600',
+  },
   // Stats (gardés pour compatibilité)
   statsRow: {
     flexDirection: 'row',
