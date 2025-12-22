@@ -159,7 +159,7 @@ const SocialButton = ({
     transform: [{ scale: scale.value }],
   }));
 
-  // Nouveaux logos Facebook et Google
+  // Nouveaux logos Facebook et Google - images plus grandes pour remplir le cercle
   const FACEBOOK_LOGO = 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Facebook_Logo_%282019%29.png/1024px-Facebook_Logo_%282019%29.png';
   const GOOGLE_LOGO = 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/1024px-Google_%22G%22_logo.svg.png';
 
@@ -173,7 +173,7 @@ const SocialButton = ({
       <Animated.View style={[styles.socialButton, type === 'facebook' ? styles.facebookButton : styles.googleButton, animatedStyle]}>
         <Image 
           source={{ uri: type === 'facebook' ? FACEBOOK_LOGO : GOOGLE_LOGO }}
-          style={styles.socialLogo}
+          style={type === 'facebook' ? styles.socialLogoFacebook : styles.socialLogoGoogle}
           resizeMode="contain"
         />
       </Animated.View>
