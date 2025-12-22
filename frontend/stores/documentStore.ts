@@ -40,6 +40,9 @@ interface DocumentStore {
   // Viewed docs (to track "new" status)
   viewedDocs: string[];
   
+  // Callback for when generation completes
+  onGenerationCompleteCallback: ((docId: string) => void) | null;
+  
   // Actions
   startGeneration: (docId: string, selectedSupports: string[], profileId?: string) => void;
   completeGeneration: (docId: string) => void;
@@ -51,6 +54,7 @@ interface DocumentStore {
   isDocumentGenerating: (docId: string) => boolean;
   isDocumentReady: (docId: string) => boolean;
   isDocumentPublished: (docId: string) => boolean;
+  setOnGenerationComplete: (callback: ((docId: string) => void) | null) => void;
   
   // Legacy actions (for compatibility)
   addToGeneration: (docId: string) => void;
