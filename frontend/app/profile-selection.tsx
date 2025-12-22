@@ -169,7 +169,7 @@ const ACCOUNT_TYPES = [
 // ============================================
 const AccountCard = ({ account, index, isActive, onPress, onDelete, canDelete }) => {
   const scale = useSharedValue(1);
-  const getTypeIcon = (type: string) => {
+  const getTypeIcon = (type) => {
     switch(type) { case 'equipe': return 'people'; case 'club': return 'shield'; case 'district': return 'map'; case 'ligue': return 'globe'; default: return 'person'; }
   };
   const getTypeColor = (type: string) => {
