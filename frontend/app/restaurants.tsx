@@ -107,7 +107,7 @@ const logoStyles = StyleSheet.create({
   imageArtywiz: { width: 154, height: 33 },
   partCategory: { alignItems: 'center', marginTop: 4 },
   categoryText: { 
-    fontSize: 13, 
+    fontSize: 9, 
     fontWeight: '300', 
     color: '#FFFFFF', 
     letterSpacing: 3, 
