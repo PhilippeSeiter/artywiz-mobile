@@ -601,7 +601,10 @@ export default function ProfileSelectionScreen() {
           {!hasAccounts && (
             <Animated.View entering={FadeIn.duration(300)} exiting={FadeOut.duration(200)} style={styles.explanationContainer}>
               <Text style={styles.explanationText}>
-                Cliquez sur le bouton + pour créer votre premier compte
+                Vous pouvez gérer plusieurs comptes avec Artywiz, équipe, club, district ou ligue.
+              </Text>
+              <Text style={styles.explanationText}>
+                Cliquez sur le bouton "+" pour commencer !
               </Text>
             </Animated.View>
           )}
