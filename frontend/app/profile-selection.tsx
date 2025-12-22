@@ -242,11 +242,6 @@ const UnifiedPopup = ({ visible, onClose, onAccountCreated }: UnifiedPopupProps)
   const [selectedType, setSelectedType] = useState<string>('');
   const [selectedClub, setSelectedClub] = useState<any>(null);
   const [searchQuery, setSearchQuery] = useState('');
-  
-  // Animation values
-  const overlayOpacity = useSharedValue(0);
-  const contentScale = useSharedValue(0.9);
-  const slideX = useSharedValue(0);
 
   // Reset when opening
   useEffect(() => {
@@ -255,20 +250,10 @@ const UnifiedPopup = ({ visible, onClose, onAccountCreated }: UnifiedPopupProps)
       setSelectedType('');
       setSelectedClub(null);
       setSearchQuery('');
-      slideX.value = 0;
-      overlayOpacity.value = withTiming(1, { duration: 200 });
-      contentScale.value = withSpring(1, { damping: 15, stiffness: 150 });
-    } else {
-      overlayOpacity.value = withTiming(0, { duration: 150 });
-      contentScale.value = withTiming(0.9, { duration: 150 });
     }
   }, [visible]);
 
-  const overlayStyle = useAnimatedStyle(() => ({ opacity: overlayOpacity.value }));
-  const contentStyle = useAnimatedStyle(() => ({ transform: [{ scale: contentScale.value }] }));
-  const slideStyle = useAnimatedStyle(() => ({ transform: [{ translateX: slideX.value }] }));
-
-  // Slide transition - simplified without runOnJS
+  // Slide transition - simplified
   const slideToNext = (nextStep: PopupStep) => {
     setStep(nextStep);
     setSearchQuery('');
