@@ -368,7 +368,7 @@ const UnifiedPopup = ({ visible, onClose, onAccountCreated }: UnifiedPopupProps)
 
           {/* Sliding content wrapper */}
           <View style={styles.popupSlideWrapper}>
-            <Animated.View style={[styles.popupSlideContent, slideStyle]}>
+            <View style={styles.popupSlideContent}>
               {/* Subtitle */}
               <Text style={styles.popupSubtitle}>{getSubtitle()}</Text>
 
