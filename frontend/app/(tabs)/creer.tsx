@@ -748,7 +748,83 @@ export default function CreerScreen() {
                 </View>
               </View>
               
-              {/* Section 3: Trier */}
+              {/* Section 3: Thématiques (menu déroulant) */}
+              <View style={styles.filterSection}>
+                <Text style={styles.filterSectionTitle}>Thématiques</Text>
+                <TouchableOpacity 
+                  style={styles.dropdownButton}
+                  onPress={() => setShowThematiquesDropdown(!showThematiquesDropdown)}
+                >
+                  <View style={styles.dropdownButtonContent}>
+                    {selectedThematique ? (
+                      <>
+                        <Ionicons 
+                          name={THEMATIQUES.find(t => t.id === selectedThematique)?.icon as any || 'folder-outline'} 
+                          size={18} 
+                          color={Colors.primary} 
+                        />
+                        <Text style={styles.dropdownButtonTextSelected}>
+                          {THEMATIQUES.find(t => t.id === selectedThematique)?.label}
+                        </Text>
+                      </>
+                    ) : (
+                      <Text style={styles.dropdownButtonText}>Toutes les thématiques</Text>
+                    )}
+                  </View>
+                  <Ionicons 
+                    name={showThematiquesDropdown ? 'chevron-up' : 'chevron-down'} 
+                    size={20} 
+                    color="#6B7280" 
+                  />
+                </TouchableOpacity>
+                
+                {/* Liste déroulante */}
+                {showThematiquesDropdown && (
+                  <View style={styles.dropdownList}>
+                    <TouchableOpacity 
+                      style={[
+                        styles.dropdownItem,
+                        !selectedThematique && styles.dropdownItemSelected
+                      ]}
+                      onPress={() => {
+                        setSelectedThematique(null);
+                        setShowThematiquesDropdown(false);
+                      }}
+                    >
+                      <Ionicons name="apps-outline" size={18} color={!selectedThematique ? Colors.primary : '#6B7280'} />
+                      <Text style={[
+                        styles.dropdownItemText,
+                        !selectedThematique && styles.dropdownItemTextSelected
+                      ]}>Toutes les thématiques</Text>
+                    </TouchableOpacity>
+                    {THEMATIQUES.map((thematique) => (
+                      <TouchableOpacity 
+                        key={thematique.id}
+                        style={[
+                          styles.dropdownItem,
+                          selectedThematique === thematique.id && styles.dropdownItemSelected
+                        ]}
+                        onPress={() => {
+                          setSelectedThematique(thematique.id);
+                          setShowThematiquesDropdown(false);
+                        }}
+                      >
+                        <Ionicons 
+                          name={thematique.icon as any} 
+                          size={18} 
+                          color={selectedThematique === thematique.id ? Colors.primary : '#6B7280'} 
+                        />
+                        <Text style={[
+                          styles.dropdownItemText,
+                          selectedThematique === thematique.id && styles.dropdownItemTextSelected
+                        ]}>{thematique.label}</Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                )}
+              </View>
+              
+              {/* Section 4: Trier */}
               <View style={styles.filterSection}>
                 <Text style={styles.filterSectionTitle}>Trier</Text>
                 <View style={styles.filterChipsRow}>
