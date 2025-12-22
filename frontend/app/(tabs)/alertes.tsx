@@ -467,13 +467,13 @@ export default function AlertesScreen() {
   const slideAnim = useRef(new Animated.Value(PANEL_HEIGHT)).current;
   const overlayOpacityAnim = useRef(new Animated.Value(0)).current;
 
-  // Animations gaming d'entrée
-  const headerY = useSharedValue(-50);
-  const headerOpacity = useSharedValue(0);
-  const searchY = useSharedValue(30);
-  const searchOpacity = useSharedValue(0);
-  const tabsY = useSharedValue(30);
-  const tabsOpacity = useSharedValue(0);
+  // Animations standard React Native
+  const headerY = useRef(new Animated.Value(-50)).current;
+  const headerOpacity = useRef(new Animated.Value(0)).current;
+  const searchY = useRef(new Animated.Value(30)).current;
+  const searchOpacity = useRef(new Animated.Value(0)).current;
+  const tabsY = useRef(new Animated.Value(30)).current;
+  const tabsOpacity = useRef(new Animated.Value(0)).current;
 
   // Animation d'entrée séquentielle gaming
   useEffect(() => {
