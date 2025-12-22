@@ -1296,6 +1296,31 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: Colors.error,
   },
+  // Sponsor content
+  sponsorContent: {
+    gap: Spacing.md,
+  },
+  sponsorDescription: {
+    fontSize: 14,
+    color: Colors.textSecondary,
+    lineHeight: 20,
+  },
+  sponsorButton: {
+    borderRadius: 12,
+    overflow: 'hidden',
+  },
+  sponsorButtonGradient: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 14,
+    gap: Spacing.sm,
+  },
+  sponsorButtonText: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: '#FFFFFF',
+  },
   // Save button
   saveButton: {
     borderRadius: 14,
