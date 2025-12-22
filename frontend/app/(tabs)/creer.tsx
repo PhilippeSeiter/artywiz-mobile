@@ -73,11 +73,11 @@ interface Profile {
 
 // Profils disponibles avec leurs logos
 const PROFILES: Profile[] = [
-  { id: 'seniors1', name: 'AS Strasbourg - Séniors 1', type: 'equipe', logo: require('../../assets/images/logo AS Strasbourg.png') },
-  { id: 'club', name: 'AS Strasbourg (Club)', type: 'club', logo: require('../../assets/images/logo AS Strasbourg.png') },
-  { id: 'lgef', name: 'Ligue LGEF', type: 'ligue', logo: require('../../assets/images/logo LGEF ligue grand est.png') },
-  { id: 'normandie', name: 'Ligue Normandie', type: 'ligue', logo: require('../../assets/images/logo ligue normandie.png') },
-  { id: 'alsace', name: 'Ligue Alsace', type: 'ligue', logo: require('../../assets/images/logo district alsace.png') },
+  { id: 'seniors1', name: 'AS Strasbourg - Séniors 1', type: 'equipe', logo: require('../../assets/images/logo_club_strasbourg.png') },
+  { id: 'club', name: 'AS Strasbourg (Club)', type: 'club', logo: require('../../assets/images/logo_club_strasbourg.png') },
+  { id: 'lgef', name: 'Ligue LGEF', type: 'ligue', logo: require('../../assets/images/logo_ligue_grandest.png') },
+  { id: 'normandie', name: 'Ligue Normandie', type: 'ligue', logo: require('../../assets/images/logo_ligue_normandie.png') },
+  { id: 'alsace', name: 'District Alsace', type: 'district', logo: require('../../assets/images/logo_district_alsace.png') },
 ];
 
 // Couleurs de fond pour les mockups (fallback)
