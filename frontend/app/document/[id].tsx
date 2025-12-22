@@ -670,6 +670,28 @@ export default function DocumentDetailScreen() {
           </Animated.View>
         )}
 
+        {/* Métriques du document publié - ligne discrète */}
+        {docStatus === 'publie' && (
+          <View style={styles.metricsRow}>
+            <View style={styles.metricItem}>
+              <Ionicons name="eye-outline" size={14} color="#9CA3AF" />
+              <Text style={styles.metricValue}>{MOCK_METRICS.views.toLocaleString()}</Text>
+            </View>
+            <View style={styles.metricItem}>
+              <Ionicons name="hand-left-outline" size={14} color="#9CA3AF" />
+              <Text style={styles.metricValue}>{MOCK_METRICS.clicks}</Text>
+            </View>
+            <View style={styles.metricItem}>
+              <Ionicons name="chatbubble-outline" size={14} color="#9CA3AF" />
+              <Text style={styles.metricValue}>{MOCK_METRICS.comments}</Text>
+            </View>
+            <View style={styles.metricItem}>
+              <Ionicons name="share-social-outline" size={14} color="#9CA3AF" />
+              <Text style={styles.metricValue}>{MOCK_METRICS.shares}</Text>
+            </View>
+          </View>
+        )}
+
         {/* Supports selection - just after mockup */}
         <View style={styles.supportsSection}>
           <Text style={styles.supportsSectionTitle}>Choisissez vos supports</Text>
