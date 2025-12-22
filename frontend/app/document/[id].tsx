@@ -936,4 +936,18 @@ const styles = StyleSheet.create({
   actionBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingVertical: 12, paddingHorizontal: 14, borderRadius: 12, gap: 6, minWidth: 100 },
   actionBtnDisabled: { opacity: 0.7 },
   actionBtnText: { fontSize: 13, fontWeight: '600', color: '#FFF' },
+  
+  // Edit button in header
+  editButton: { 
+    paddingHorizontal: 14, 
+    paddingVertical: 8, 
+    backgroundColor: 'rgba(255,255,255,0.2)', 
+    borderRadius: 16,
+    opacity: 0.5,
+  },
+  editButtonText: { 
+    fontSize: 14, 
+    fontWeight: '600', 
+    color: Colors.white 
+  },
 });
