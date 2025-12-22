@@ -551,19 +551,20 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 4,
   },
-  // Carte blanche
+  // Carte blanche - 95% opacité, agrandie et remontée de 20px
   cardContainer: {
     marginBottom: 0,
+    marginTop: -20,
   },
   card: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: 'rgba(255, 255, 255, 0.95)',
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
     borderBottomLeftRadius: 24,
     borderBottomRightRadius: 24,
     paddingHorizontal: 20,
-    paddingTop: 22,
-    paddingBottom: 16,
+    paddingTop: 26,
+    paddingBottom: 20,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: -4 },
     shadowOpacity: 0.1,
