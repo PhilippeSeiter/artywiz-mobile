@@ -408,6 +408,32 @@ export default function CreerScreen() {
     setIsLoading(false);
   }, [selectedProfile]);
 
+  // Setup callback pour notifier quand un document est prêt
+  const { setOnGenerationComplete } = useDocumentStore();
+  
+  useEffect(() => {
+    setOnGenerationComplete((docId: string) => {
+      // Trouver le titre du document
+      const doc = documents.find(d => d.id === docId);
+      const docTitle = doc?.ligne2 || 'Votre document';
+      
+      Alert.alert(
+        '✅ Document prêt !',
+        `${docTitle} est prêt. Vous pouvez maintenant le diffuser.`,
+        [
+          { text: 'OK', style: 'default' },
+          { 
+            text: 'Voir le document', 
+            onPress: () => router.push(`/document/${docId}`)
+          },
+        ]
+      );
+    });
+    
+    // Cleanup
+    return () => setOnGenerationComplete(null);
+  }, [documents, setOnGenerationComplete]);
+
   useEffect(() => {
     loadDocuments();
   }, [loadDocuments]);
