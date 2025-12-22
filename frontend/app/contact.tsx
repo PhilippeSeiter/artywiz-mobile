@@ -219,7 +219,10 @@ export default function ContactScreen() {
             <View style={styles.backButton}>
               <Ionicons name="arrow-back" size={20} color="#FF6B6B" />
             </View>
-            <Text style={styles.title}>Contactez-nous</Text>
+            <View style={styles.titleContainer}>
+              <Text style={styles.titleLine1}>Contactez</Text>
+              <Text style={styles.titleLine2}>nous</Text>
+            </View>
           </TouchableOpacity>
 
           <Text style={styles.description}>
