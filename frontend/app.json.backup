@@ -52,6 +52,11 @@
     "experiments": {
       "typedRoutes": true
     },
-    "extra": {}
+    "extra": {
+      "eas": {
+        "projectId": "artywiz-mobile"
+      }
+    },
+    "owner": "artywiz"
   }
 }
