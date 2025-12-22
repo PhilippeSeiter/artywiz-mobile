@@ -1,28 +1,33 @@
 /**
- * VideoBackground component - Animated background with gyroscope movement
- * Used on login, signup, welcome, and profile selection screens
+ * VideoBackground component - Animated background with 4-direction gyroscope movement
+ * Used on login, signup, welcome, contact and profile selection screens
  * 
  * Features:
- * - Wider image that moves based on device orientation (gyroscope)
+ * - Larger image that moves based on device orientation (gyroscope) in 4 directions
  * - Fallback to automatic panoramic animation if gyroscope unavailable
  */
 import React, { useEffect, useRef, useState } from 'react';
 import { View, StyleSheet, Image, Dimensions, Animated, Platform } from 'react-native';
 import { DeviceMotion } from 'expo-sensors';
 
-const BACKGROUND_IMAGE_URL = 'https://customer-assets.emergentagent.com/job_document-editor-5/artifacts/jeu59hen_Fond%20Ecran%20app%20Artywiz.png';
+// New larger background image for 4-direction movement
+const BACKGROUND_IMAGE_URL = 'https://customer-assets.emergentagent.com/job_document-editor-5/artifacts/xekx9h9s_Fond%20Ecran%20app%20Artywiz%20B.png';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
-// Image is wider than screen - define how much it can move
-const IMAGE_WIDTH = SCREEN_WIDTH * 1.4; // 40% wider than screen
-const MAX_OFFSET = (IMAGE_WIDTH - SCREEN_WIDTH) / 2;
+// Image is larger than screen in both directions
+const IMAGE_SCALE = 1.4; // 40% larger in both dimensions
+const IMAGE_WIDTH = SCREEN_WIDTH * IMAGE_SCALE;
+const IMAGE_HEIGHT = SCREEN_HEIGHT * IMAGE_SCALE;
+const MAX_OFFSET_X = (IMAGE_WIDTH - SCREEN_WIDTH) / 2;
+const MAX_OFFSET_Y = (IMAGE_HEIGHT - SCREEN_HEIGHT) / 2;
 
 // Sensitivity for gyroscope movement (higher = more responsive)
-const GYRO_SENSITIVITY = 80;
+const GYRO_SENSITIVITY_X = 80;
+const GYRO_SENSITIVITY_Y = 60; // Slightly less for vertical to feel natural
 
 // Auto-pan animation duration (fallback)
-const AUTO_PAN_DURATION = 8000; // 8 seconds per direction
+const AUTO_PAN_DURATION = 8000;
 
 interface VideoBackgroundProps {
   children?: React.ReactNode;
@@ -30,8 +35,10 @@ interface VideoBackgroundProps {
 
 export function VideoBackground({ children }: VideoBackgroundProps) {
   const translateX = useRef(new Animated.Value(0)).current;
+  const translateY = useRef(new Animated.Value(0)).current;
   const [hasGyroscope, setHasGyroscope] = useState(false);
-  const gyroOffset = useRef(0);
+  const gyroOffsetX = useRef(0);
+  const gyroOffsetY = useRef(0);
   const autoPanAnimation = useRef<Animated.CompositeAnimation | null>(null);
 
   useEffect(() => {
@@ -39,36 +46,30 @@ export function VideoBackground({ children }: VideoBackgroundProps) {
 
     const setupGyroscope = async () => {
       try {
-        // Check if device motion is available
         const isAvailable = await DeviceMotion.isAvailableAsync();
         
         if (isAvailable) {
           setHasGyroscope(true);
+          DeviceMotion.setUpdateInterval(16); // 60fps
           
-          // Set update interval (60fps)
-          DeviceMotion.setUpdateInterval(16);
-          
-          // Subscribe to device motion
           subscription = DeviceMotion.addListener((data) => {
             if (data.rotation) {
-              // Use gamma (left/right tilt) for horizontal movement
-              const { gamma } = data.rotation;
+              const { gamma, beta } = data.rotation;
               
-              // Calculate new offset based on tilt
-              // gamma is in radians, typically -PI to PI
-              const targetOffset = gamma * GYRO_SENSITIVITY * -1;
+              // Horizontal movement (left/right tilt)
+              const targetOffsetX = gamma * GYRO_SENSITIVITY_X * -1;
+              gyroOffsetX.current = gyroOffsetX.current * 0.85 + targetOffsetX * 0.15;
+              const clampedOffsetX = Math.max(-MAX_OFFSET_X, Math.min(MAX_OFFSET_X, gyroOffsetX.current));
+              translateX.setValue(clampedOffsetX);
               
-              // Smooth the movement
-              gyroOffset.current = gyroOffset.current * 0.85 + targetOffset * 0.15;
-              
-              // Clamp to max offset
-              const clampedOffset = Math.max(-MAX_OFFSET, Math.min(MAX_OFFSET, gyroOffset.current));
-              
-              translateX.setValue(clampedOffset);
+              // Vertical movement (forward/backward tilt)
+              const targetOffsetY = beta * GYRO_SENSITIVITY_Y * -1;
+              gyroOffsetY.current = gyroOffsetY.current * 0.85 + targetOffsetY * 0.15;
+              const clampedOffsetY = Math.max(-MAX_OFFSET_Y, Math.min(MAX_OFFSET_Y, gyroOffsetY.current));
+              translateY.setValue(clampedOffsetY);
             }
           });
         } else {
-          // Fallback to auto-pan animation
           startAutoPan();
         }
       } catch (error) {
@@ -78,23 +79,20 @@ export function VideoBackground({ children }: VideoBackgroundProps) {
     };
 
     const startAutoPan = () => {
-      // Create looping pan animation
-      const panRight = Animated.timing(translateX, {
-        toValue: MAX_OFFSET,
-        duration: AUTO_PAN_DURATION,
-        useNativeDriver: true,
-      });
-
-      const panLeft = Animated.timing(translateX, {
-        toValue: -MAX_OFFSET,
-        duration: AUTO_PAN_DURATION,
-        useNativeDriver: true,
-      });
-
-      // Start from center, go right, then loop left-right
-      autoPanAnimation.current = Animated.loop(
-        Animated.sequence([panRight, panLeft])
+      // Create figure-8 looping animation for both axes
+      const panSequence = Animated.loop(
+        Animated.sequence([
+          Animated.parallel([
+            Animated.timing(translateX, { toValue: MAX_OFFSET_X, duration: AUTO_PAN_DURATION, useNativeDriver: true }),
+            Animated.timing(translateY, { toValue: MAX_OFFSET_Y / 2, duration: AUTO_PAN_DURATION, useNativeDriver: true }),
+          ]),
+          Animated.parallel([
+            Animated.timing(translateX, { toValue: -MAX_OFFSET_X, duration: AUTO_PAN_DURATION, useNativeDriver: true }),
+            Animated.timing(translateY, { toValue: -MAX_OFFSET_Y / 2, duration: AUTO_PAN_DURATION, useNativeDriver: true }),
+          ]),
+        ])
       );
+      autoPanAnimation.current = panSequence;
       autoPanAnimation.current.start();
     };
 
@@ -112,12 +110,11 @@ export function VideoBackground({ children }: VideoBackgroundProps) {
 
   return (
     <View style={styles.container}>
-      {/* Animated background image */}
       <Animated.View
         style={[
           styles.imageContainer,
           {
-            transform: [{ translateX }],
+            transform: [{ translateX }, { translateY }],
           },
         ]}
       >
@@ -128,7 +125,6 @@ export function VideoBackground({ children }: VideoBackgroundProps) {
         />
       </Animated.View>
 
-      {/* Children content overlay */}
       {children && (
         <View style={styles.content}>
           {children}
@@ -150,10 +146,10 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     position: 'absolute',
-    top: 0,
-    left: -MAX_OFFSET, // Center the wider image
+    top: -MAX_OFFSET_Y,
+    left: -MAX_OFFSET_X,
     width: IMAGE_WIDTH,
-    height: SCREEN_HEIGHT,
+    height: IMAGE_HEIGHT,
   },
   backgroundImage: {
     width: '100%',
