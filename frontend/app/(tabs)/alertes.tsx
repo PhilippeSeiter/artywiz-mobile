@@ -710,22 +710,14 @@ export default function AlertesScreen() {
           </View>
         ) : (
           displayedNotifications.map((item, index) => (
-            <ReAnimated.View 
-              key={item.id}
-              // Entrée: slide depuis le bas avec spring gaming
-              entering={FadeInDown.delay(index * 80).springify().damping(12).stiffness(180)}
-              // Sortie Tetris: slide vers la gauche + fade out
-              exiting={SlideOutLeft.duration(300).springify().damping(15).stiffness(200)}
-              // Layout Tetris: les blocs restants "tombent" avec rebond gaming
-              layout={Layout.springify().damping(14).stiffness(120).mass(0.8)}
-            >
+            <View key={item.id}>
               <NotificationCard
                 item={item}
                 onAction={handleAction}
                 isExpanded={expandedIds.has(item.id)}
                 onToggleExpand={toggleExpand}
               />
-            </ReAnimated.View>
+            </View>
           ))
         )}
       </ScrollView>
