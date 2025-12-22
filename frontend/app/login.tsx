@@ -43,7 +43,7 @@ const { width, height } = Dimensions.get('window');
 // Animation: décalage 500ms, ±5%, cycles 2s, boucle infinie
 // W et Football: GRANDIT d'abord | Artywiz: RÉDUIT d'abord
 // ============================================
-const AnimatedLoginLogo = () => {
+const AnimatedLoginLogo = ({ onPress }: { onPress?: () => void }) => {
   // Opacités pour le fondu décalé
   const opacityW = useSharedValue(0);
   const opacityArtywiz = useSharedValue(0);
