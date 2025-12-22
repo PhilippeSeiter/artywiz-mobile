@@ -106,7 +106,7 @@ const AnimatedLoginLogo = ({ onPress }: { onPress?: () => void }) => {
   }));
 
   return (
-    <View style={styles.animatedLogoContainer}>
+    <TouchableOpacity style={styles.animatedLogoContainer} onPress={onPress} activeOpacity={0.9}>
       <View style={styles.logoPartsWrapper}>
         {/* W - en haut */}
         <Animated.View style={[styles.logoPart, styles.logoW, animatedStyleW]}>
