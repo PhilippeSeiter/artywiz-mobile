@@ -451,10 +451,10 @@ const styles = StyleSheet.create({
     paddingBottom: Spacing.xxl,
   },
   card: {
-    backgroundColor: Colors.white,
+    backgroundColor: 'rgba(255, 255, 255, 0.90)',
     borderRadius: 24,
     padding: Spacing.xl,
-    marginTop: 115,  // Réduit pour rapprocher du logo
+    marginTop: 115,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 10 },
     shadowOpacity: 0.15,
