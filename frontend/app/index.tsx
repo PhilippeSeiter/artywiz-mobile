@@ -551,13 +551,13 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 4,
   },
-  // Carte blanche - 80% opacité, agrandie et remontée de 30px
+  // Carte blanche - 90% opacité, agrandie et remontée de 30px
   cardContainer: {
     marginBottom: 0,
     marginTop: -30,
   },
   card: {
-    backgroundColor: 'rgba(255, 255, 255, 0.80)',
+    backgroundColor: 'rgba(255, 255, 255, 0.90)',
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
     borderBottomLeftRadius: 24,
