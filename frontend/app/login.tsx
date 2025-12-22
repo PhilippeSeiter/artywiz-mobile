@@ -345,19 +345,20 @@ export default function LoginScreen() {
       >
         {/* Carte de connexion */}
         <Animated.View style={[styles.loginCard, cardAnimatedStyle]}>
-          {/* Bouton retour avec titre à droite */}
-          <View style={styles.headerRow}>
-            <TouchableOpacity 
-              style={styles.backButton}
-              onPress={() => router.back()}
-            >
+          {/* Bouton retour avec titre - zone cliquable */}
+          <TouchableOpacity 
+            style={styles.headerRow}
+            onPress={() => router.back()}
+            activeOpacity={0.7}
+          >
+            <View style={styles.backButton}>
               <Ionicons name="arrow-back" size={20} color="#FF6B6B" />
-            </TouchableOpacity>
+            </View>
             <View style={styles.titleContainer}>
               <Text style={styles.titleLine1}>Déjà</Text>
               <Text style={styles.titleLine2}>Inscrit.e?</Text>
             </View>
-          </View>
+          </TouchableOpacity>
 
           {/* Description */}
           <Text style={styles.cardDescription}>
