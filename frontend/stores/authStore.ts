@@ -53,8 +53,11 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     try {
       // Clear user state FIRST
       set({ user: null });
-      // Then clear storage
+      // Clear storage
       await AuthService.logout();
+      // Reset user preferences (profiles, themes, etc.)
+      const { resetPreferences } = require('./userPreferencesStore').useUserPreferencesStore.getState();
+      resetPreferences();
       set({ isLoggingOut: false });
       return true;
     } catch (error) {
