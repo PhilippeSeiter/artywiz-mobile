@@ -67,8 +67,8 @@ export function useLogin() {
       // Update user in cache
       queryClient.setQueryData(AUTH_KEYS.user, response.user);
       
-      // Login always goes directly to dashboard
-      router.replace('/(tabs)');
+      // Login goes to promo video first, then dashboard
+      router.replace('/promo-video');
     },
     onError: (error: ApiError) => {
       console.error('Login error:', error.message);
