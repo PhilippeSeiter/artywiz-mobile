@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { View, TextInput, Text, StyleSheet, TextInputProps, TouchableOpacity, Animated } from 'react-native';
+import React, { useState } from 'react';
+import { View, TextInput, Text, StyleSheet, TextInputProps, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Colors, Spacing } from '../constants';
 
@@ -19,26 +19,8 @@ export const CustomInput: React.FC<CustomInputProps> = ({
 }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
-  
-  // Animation values - utiliser uniquement useNativeDriver: false pour éviter les conflits
-  const shakeAnim = useRef(new Animated.Value(0)).current;
 
-  // Handle error shake animation
-  useEffect(() => {
-    if (error) {
-      Animated.sequence([
-        Animated.timing(shakeAnim, { toValue: -8, duration: 50, useNativeDriver: false }),
-        Animated.timing(shakeAnim, { toValue: 8, duration: 50, useNativeDriver: false }),
-        Animated.timing(shakeAnim, { toValue: -6, duration: 50, useNativeDriver: false }),
-        Animated.timing(shakeAnim, { toValue: 6, duration: 50, useNativeDriver: false }),
-        Animated.timing(shakeAnim, { toValue: -3, duration: 50, useNativeDriver: false }),
-        Animated.timing(shakeAnim, { toValue: 3, duration: 50, useNativeDriver: false }),
-        Animated.timing(shakeAnim, { toValue: 0, duration: 50, useNativeDriver: false }),
-      ]).start();
-    }
-  }, [error]);
-
-  // Couleurs dynamiques basées sur l'état
+  // Couleurs dynamiques basées sur l'état (sans animations)
   const borderColor = error ? '#FF6B6B' : (isFocused ? '#007BFF' : '#E5E7EB');
   const borderWidth = error ? 2 : (isFocused ? 2 : 1);
   const iconColor = isFocused ? '#007BFF' : (error ? '#FF6B6B' : Colors.textSecondary);
@@ -46,11 +28,10 @@ export const CustomInput: React.FC<CustomInputProps> = ({
   return (
     <View style={styles.container}>
       {label && <Text style={styles.label}>{label}</Text>}
-      <Animated.View 
+      <View 
         style={[
           styles.inputContainer, 
           { 
-            transform: [{ translateX: shakeAnim }],
             borderColor,
             borderWidth,
           }
@@ -93,7 +74,7 @@ export const CustomInput: React.FC<CustomInputProps> = ({
             />
           </TouchableOpacity>
         )}
-      </Animated.View>
+      </View>
       {error && (
         <Text style={styles.errorText}>{error}</Text>
       )}
