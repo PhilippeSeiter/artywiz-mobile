@@ -8,7 +8,6 @@ export default {
     scheme: "artywiz",
     userInterfaceStyle: "automatic",
     newArchEnabled: false,
-    owner: "artywiz-organisation",
     ios: {
       supportsTablet: true,
       bundleIdentifier: "com.artyplanet.artywiz"
@@ -44,10 +43,7 @@ export default {
       typedRoutes: true
     },
     extra: {
-      EXPO_PUBLIC_BACKEND_URL: process.env.EXPO_PUBLIC_BACKEND_URL || "https://artywiz.io",
-      eas: {
-        projectId: "5188cfd5-e612-4364-88d7-51261e0ec49e"
-      }
+      EXPO_PUBLIC_BACKEND_URL: process.env.EXPO_PUBLIC_BACKEND_URL || "https://artywiz.io"
     }
   }
 };
