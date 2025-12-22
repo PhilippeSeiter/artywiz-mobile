@@ -499,6 +499,8 @@ export default function CreerScreen() {
     setDisplaySize('medium');
     setSortOption(null);
     setSponsorFilter(null);
+    setSelectedThematique(null);
+    setShowThematiquesDropdown(false);
   };
   
   // Appliquer la recherche du modal et fermer
