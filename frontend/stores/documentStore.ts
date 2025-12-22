@@ -88,6 +88,11 @@ export const useDocumentStore = create<DocumentStore>()(
         // Simulate generation completion after 30 seconds
         setTimeout(() => {
           get().completeGeneration(docId);
+          // Call the onComplete callback if set
+          const callback = get().onGenerationCompleteCallback;
+          if (callback) {
+            callback(docId);
+          }
         }, 30000);
       },
 
