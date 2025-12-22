@@ -136,7 +136,7 @@ const BG_SCALE_AMPLITUDE = 0.02;  // Très léger zoom (2%)
 // Amplitude du déplacement - très subtil pour ne pas montrer les bords
 const BG_TRANSLATE_AMPLITUDE = width * 0.01;  // 1% de déplacement max
 
-// Bouton social avec icônes vectorielles (plus fiables que les images externes)
+// Bouton social avec images locales (sans cercle)
 const SocialButton = ({ 
   type, 
   onPress 
@@ -165,16 +165,15 @@ const SocialButton = ({
       onPressOut={handlePressOut}
       activeOpacity={1}
     >
-      <Animated.View style={[
-        styles.socialButton, 
-        type === 'facebook' ? styles.facebookButton : styles.googleButton, 
-        animatedStyle
-      ]}>
-        {type === 'facebook' ? (
-          <Ionicons name="logo-facebook" size={52} color="#1877F2" />
-        ) : (
-          <Ionicons name="logo-google" size={48} color="#EA4335" />
-        )}
+      <Animated.View style={[styles.socialButton, animatedStyle]}>
+        <Image 
+          source={type === 'facebook' 
+            ? require('../assets/images/logo_facebook.png')
+            : require('../assets/images/logo_google.png')
+          }
+          style={styles.socialLogo}
+          resizeMode="contain"
+        />
       </Animated.View>
     </TouchableOpacity>
   );
