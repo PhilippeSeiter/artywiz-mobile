@@ -411,9 +411,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: Spacing.sm,
+    gap: 10, // Espacement réduit entre les cartes
   },
   cardWrapper: {
-    width: '48%',
+    width: '47.5%', // Plus large (-5% de marge de chaque côté)
   },
   sectorCard: {
     backgroundColor: '#F9FAFB',
@@ -422,27 +423,29 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 1,
     borderColor: '#E5E7EB',
-    minHeight: 130,
+    height: 160, // Hauteur fixe pour uniformité (2 lignes de texte)
     justifyContent: 'center',
     position: 'relative',
   },
   avatarContainer: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
+    width: 80, // Agrandi de 64 à 80
+    height: 80, // Agrandi de 64 à 80
+    borderRadius: 40,
     overflow: 'hidden',
-    marginBottom: Spacing.xs,
+    marginBottom: Spacing.sm,
   },
   avatarImage: {
     width: '100%',
     height: '100%',
   },
   sectorName: {
-    fontSize: 13,
+    fontSize: 14, // Légèrement plus grand
     fontWeight: '600',
     color: Colors.text,
     textAlign: 'center',
     marginTop: Spacing.xs,
+    minHeight: 36, // Réserve espace pour 2 lignes
+    lineHeight: 18,
   },
   infoNote: {
     flexDirection: 'row',
