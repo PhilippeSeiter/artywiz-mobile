@@ -588,7 +588,7 @@ export default function ProfileSelectionScreen() {
         <Animated.View style={[styles.card, cardAnimatedStyle]}>
           {/* Header */}
           <View style={styles.cardHeader}>
-            <TouchableOpacity style={styles.backButtonCircle} onPress={() => router.back()}>
+            <TouchableOpacity style={styles.backButtonCircle} onPress={() => router.replace('/sector-selection')}>
               <Ionicons name="arrow-back" size={20} color="#FF6B6B" />
             </TouchableOpacity>
             <View style={styles.titleContainer}>
