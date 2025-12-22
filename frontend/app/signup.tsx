@@ -367,6 +367,31 @@ export default function SignupScreen() {
             </Animated.View>
           </TouchableOpacity>
 
+          {/* Séparateur et boutons sociaux */}
+          <View style={styles.socialSection}>
+            <View style={styles.dividerContainer}>
+              <View style={styles.divider} />
+              <Text style={styles.dividerText}>ou connectez-vous avec</Text>
+              <View style={styles.divider} />
+            </View>
+            <View style={styles.socialButtons}>
+              <TouchableOpacity style={styles.socialButton} activeOpacity={0.8}>
+                <Image 
+                  source={{ uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Facebook_Logo_%282019%29.png/1024px-Facebook_Logo_%282019%29.png' }}
+                  style={styles.socialLogoFull}
+                  resizeMode="cover"
+                />
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.socialButton} activeOpacity={0.8}>
+                <Image 
+                  source={{ uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/1024px-Google_%22G%22_logo.svg.png' }}
+                  style={styles.socialLogoFull}
+                  resizeMode="cover"
+                />
+              </TouchableOpacity>
+            </View>
+          </View>
+
           {/* Footer */}
           <View style={styles.footer}>
             <Text style={styles.footerText}>Déjà inscrit ?</Text>
