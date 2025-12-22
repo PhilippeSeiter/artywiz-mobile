@@ -15,7 +15,6 @@ import Animated, {
 import { Colors, Spacing } from '../constants';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { VideoBackground } from '../components/VideoBackground';
 
 const { height } = Dimensions.get('window');
 
