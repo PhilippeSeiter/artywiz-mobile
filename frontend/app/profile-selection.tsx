@@ -594,10 +594,7 @@ export default function ProfileSelectionScreen() {
           {!hasAccounts && (
             <Animated.View entering={FadeIn.duration(300)} exiting={FadeOut.duration(200)} style={styles.explanationContainer}>
               <Text style={styles.explanationText}>
-                Gérez tous vos comptes depuis une seule application : équipe, club, district ou ligue.
-              </Text>
-              <Text style={styles.explanationText}>
-                Cliquez sur le bouton + ci-dessous pour créer votre premier compte et commencer à communiquer.
+                Cliquez sur le bouton + pour créer votre premier compte
               </Text>
             </Animated.View>
           )}
