@@ -665,10 +665,10 @@ export default function AlertesScreen() {
             <Ionicons name="options-outline" size={24} color={Colors.white} />
           </TouchableOpacity>
         </LinearGradient>
-      </ReAnimated.View>
+      </Animated.View>
 
       {/* Barre de recherche avec animation */}
-      <ReAnimated.View style={[styles.searchContainer, searchAnimStyle]}>
+      <Animated.View style={[styles.searchContainer, searchAnimStyle]}>
         <View style={styles.searchInputContainer}>
           <Ionicons name="search" size={20} color="#8E8E93" />
           <TextInput
