@@ -20,55 +20,28 @@ export const CustomInput: React.FC<CustomInputProps> = ({
   const [showPassword, setShowPassword] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   
-  // Animation values using React Native's Animated
-  const focusAnim = useRef(new Animated.Value(0)).current;
+  // Animation values - utiliser uniquement useNativeDriver: false pour éviter les conflits
   const shakeAnim = useRef(new Animated.Value(0)).current;
-  const iconScale = useRef(new Animated.Value(1)).current;
-
-  // Handle focus animation
-  useEffect(() => {
-    Animated.timing(focusAnim, {
-      toValue: isFocused ? 1 : 0,
-      duration: 200,
-      useNativeDriver: false,
-    }).start();
-    
-    if (isFocused) {
-      Animated.sequence([
-        Animated.spring(iconScale, { toValue: 1.15, useNativeDriver: true }),
-        Animated.spring(iconScale, { toValue: 1, useNativeDriver: true }),
-      ]).start();
-    }
-  }, [isFocused]);
 
   // Handle error shake animation
   useEffect(() => {
     if (error) {
       Animated.sequence([
-        Animated.timing(shakeAnim, { toValue: -8, duration: 50, useNativeDriver: true }),
-        Animated.timing(shakeAnim, { toValue: 8, duration: 50, useNativeDriver: true }),
-        Animated.timing(shakeAnim, { toValue: -6, duration: 50, useNativeDriver: true }),
-        Animated.timing(shakeAnim, { toValue: 6, duration: 50, useNativeDriver: true }),
-        Animated.timing(shakeAnim, { toValue: -3, duration: 50, useNativeDriver: true }),
-        Animated.timing(shakeAnim, { toValue: 3, duration: 50, useNativeDriver: true }),
-        Animated.timing(shakeAnim, { toValue: 0, duration: 50, useNativeDriver: true }),
+        Animated.timing(shakeAnim, { toValue: -8, duration: 50, useNativeDriver: false }),
+        Animated.timing(shakeAnim, { toValue: 8, duration: 50, useNativeDriver: false }),
+        Animated.timing(shakeAnim, { toValue: -6, duration: 50, useNativeDriver: false }),
+        Animated.timing(shakeAnim, { toValue: 6, duration: 50, useNativeDriver: false }),
+        Animated.timing(shakeAnim, { toValue: -3, duration: 50, useNativeDriver: false }),
+        Animated.timing(shakeAnim, { toValue: 3, duration: 50, useNativeDriver: false }),
+        Animated.timing(shakeAnim, { toValue: 0, duration: 50, useNativeDriver: false }),
       ]).start();
     }
   }, [error]);
 
-  const borderColor = error 
-    ? '#FF6B6B' 
-    : focusAnim.interpolate({
-        inputRange: [0, 1],
-        outputRange: ['#E5E7EB', '#007BFF'],
-      });
-
-  const borderWidth = error 
-    ? 2 
-    : focusAnim.interpolate({
-        inputRange: [0, 1],
-        outputRange: [1, 2],
-      });
+  // Couleurs dynamiques basées sur l'état
+  const borderColor = error ? '#FF6B6B' : (isFocused ? '#007BFF' : '#E5E7EB');
+  const borderWidth = error ? 2 : (isFocused ? 2 : 1);
+  const iconColor = isFocused ? '#007BFF' : (error ? '#FF6B6B' : Colors.textSecondary);
 
   return (
     <View style={styles.container}>
@@ -84,14 +57,14 @@ export const CustomInput: React.FC<CustomInputProps> = ({
         ]}
       >
         {icon && (
-          <Animated.View style={{ transform: [{ scale: iconScale }] }}>
+          <View style={styles.iconContainer}>
             <Ionicons 
               name={icon} 
               size={20} 
-              color={isFocused ? '#007BFF' : (error ? '#FF6B6B' : Colors.textSecondary)} 
+              color={iconColor} 
               style={styles.icon} 
             />
-          </Animated.View>
+          </View>
         )}
         <TextInput
           {...textInputProps}
@@ -146,14 +119,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#E5E7EB',
     paddingHorizontal: Spacing.md,
-    shadowColor: '#007BFF',
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 8,
-    shadowOpacity: 0.1,
-    elevation: 2,
+  },
+  iconContainer: {
+    marginRight: Spacing.sm,
   },
   icon: {
-    marginRight: Spacing.sm,
+    // Style de base pour l'icône
   },
   eyeIcon: {
     padding: Spacing.sm,
