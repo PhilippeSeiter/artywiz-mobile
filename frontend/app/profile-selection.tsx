@@ -608,10 +608,6 @@ export default function ProfileSelectionScreen() {
           {/* Explanatory text - shown when no accounts exist */}
           {!hasAccounts && (
             <Animated.View entering={FadeIn.duration(300)} exiting={FadeOut.duration(200)} style={styles.explanationContainer}>
-              <View style={styles.welcomeIconContainer}>
-                <Ionicons name="sparkles" size={32} color="#6366F1" />
-              </View>
-              <Text style={styles.welcomeTitle}>Bienvenue sur Artywiz !</Text>
               <Text style={styles.explanationText}>
                 Gérez tous vos comptes depuis une seule application : équipe, club, district ou ligue.
               </Text>
