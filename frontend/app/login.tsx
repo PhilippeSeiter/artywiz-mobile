@@ -323,8 +323,7 @@ export default function LoginScreen() {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.container}
     >
-      {/* Fond vidéo en boucle */}
-      <VideoBackground />
+      {/* Fond global géré par _layout.tsx */}
 
       {/* Logo Artywiz - COUCHE 2 (3 parties animées) - cliquable pour retour accueil */}
       <AnimatedLoginLogo onPress={() => router.replace('/')} />
