@@ -261,12 +261,12 @@ const UnifiedPopup = ({ visible, onClose, onAccountCreated }) => {
   }, [visible]);
 
   // Slide transition - simplified
-  const slideToNext = (nextStep: PopupStep) => {
+  const slideToNext = (nextStep) => {
     setStep(nextStep);
     setSearchQuery('');
   };
 
-  const slideBack = (prevStep: PopupStep) => {
+  const slideBack = (prevStep) => {
     setStep(prevStep);
     setSearchQuery('');
   };
